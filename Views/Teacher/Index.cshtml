@@ -2,20 +2,37 @@
     ViewData["Title"] = "Hub";
 }
 
-    <div>
-        <h1>Project Hamilton</h1>
+@section Styles {
+    <link href="@Url.Content("~/css/home_stylesheet.css")" rel="stylesheet" type="text/css" />
+}
+
+<div>
+    <h1>Project Hamilton</h1>
+    <div id="seccion_crear_hub">
+        <h1>Profesores</h1>
         <div>
-            <h1>Profesores</h1>
-            <div>
-                <p>Crea un hub para tu clase.</p>
-                <button onclick="">Crear hub</button>
-            </div>
-            <p></p>
+            <p>Crea un hub para tu clase.</p>
+            <p id="hubCode"></p>
+            <button id="crear_hub">Crear hub</button>
         </div>
-        <div>
-            <h1>Alumnos</h1>
-            <p>Conectate al lobby de tu profesor.</p>
-            <input type="text" id="passedLobbyCode"/>
-            <button onclick="">Unirse</button>
-        </div>
+        <p></p>
     </div>
+    <div id="seccion_unir_hub">
+        <h1>Alumnos</h1>
+        <p>Conectate al lobby de tu profesor.</p>
+        <button id="unir_hub" 
+                onclick="window.location.href('/game')">Unirse</button>
+    </div>
+    <script>
+        var createHub = document.getElementById("crear_hub");
+        var hubCodeContainer = document.getElementById("hubCode");
+
+        fetch('/Teacher', { method: 'POST' })
+            .then(function (response) {
+                hubCodeContainer.innerHTML = response.text;
+            })
+            .then(function (error) {
+                console.error(error);
+            });
+    </script>
+</div>
