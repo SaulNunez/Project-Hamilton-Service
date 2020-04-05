@@ -60,7 +60,7 @@ namespace LaCasaDelTerror.Models
 
         public void MoveRight(string hubCode)
         {
-
+           
         }
 
         public void MoveLeft(string hubCode)

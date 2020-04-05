@@ -15,5 +15,6 @@ namespace LaCasaDelTerror.Models
 
         public List<Items> items;
         public Position position;
+        public int floor;
     }
 }

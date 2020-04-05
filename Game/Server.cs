@@ -21,7 +21,7 @@ namespace LaCasaDelTerror.Models
 
         public void MoveRight(string hubCode)
         {
-
+            var currentRoom = hu
         }
 
         public void MoveLeft(string hubCode)

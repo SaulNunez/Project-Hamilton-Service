@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using ProjectHamiltonService.Game;
 
 namespace ProjectHamiltonService
 {
@@ -45,6 +46,7 @@ namespace ProjectHamiltonService
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Teacher}/{action=Index}/{id?}");
+                endpoints.MapHub<ServerHub>("/gameapi");
             });
         }
     }
