@@ -29,7 +29,7 @@
 
         fetch('/Teacher', { method: 'POST' })
             .then(function (response) {
-                hubCodeContainer.innerHTML = response.text;
+                hubCodeContainer.innerHTML = response.text();
             })
             .then(function (error) {
                 console.error(error);
