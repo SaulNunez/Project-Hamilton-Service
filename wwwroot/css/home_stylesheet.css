@@ -23,7 +23,13 @@
 
 }
 
-button {
+#hubCode {
+    padding: 1rem;
+    font-size: 2rem;
+    border: 2px solid black;
+}
+
+button, .button {
     padding: 1rem;
     border-radius: 0.5rem;
     background-color: dodgerblue;
