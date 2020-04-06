@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LaCasaDelTerror.Models
 {
-    class Items
+    public class Items
     {
         public enum SpecialItems
         {

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LaCasaDelTerror.Models.Abstracts
 {
-    class Stats
+    public class Stats
     {
         public int sanity;
         public int physical;

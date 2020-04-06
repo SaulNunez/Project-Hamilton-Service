@@ -6,7 +6,7 @@ using System.Text;
 
 namespace LaCasaDelTerror.Models
 {
-    class Lobby
+    public class Lobby
     {
         private const string db = "juego.sqlite";
 

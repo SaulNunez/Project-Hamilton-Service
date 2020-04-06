@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LaCasaDelTerror.Models
 {
-    class Character
+    public class Character
     {
         public string name;
         public Stats stats;

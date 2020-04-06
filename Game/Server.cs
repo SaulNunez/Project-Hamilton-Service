@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LaCasaDelTerror.Models
 {
-    class Server
+    public class Server
     {
         private static readonly Lazy<Server> lazy = new Lazy<Server>(() => new Server());
 

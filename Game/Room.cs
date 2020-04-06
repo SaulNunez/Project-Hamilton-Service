@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LaCasaDelTerror.Models
 {
-    class Room
+    public class Room
     {
         public static Room[] mainFloor = {
             new Room

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LaCasaDelTerror.Models
 {
-    class Players: Character
+    public class Players: Character
     {
         public Players(Character characterPrototype)
         {

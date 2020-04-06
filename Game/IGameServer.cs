@@ -8,5 +8,7 @@ namespace ProjectHamiltonService.Game
 {
     public interface IGameServer
     {
+        public Task<Stats> ChangeStats();
+
     }
 }
