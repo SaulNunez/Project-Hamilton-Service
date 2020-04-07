@@ -1,6 +1,10 @@
-﻿using System;
+﻿using ProjectHamiltonService.Game;
+using ProjectHamiltonService.Game.Abstracts;
+using ProjectHamiltonService.Game.ServerActions;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace LaCasaDelTerror.Models
 {
@@ -14,29 +18,71 @@ namespace LaCasaDelTerror.Models
 
         public Dictionary<string, Lobby> lobbies = new Dictionary<string, Lobby>();
 
-        public void UseItem(string hubCode)
+        public List<ServerPlayer> players = new List<ServerPlayer>();
+
+        public List<Items> GetItems(string hubCode, string playerAuth)
         {
+            if (!lobbies.ContainsKey(hubCode))
+            {
+                throw new Exception("Hub was not found");
+            }
+
+            return lobbies[hubCode].GetPlayer().items;
+        }
+
+        public void UseItem(string hubCode, string userVerification, string itemIdentification)
+        {
+            if (!lobbies.ContainsKey(hubCode))
+            {
+                throw new Exception("Hub was not found");
+            }
+
+            lobbies[hubCode].UseItem(userVerification, itemIdentification);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <param name="verificationCode"></param>
+        /// <returns></returns>
+        public bool MoveVertical(int direction, string verificationCode)
+        {
+            if (!lobbies.ContainsKey(movement.lobbyCode))
+            {
+                throw new Exception("Hub was not found");
+            }
+
+            
+        }
+
+        public bool MoveHorizontal(string hubCode, int direction, string verificationCode)
+        {
+            if (!lobbies.ContainsKey(hubCode))
+            {
+                throw new Exception("Hub was not found");
+            }
 
         }
 
-        public void MoveRight(string hubCode)
+        public Task<bool> SolvePuzzle(string hubCode, string verificationCode, string codeResult)
         {
-            //var currentRoom = hu
+            if (!lobbies.ContainsKey(hubCode))
+            {
+                throw new Exception("Hub was not found");
+            }
+
+            return true;
         }
 
-        public void MoveLeft(string hubCode)
+        /// <summary>
+        /// Moves current player in a lobby to a position
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <returns>A position if the player can move</returns>
+        public Position? MoveTo(Position pos)
         {
-
-        }
-
-        public void MoveTop(string hubCode)
-        {
-
-        }
-
-        public void MoveBottom(string hubCode)
-        {
-
+            return null;
         }
     }
 }
