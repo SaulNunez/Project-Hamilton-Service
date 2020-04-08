@@ -20,6 +20,12 @@ namespace LaCasaDelTerror.Models
 
         public List<ServerPlayer> players = new List<ServerPlayer>();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hubCode"></param>
+        /// <param name="playerAuth"></param>
+        /// <returns></returns>
         public List<Items> GetItems(string hubCode, string playerAuth)
         {
             if (!lobbies.ContainsKey(hubCode))
@@ -30,6 +36,12 @@ namespace LaCasaDelTerror.Models
             return lobbies[hubCode].GetPlayer().items;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hubCode"></param>
+        /// <param name="userVerification"></param>
+        /// <param name="itemIdentification"></param>
         public void UseItem(string hubCode, string userVerification, string itemIdentification)
         {
             if (!lobbies.ContainsKey(hubCode))
@@ -45,34 +57,43 @@ namespace LaCasaDelTerror.Models
         /// </summary>
         /// <param name="direction"></param>
         /// <param name="verificationCode"></param>
+        /// <param name="hubCode"></param>
         /// <returns></returns>
-        public bool MoveVertical(int direction, string verificationCode)
-        {
-            if (!lobbies.ContainsKey(movement.lobbyCode))
-            {
-                throw new Exception("Hub was not found");
-            }
-
-            
-        }
-
-        public bool MoveHorizontal(string hubCode, int direction, string verificationCode)
+        public int MoveVertical(string hubCode, int direction, string verificationCode)
         {
             if (!lobbies.ContainsKey(hubCode))
             {
                 throw new Exception("Hub was not found");
             }
 
+            return lobbies[hubCode].MoveVertical(verificationCode, direction);
         }
 
-        public Task<bool> SolvePuzzle(string hubCode, string verificationCode, string codeResult)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hubCode"></param>
+        /// <param name="direction"></param>
+        /// <param name="verificationCode"></param>
+        /// <returns></returns>
+        public int MoveHorizontal(string hubCode, int direction, string verificationCode)
         {
             if (!lobbies.ContainsKey(hubCode))
             {
                 throw new Exception("Hub was not found");
             }
 
-            return true;
+            return lobbies[hubCode].MoveHorizontal(verificationCode, direction);
+        }
+
+        public async Task<bool> SolvePuzzle(string hubCode, string verificationCode, string codeResult)
+        {
+            if (!lobbies.ContainsKey(hubCode))
+            {
+                throw new Exception("Hub was not found");
+            }
+
+            return await lobbies[hubCode].CheckPuzzle(verificationCode, codeResult);
         }
 
         /// <summary>

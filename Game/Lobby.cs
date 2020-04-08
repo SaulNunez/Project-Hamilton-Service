@@ -41,10 +41,10 @@ namespace LaCasaDelTerror.Models
             }
         }
 
-        public string[] AvailableCharacters()
+        public List<Character> AvailableCharacters()
         {
-            var characters = new List<string>();
-            return characters.ToArray();
+            //TODO: Hacer una implementacion completa
+            return new List<Character>();
         }
 
         private static readonly HttpClient client = new HttpClient();
@@ -134,12 +134,6 @@ namespace LaCasaDelTerror.Models
             {
                 return -1;
             }
-        }
-
-        public bool SolvePuzzle(string verification, string code)
-        {
-            //TODO: Tomar en cuenta el timing del juego
-            return true;
         }
     }
 }

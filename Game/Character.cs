@@ -7,6 +7,13 @@ namespace LaCasaDelTerror.Models
 {
     public class Character
     {
+        public static Dictionary<string, Character> roster = new Dictionary<string, Character>();
+
+        static Character()
+        {
+            //Lista de personajes
+        }
+
         public string name;
         public Stats stats;
     }
