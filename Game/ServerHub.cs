@@ -12,42 +12,42 @@ namespace ProjectHamiltonService.Game
 {
     public class ServerHub : Hub<IClientActions>
     {
-        public async Task<int> GoToLeft(LobbyAction action)
+        public int GoToLeft(LobbyAction action)
         {
             var availableMovements = Server.Instance.MoveHorizontal(action.lobbyCode, -1, action.code);
 
             var player = Server.Instance.lobbies[action.lobbyCode].GetPlayer();
-            Clients.All.MoveTo(player.name, player.position);
+            Clients.Group(action.lobbyCode).MoveTo(player.name, player.position);
 
             return availableMovements;
         }
 
-        public async Task<int> GoToRight(LobbyAction action)
+        public int GoToRight(LobbyAction action)
         {
             var availableMovements = Server.Instance.MoveHorizontal(action.lobbyCode, 1, action.code);
 
             var player = Server.Instance.lobbies[action.lobbyCode].GetPlayer();
-            Clients.All.MoveTo(player.name, player.position);
+            Clients.Group(action.lobbyCode).MoveTo(player.name, player.position);
 
             return availableMovements;
         }
 
-        public async Task<int> GoToBottom(LobbyAction action)
+        public int GoToBottom(LobbyAction action)
         {
             var availableMovements = Server.Instance.MoveVertical(action.lobbyCode, -1, action.code);
 
             var player = Server.Instance.lobbies[action.lobbyCode].GetPlayer();
-            Clients.All.MoveTo(player.name, player.position);
+            Clients.Group(action.lobbyCode).MoveTo(player.name, player.position);
 
             return availableMovements;
         }
 
-        public async Task<int> GoToTop(LobbyAction action)
+        public int GoToTop(LobbyAction action)
         {
             var availableMovements = Server.Instance.MoveVertical(action.lobbyCode, 1, action.code);
 
             var player = Server.Instance.lobbies[action.lobbyCode].GetPlayer();
-            Clients.All.MoveTo(player.name, player.position);
+            Clients.Group(action.lobbyCode).MoveTo(player.name, player.position);
 
             return availableMovements;
         }
@@ -71,10 +71,10 @@ namespace ProjectHamiltonService.Game
 
         public async Task<bool> EnterLobby(string code)
         {
-            //TODO: Revisar que contiene lobbies
             if (Server.Instance.lobbies.ContainsKey(code))
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, code);
+                Clients.Group(code).PlayerJoinedLobby();
 
                 return true;
             }
@@ -82,9 +82,8 @@ namespace ProjectHamiltonService.Game
             return false;
         }
 
-        public async Task<List<Character>> GetAvailableCharacters(LobbyAction lobby)
+        public List<Character> GetAvailableCharacters(LobbyAction lobby)
         {
-            //TODO: Hacer que available characters pueda retornar la info por default de los personajes
             return Server.Instance.lobbies[lobby.lobbyCode].AvailableCharacters();
         }
     }

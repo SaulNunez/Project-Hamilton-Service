@@ -14,5 +14,7 @@ namespace ProjectHamiltonService.Game
         void SetItemList(string playerName, List<Items> items);
         void MoveTo(string playerName, Position pos);
         void StartPuzzle(string xmlTemplate, string instructions);
+        void PlayerJoinedLobby();
+        void CharacterJoined();
     }
 }
