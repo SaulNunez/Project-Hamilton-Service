@@ -11,10 +11,8 @@ namespace LaCasaDelTerror.Models
 {
     public class Lobby
     {
-
-        private string[] character = { "char1", "char2", "char3", "char4" };
-
-        public string name;
+        public readonly string name;
+        public string code { get; private set; }
         public List<ServerPlayer> players = new List<ServerPlayer>();
         public Dictionary<Position,Room> topFloor = new Dictionary<Position, Room>();
         public Dictionary<Position, Room> mainFloor = new Dictionary<Position, Room>();
@@ -28,17 +26,9 @@ namespace LaCasaDelTerror.Models
 }
         public int turnOf = 0;
         
-        public Lobby(string lobby)
+        public Lobby()
         {
-            name = lobby;
-        }
-
-        private void SetupRooms()
-        {
-            foreach(var room in Room.mainFloor)
-            {
-
-            }
+            code = "ABCD";
         }
 
         public List<Character> AvailableCharacters()
@@ -73,10 +63,10 @@ namespace LaCasaDelTerror.Models
 
         public string? AddPlayer(string characterPrototypeId)
         {
-            if (character.Contains(characterPrototypeId))
-            {
-                return null;
-            }
+            //if (character.Contains(characterPrototypeId))
+            //{
+            //    return null;
+            //}
 
             var player = new ServerPlayer(Character.roster[characterPrototypeId]);
             players.Add(player);

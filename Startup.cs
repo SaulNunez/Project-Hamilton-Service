@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using ProjectHamiltonService.Game;
+using ProjectHamiltonService.Models;
 
 namespace ProjectHamiltonService
 {
@@ -19,6 +20,8 @@ namespace ProjectHamiltonService
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<GameContext>();
+
             services.AddSignalR();
             services.AddMvc();
         }
