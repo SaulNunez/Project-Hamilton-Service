@@ -6,35 +6,32 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using static LaCasaDelTerror.Models.Server;
 
 namespace LaCasaDelTerror.Models
 {
     public class Lobby
     {
-        public readonly string name;
         public string code { get; private set; }
         public List<ServerPlayer> players = new List<ServerPlayer>();
         public Dictionary<Position,Room> topFloor = new Dictionary<Position, Room>();
         public Dictionary<Position, Room> mainFloor = new Dictionary<Position, Room>();
         public Dictionary<Position, Room> basement = new Dictionary<Position, Room>();
 
-        public int currentPlayers {
+        public int CurrentPlayers {
             get
         {
             return players.Count;
         }
 }
-        public int turnOf = 0;
+        /// <summary>
+        /// Indice del jugador actual que tiene su partida. Indice corresponde a su posicion en la lista de players
+        /// </summary>
+        public int currentMoveServerPlayerIndex = 0;
         
         public Lobby()
         {
             code = "ABCD";
-        }
-
-        public List<Character> AvailableCharacters()
-        {
-            //TODO: Hacer una implementacion completa
-            return new List<Character>();
         }
 
         private static readonly HttpClient client = new HttpClient();
@@ -88,39 +85,33 @@ namespace LaCasaDelTerror.Models
 
         public bool IsCodeForCurrentTurn(string code)
         {
-            return players[turnOf].code == code;
+            return players[currentMoveServerPlayerIndex].code == code;
         }
 
-        public int MoveHorizontal(string verificationCode, int direction)
+        public int Move(string verificationCode, Direction direction)
         {
             if (IsCodeForCurrentTurn(verificationCode))
             {
-                //Para que siempre sea -1, 0 o 1
-                direction = Math.Sign(direction);
 
-                var affectedPlayer = players[turnOf];
-                affectedPlayer.position.x += direction;
+                var affectedPlayer = players[currentMoveServerPlayerIndex];
+                switch (direction)
+                {
+                    case Direction.DOWN:
+                        affectedPlayer.position.y--;
+                        break;
+                    case Direction.UP:
+                        affectedPlayer.position.y++;
+                        break;
+                    case Direction.LEFT:
+                        affectedPlayer.position.x--;
+                        break;
+                    case Direction.RIGHT:
+                        affectedPlayer.position.x++;
+                        break;
+                }
                 affectedPlayer.positionsMoved++;
                 return affectedPlayer.currentThrow + affectedPlayer.positionsMoved;
             } else
-            {
-                return -1;
-            }
-        }
-        
-        public int MoveVertical(string verificationCode, int direction)
-        {
-            if (IsCodeForCurrentTurn(verificationCode))
-            {
-                //Para que siempre sea -1, 0 o 1
-                direction = Math.Sign(direction);
-
-                var affectedPlayer = players[turnOf];
-                affectedPlayer.position.y += direction;
-                affectedPlayer.positionsMoved++;
-                return affectedPlayer.currentThrow + affectedPlayer.positionsMoved;
-            }
-            else
             {
                 return -1;
             }

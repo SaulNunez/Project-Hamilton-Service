@@ -3,6 +3,7 @@ using LaCasaDelTerror.Models.Abstracts;
 using Microsoft.AspNetCore.SignalR;
 using ProjectHamiltonService.Game.ClientActions;
 using ProjectHamiltonService.Game.ServerActions;
+using ProjectHamiltonService.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,66 +13,70 @@ namespace ProjectHamiltonService.Game
 {
     public class ServerHub : Hub<IClientActions>
     {
-        public int GoToLeft(LobbyAction action)
+        private GameContext gameContext;
+
+        public ServerHub(GameContext gameContext)
         {
-            var availableMovements = Server.Instance.MoveHorizontal(action.lobbyCode, -1, action.code);
-
-            var player = Server.Instance.lobbies[action.lobbyCode].GetPlayer();
-            Clients.Group(action.lobbyCode).MoveTo(player.name, player.position);
-
-            return availableMovements;
+            this.gameContext = gameContext;
         }
 
-        public int GoToRight(LobbyAction action)
+        private bool IsLobbyInList(string lobbyCode) => gameContext.lobbies.Exists(x => x.code == lobbyCode);
+
+        private bool IsUserAuthCodeOfCurrentTurn(string lobbyCode, string playerToken)
         {
-            var availableMovements = Server.Instance.MoveHorizontal(action.lobbyCode, 1, action.code);
+            var lobby = gameContext.lobbies.Find(x => x.code == lobbyCode);
 
-            var player = Server.Instance.lobbies[action.lobbyCode].GetPlayer();
-            Clients.Group(action.lobbyCode).MoveTo(player.name, player.position);
+            if(lobby != null)
+            {
+                return lobby.players.Exists(x => x.code == playerToken);
+            }
 
-            return availableMovements;
+            return false;
         }
 
-        public int GoToBottom(LobbyAction action)
+        public DirectionAvailability GetAvailableMovements(LobbyAction action)
         {
-            var availableMovements = Server.Instance.MoveVertical(action.lobbyCode, -1, action.code);
+            var lobby = gameContext.lobbies.Find(x => x.code == action.lobbyCode);
 
-            var player = Server.Instance.lobbies[action.lobbyCode].GetPlayer();
-            Clients.Group(action.lobbyCode).MoveTo(player.name, player.position);
+            if (lobby != null)
+            {
+                return new DirectionAvailability
+                {
+                    right = false,
+                    left = false,
+                    up = false,
+                    down = false
+                };
+            }
 
-            return availableMovements;
+            return null;
         }
 
-        public int GoToTop(LobbyAction action)
+        public int Move(LobbyAction action)
         {
-            var availableMovements = Server.Instance.MoveVertical(action.lobbyCode, 1, action.code);
 
-            var player = Server.Instance.lobbies[action.lobbyCode].GetPlayer();
-            Clients.Group(action.lobbyCode).MoveTo(player.name, player.position);
-
-            return availableMovements;
+            return 1;
         }
 
         public async Task UseItem(ItemAction puzzleActions)
         {
-            Server.Instance.UseItem(puzzleActions.lobbyCode, puzzleActions.code, puzzleActions.itemName);
+            
         }
 
         public List<Items> GetItems(LobbyAction lobby)
         {
-            return Server.Instance.GetItems(lobby.lobbyCode, lobby.code);
+            return new List<Items>();
         }
 
         public async Task<bool> SendPuzzle(PuzzleActions puzzleActions)
         {
-            return await Server.Instance.SolvePuzzle(puzzleActions.lobbyCode,
-                puzzleActions.code,
-                puzzleActions.puzzleResultCode);
+            return false;
         }
 
         public async Task<bool> EnterLobby(string code)
         {
-            if (Server.Instance.lobbies.ContainsKey(code))
+            //Existe lobby en servidor
+            if (true)
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, code);
                 Clients.Group(code).PlayerJoinedLobby();
@@ -84,7 +89,7 @@ namespace ProjectHamiltonService.Game
 
         public List<Character> GetAvailableCharacters(LobbyAction lobby)
         {
-            return Server.Instance.lobbies[lobby.lobbyCode].AvailableCharacters();
+            return new List<Character>();
         }
     }
 }
