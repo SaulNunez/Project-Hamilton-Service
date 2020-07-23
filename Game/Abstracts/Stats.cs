@@ -6,27 +6,29 @@ namespace LaCasaDelTerror.Models.Abstracts
 {
     public class Stats
     {
-        public int sanity;
-        public int physical;
-        public int intelligence;
-        public int balls;
+        public int Sanity { get; set; }
+        public int Physical { get; set; }
+        public int Intelligence { get; set; }
+        public int Bravery { get; set; }
 
+        [Obsolete]
         public static Stats operator +(Stats a, Stats b)
         => new Stats
         {
-            sanity = a.sanity + b.sanity,
-            physical = a.physical + b.physical,
-            intelligence = a.intelligence + b.intelligence,
-            balls = a.balls + b.balls
+            Sanity = a.Sanity + b.Sanity,
+            Physical = a.Physical + b.Physical,
+            Intelligence = a.Intelligence + b.Intelligence,
+            Bravery = a.Bravery + b.Bravery
         };
 
+        [Obsolete]
         public static Stats operator -(Stats a, Stats b)
         => new Stats
         {
-            sanity = a.sanity - b.sanity,
-            physical = a.physical - b.physical,
-            intelligence = a.intelligence - b.intelligence,
-            balls = a.balls - b.balls
+            Sanity = a.Sanity - b.Sanity,
+            Physical = a.Physical - b.Physical,
+            Intelligence = a.Intelligence - b.Intelligence,
+            Bravery = a.Bravery - b.Bravery
         };
     }
 }
