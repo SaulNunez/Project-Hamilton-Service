@@ -31,7 +31,7 @@ namespace ProjectHamiltonService.Controllers
 
             var result = new CreatedLobbyInfo
             {
-                code = newLobby.code
+                code = newLobby.Code
             };
 
             return new JsonResult(result);

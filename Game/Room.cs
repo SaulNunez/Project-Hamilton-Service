@@ -5,250 +5,254 @@ using System.Text;
 
 namespace LaCasaDelTerror.Models
 {
-    public class Room
+    public class Rooms
     {
-        public static Room[] mainFloor = {
-            new Room
+        public static Rooms[] mainFloor = {
+            new Rooms
             {
-                name="Commedor",
+                Name="Commedor",
             },
-            new Room
+            new Rooms
             {
-                name="Cuarto de baile",
+                Name="Cuarto de baile",
                 adjacentRoomTop=false,
-                type=Type.PUZZLE
+                Type=RoomType.PUZZLE
             },
-            new Room
+            new Rooms
             {
-                name="Cocina",
+                Name="Cocina",
                 adjacentRoomTop=false,
             },
-            new Room
+            new Rooms
             {
-                name="Cuarto de lavado"
+                Name="Cuarto de lavado"
             },
-            new Room
+            new Rooms
             {
-                name="Conservatorio",
+                Name="Conservatorio",
                 adjacentRoomTop=false
             },
-            new Room
+            new Rooms
             {
-                name="Jardin",
+                Name="Jardin",
                 adjacentRoomLeft=false,
                 adjacentRoomRight=false,
                 adjacentRoomTop=false,
-                type=Type.PUZZLE
+                Type=RoomType.PUZZLE
             },
-            new Room
+            new Rooms
             {
-                name="Cuarto de conservas",
-                type=Type.ITEM
+                Name="Cuarto de conservas",
+                Type=RoomType.ITEM
             },
-            new Room
+            new Rooms
             {
-                name="Workshop",
+                Name="Workshop",
             },
-            new Room
+            new Rooms
             {
-                name="Baño",
-                type=Type.ITEM
+                Name="Baño",
+                Type=RoomType.ITEM
             },
-            new Room
+            new Rooms
             {
-                name="Cuarto de mayordomo",
-                type=Type.ITEM
+                Name="Cuarto de mayordomo",
+                Type=RoomType.ITEM
             },
-            new Room
+            new Rooms
             {
-                name="Elevador",
-                movesToFloor=new int[]{0,1,2 }
+                Name="Elevador",
+                MovesToFloor=new int[]{0,1,2 }
             },
-            new Room
+            new Rooms
             {
-                name="Entrada",
-                movesToFloor=new int[]{2}
+                Name="Entrada",
+                MovesToFloor=new int[]{2}
             },
-            new Room
+            new Rooms
             {
-                name="Cuarto colapsado",
-                statsEffects= new Stats
+                Name="Cuarto colapsado",
+                StatsEffects= new Stats
                 {
-                    sanity= 0,
-                    physical= -1,
-                    intelligence= 0,
-                    balls= 0
+                    Sanity= 0,
+                    Physical= -1,
+                    Intelligence= 0,
+                    Bravery= 0
                 }
             }
         };
 
-        public static Room[] topFloor =
+        public static Rooms[] topFloor =
         {
-            new Room
+            new Rooms
             {
-                name="Librería",
-                type= Type.PUZZLE
+                Name="Librería",
+                Type= RoomType.PUZZLE
             },
-            new Room
+            new Rooms
             {
-                name="Gimnasio",
-                type= Type.PUZZLE
+                Name="Gimnasio",
+                Type= RoomType.PUZZLE
             },
-            new Room
+            new Rooms
             {
-                name="Oficina"
+                Name="Oficina"
             },
-            new Room
+            new Rooms
             {
-                name="Cuarto de los niños"
+                Name="Cuarto de los niños"
             },
-            new Room
+            new Rooms
             {
-                name="Cuarto de los padres"
+                Name="Cuarto de los padres"
             },
-            new Room
+            new Rooms
             {
-                name="Enfermería",
-                type= Type.PUZZLE
+                Name="Enfermería",
+                Type= RoomType.PUZZLE
             },
-            new Room {
-                name="Cuarto de huespedes"
+            new Rooms {
+                Name="Cuarto de huespedes"
             },
-            new Room
+            new Rooms
             {
-                name="Cuarto de storage"
+                Name="Cuarto de storage"
             },
-            new Room
+            new Rooms
             {
-                name="Piso con agujero",
-                movesToFloor=new int[]{1}
+                Name="Piso con agujero",
+                MovesToFloor=new int[]{1}
             },
-            new Room
+            new Rooms
             {
-                name="Vault",
-                type=Type.PUZZLE
+                Name="Vault",
+                Type=RoomType.PUZZLE
             },
-            new Room
+            new Rooms
             {
-                name="Terraza",
+                Name="Terraza",
                 adjacentRoomBottom=false,
                 adjacentRoomLeft=false,
                 adjacentRoomTop=false
             },
-            new Room
+            new Rooms
             {
-                name="Biblioteca"
+                Name="Biblioteca"
             },
-            new Room
+            new Rooms
             {
-                name="Cuarto de descanso"
+                Name="Cuarto de descanso"
             },
-            new Room {
-                name="Laboratorio"
+            new Rooms {
+                Name="Laboratorio"
             },
-            new Room
+            new Rooms
             {
-                name="Cuarto de juego de niños",
-                type=Type.ITEM
+                Name="Cuarto de juego de niños",
+                Type=RoomType.ITEM
             },
-            new Room
+            new Rooms
             {
-                name="Elevador",
-                movesToFloor= new int[]{0, 1, 2}
+                Name="Elevador",
+                MovesToFloor= new int[]{0, 1, 2}
             },
-            new Room
+            new Rooms
             {
-                name="Escaleras",
-                movesToFloor= new int[]{1}
+                Name="Escaleras",
+                MovesToFloor= new int[]{1}
             }
         };
 
-        public static Room[] basement =
+        public static Rooms[] basement =
         {
-            new Room
+            new Rooms
             {
-                name="Cuarto de almacenamiento",
-                type=Type.PUZZLE
+                Name="Cuarto de almacenamiento",
+                Type=RoomType.PUZZLE
             },
-            new Room
+            new Rooms
             {
-                name="Calentadores de agua",
+                Name="Calentadores de agua",
                 adjacentRoomTop=false,
-                type=Type.PUZZLE
+                Type=RoomType.PUZZLE
             },
-            new Room
+            new Rooms
             {
-                name="Elevador",
+                Name="Elevador",
             },
-            new Room
+            new Rooms
             {
-                name="Cuarto colapsado",
-                statsEffects= new Stats
+                Name="Cuarto colapsado",
+                StatsEffects= new Stats
                 {
-                    sanity=0,
-                    physical=-1,
-                    intelligence=0,
-                    balls=0
+                    Sanity=0,
+                    Physical=-1,
+                    Intelligence=0,
+                    Bravery=0
                 }
             },
-            new Room
+            new Rooms
             {
-                name="Cuarto de vinos",
-                type=Type.ITEM
+                Name="Cuarto de vinos",
+                Type=RoomType.ITEM
             },
-            new Room
+            new Rooms
             {
-                name="Cuarto de monstruo",
-                type=Type.PUZZLE
+                Name="Cuarto de monstruo",
+                Type=RoomType.PUZZLE
             },
-            new Room {
-                name="Cuarto de tesoro",
-                type=Type.PUZZLE
+            new Rooms {
+                Name="Cuarto de tesoro",
+                Type=RoomType.PUZZLE
             },
-            new Room
+            new Rooms
             {
-                name="Cuarto de armamento"
+                Name="Cuarto de armamento"
             },
-            new Room
+            new Rooms
             {
-                name="Lago subterraneo"
+                Name="Lago subterraneo"
             },
-            new Room
+            new Rooms
             {
-                name="Cripta",
-                type=Type.PUZZLE
+                Name="Cripta",
+                Type=RoomType.PUZZLE
             },
-            new Room
+            new Rooms
             {
-                name="Cuarto de tiradero"
+                Name="Cuarto de tiradero"
             },
-            new Room {
-                name="Cuarto sangriento",
-                statsEffects=new Stats
+            new Rooms {
+                Name="Cuarto sangriento",
+                StatsEffects=new Stats
                 {
-                    sanity=-1
+                    Sanity=-1
                 }
             }
         };
 
 
-        public enum Type
+        public enum RoomType
         {
             PUZZLE,
             ITEM,
             NONE
         }
 
-        public string name;
+        public string Name { get; set; }
 
-        public Type type = Type.NONE;
+        public RoomType Type { get; set; } = RoomType.NONE;
 
         public bool adjacentRoomRight = true;
         public bool adjacentRoomLeft = true;
         public bool adjacentRoomTop = true;
         public bool adjacentRoomBottom = true;
 
-        public Stats statsEffects;
-        public int[] movesToFloor = Array.Empty<int>();
+        public Stats StatsEffects { get; set; }
+        public int[] MovesToFloor { get; set; }
+
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Floor { get; set; }
     }
 }

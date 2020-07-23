@@ -12,16 +12,14 @@ namespace LaCasaDelTerror.Models
 {
     public class Lobby
     {
-        public string code { get; private set; }
-        public List<ServerPlayer> players = new List<ServerPlayer>();
-        public Dictionary<Position,Room> topFloor = new Dictionary<Position, Room>();
-        public Dictionary<Position, Room> mainFloor = new Dictionary<Position, Room>();
-        public Dictionary<Position, Room> basement = new Dictionary<Position, Room>();
+        public string Code { get; set; }
+        public List<Players> Players { get; set; }
+        public List<Rooms> Rooms { get; set; }
 
         public int CurrentPlayers {
             get
         {
-            return players.Count;
+            return Players.Count;
         }
 }
         /// <summary>
@@ -29,9 +27,9 @@ namespace LaCasaDelTerror.Models
         /// </summary>
         public int currentMoveServerPlayerIndex = 0;
         
-        public Lobby()
+        private Lobby()
         {
-            code = "ABCD";
+            Code = "ABCD";
         }
 
         private static readonly HttpClient client = new HttpClient();
@@ -66,7 +64,7 @@ namespace LaCasaDelTerror.Models
             //}
 
             var player = new ServerPlayer(Character.roster[characterPrototypeId]);
-            players.Add(player);
+            Players.Add(player);
 
             return player.code;
         }
@@ -85,7 +83,7 @@ namespace LaCasaDelTerror.Models
 
         public bool IsCodeForCurrentTurn(string code)
         {
-            return players[currentMoveServerPlayerIndex].code == code;
+            return true;
         }
 
         public int Move(string verificationCode, Direction direction)
@@ -93,24 +91,24 @@ namespace LaCasaDelTerror.Models
             if (IsCodeForCurrentTurn(verificationCode))
             {
 
-                var affectedPlayer = players[currentMoveServerPlayerIndex];
+                var affectedPlayer = Players[currentMoveServerPlayerIndex];
                 switch (direction)
                 {
                     case Direction.DOWN:
-                        affectedPlayer.position.y--;
+                        affectedPlayer.Y--;
                         break;
                     case Direction.UP:
-                        affectedPlayer.position.y++;
+                        affectedPlayer.Y++;
                         break;
                     case Direction.LEFT:
-                        affectedPlayer.position.x--;
+                        affectedPlayer.X--;
                         break;
                     case Direction.RIGHT:
-                        affectedPlayer.position.x++;
+                        affectedPlayer.X++;
                         break;
                 }
-                affectedPlayer.positionsMoved++;
-                return affectedPlayer.currentThrow + affectedPlayer.positionsMoved;
+                affectedPlayer.PositionsMoved++;
+                return affectedPlayer.CurrentThrow + affectedPlayer.PositionsMoved;
             } else
             {
                 return -1;
