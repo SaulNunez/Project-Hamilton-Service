@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static LaCasaDelTerror.Models.Server;
 
+
 namespace LaCasaDelTerror.Models
 {
     public class Lobby

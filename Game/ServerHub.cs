@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static LaCasaDelTerror.Models.Server;
 
 namespace ProjectHamiltonService.Game
 {
@@ -20,15 +21,15 @@ namespace ProjectHamiltonService.Game
             this.gameContext = gameContext;
         }
 
-        private bool IsLobbyInList(string lobbyCode) => gameContext.lobbies.Exists(x => x.code == lobbyCode);
+        private bool IsLobbyInList(string lobbyCode) => gameContext.Lobbies.Exists(x => x.Code == lobbyCode);
 
         private bool IsUserAuthCodeOfCurrentTurn(string lobbyCode, string playerToken)
         {
-            var lobby = gameContext.lobbies.Find(x => x.code == lobbyCode);
+            var lobby = gameContext.Lobbies.Find(x => x.Code == lobbyCode);
 
             if(lobby != null)
             {
-                return lobby.players.Exists(x => x.code == playerToken);
+                return lobby.Players.Exists(x => x.PlayerToken == playerToken);
             }
 
             return false;
@@ -36,7 +37,7 @@ namespace ProjectHamiltonService.Game
 
         public DirectionAvailability GetAvailableMovements(LobbyAction action)
         {
-            var lobby = gameContext.lobbies.Find(x => x.code == action.lobbyCode);
+            var lobby = gameContext.Lobbies.Find(x => x.Code == action.lobbyCode);
 
             if (lobby != null)
             {
@@ -52,10 +53,34 @@ namespace ProjectHamiltonService.Game
             return null;
         }
 
-        public int Move(LobbyAction action)
+        public int Move(DirectionAction action)
         {
+            if (IsUserAuthCodeOfCurrentTurn(action.lobbyCode, action.playerToken))
+            {
 
-            return 1;
+                Players affectedPlayer; //gameContext.Lobbies.Find(action.lobbyCode).Players[currentMoveServerPlayerIndex];
+                switch (action.Direction)
+                {
+                    case Direction.DOWN:
+                        //affectedPlayer.Y--;
+                        break;
+                    case Direction.UP:
+                        //affectedPlayer.Y++;
+                        break;
+                    case Direction.LEFT:
+                        //affectedPlayer.X--;
+                        break;
+                    case Direction.RIGHT:
+                        //affectedPlayer.X++;
+                        break;
+                }
+                //affectedPlayer.PositionsMoved++;
+                return 0; //affectedPlayer.CurrentThrow + affectedPlayer.PositionsMoved;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         public async Task UseItem(ItemAction puzzleActions)
