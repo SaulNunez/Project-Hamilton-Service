@@ -7,6 +7,7 @@ using ProjectHamiltonService.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using static LaCasaDelTerror.Models.Server;
 
@@ -85,7 +86,9 @@ namespace ProjectHamiltonService.Game
 
         public async Task UseItem(ItemAction puzzleActions)
         {
-            
+            //Tener lista de items en player
+            //Revisar si tiene item
+            //Si si, afecta jugador que nos mando el shit
         }
 
         public List<Items> GetItems(LobbyAction lobby)
@@ -93,9 +96,27 @@ namespace ProjectHamiltonService.Game
             return new List<Items>();
         }
 
-        public async Task<bool> SendPuzzle(PuzzleActions puzzleActions)
+        private static readonly HttpClient client = new HttpClient();
+        public async Task<bool> CheckPuzzle(PuzzleActions puzzleActions)
         {
-            return false;
+            if (IsUserAuthCodeOfCurrentTurn(puzzleActions.lobbyCode, puzzleActions.playerToken))
+            {
+                //TODO: Cuando este terminada esa API llenar el JSON del request
+                var values = new Dictionary<string, string>
+                {
+                { "code", puzzleActions.code },
+                { "type", "world" }
+                };
+
+                var content = new FormUrlEncodedContent(values);
+
+                //Cambiar dirección del servidor
+                var response = await client.PostAsync("http://www.example.com/recepticle.aspx", content);
+
+                var responseString = await response.Content.ReadAsStringAsync();
+            }
+
+            return true;
         }
 
         public async Task<bool> EnterLobby(string code)
@@ -115,6 +136,11 @@ namespace ProjectHamiltonService.Game
         public List<Character> GetAvailableCharacters(LobbyAction lobby)
         {
             return new List<Character>();
+        }
+
+        public bool SelectCharacter()
+        {
+            return true;
         }
     }
 }
