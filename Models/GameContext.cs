@@ -9,6 +9,8 @@ namespace ProjectHamiltonService.Models
 {
     public class GameContext: DbContext
     {
-        public List<Lobby> Lobbies { get; set; }
+        public DbSet<Lobbies> Lobbies { get; set; }
+        public DbSet<Players> Players { get; set; }
+        public DbSet<Items> Items { get; set; }
     }
 }

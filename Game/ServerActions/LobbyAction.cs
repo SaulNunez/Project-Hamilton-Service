@@ -13,7 +13,7 @@ namespace ProjectHamiltonService.Game
         /// <summary>
         /// Codigo personal para autentificarse como el que tiene el personaje
         /// </summary>
-        public string playerToken;
+        public Guid playerToken;
         /// <summary>
         /// Codigo del lobby donde esta jugando
         /// </summary>

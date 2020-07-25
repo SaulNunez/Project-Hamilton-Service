@@ -7,7 +7,9 @@
             RIGHT,
             LEFT,
             UP,
-            DOWN
+            DOWN,
+            FLOOR_DOWN,
+            FLOOR_UP
         }
     }
 }

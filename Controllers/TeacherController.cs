@@ -25,7 +25,7 @@ namespace ProjectHamiltonService.Controllers
         [HttpPost]
         public IActionResult RegisterLobby()
         {
-            var newLobby = new Lobby();
+            var newLobby = new Lobbies();
 
             gameContext.lobbies.Add(newLobby);
 

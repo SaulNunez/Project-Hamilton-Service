@@ -2,6 +2,7 @@
 using ProjectHamiltonService.Game.Abstracts;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -11,8 +12,9 @@ using static LaCasaDelTerror.Models.Server;
 
 namespace LaCasaDelTerror.Models
 {
-    public class Lobby
+    public class Lobbies
     {
+        [Key]
         public string Code { get; set; }
         public List<Players> Players { get; set; }
         public List<Rooms> Rooms { get; set; }
