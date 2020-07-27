@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using static LaCasaDelTerror.Models.Server;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace ProjectHamiltonService.Game
 {
@@ -167,6 +168,8 @@ namespace ProjectHamiltonService.Game
             //Tener lista de items en player
             //Revisar si tiene item
             //Si si, afecta jugador que nos mando el shit
+
+            //TODO: Revisar todas las posibilidades que tienen los items
         }
 
         public List<Items> GetItems(LobbyAction action)
@@ -179,7 +182,7 @@ namespace ProjectHamiltonService.Game
         }
 
         private static readonly HttpClient client = new HttpClient();
-        public async Task<bool> CheckPuzzle(PuzzleActions puzzleActions)
+        public async Task<bool> CheckPuzzleAsync(PuzzleActions puzzleActions)
         {
             if (IsUserAuthCodeOfCurrentTurn(puzzleActions.lobbyCode, puzzleActions.playerToken))
             {
@@ -193,9 +196,11 @@ namespace ProjectHamiltonService.Game
                 var content = new FormUrlEncodedContent(values);
 
                 //Cambiar dirección del servidor
-                var response = await client.PostAsync("http://www.example.com/recepticle.aspx", content);
+                var response = await client.PostAsync("http://CodeTest", content);
 
                 var responseString = await response.Content.ReadAsStringAsync();
+
+                var result = JsonSerializer.Deserialize<CodeTestResult>(responseString);
             }
 
             return true;
