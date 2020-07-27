@@ -16,5 +16,6 @@ namespace ProjectHamiltonService.Game
         void StartPuzzle(string xmlTemplate, string instructions);
         void PlayerJoinedLobby();
         void CharacterJoined();
+        void StartGame();
     }
 }
