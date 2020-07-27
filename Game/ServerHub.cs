@@ -122,8 +122,18 @@ namespace ProjectHamiltonService.Game
                         }
                         break;
                     case Direction.FLOOR_DOWN:
+                        if(lobby.Rooms.Where(room => room.X == player.X && room.Y == player.Y).First().MovesToFloor.Contains(player.Floor + 1))
+                        {
+                            player.Floor--;
+                            movementIsLegal = true;
+                        }
                         break;
                     case Direction.FLOOR_UP:
+                        if (lobby.Rooms.Where(room => room.X == player.X && room.Y == player.Y).First().MovesToFloor.Contains(player.Floor - 1))
+                        {
+                            player.Floor++;
+                            movementIsLegal = true;
+                        }
                         break;
                 }
 
