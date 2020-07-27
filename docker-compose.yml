@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  Server:
+    image: ${DOCKER_REGISTRY-}projecthamiltonservice
+    build:
+      context: .
+      dockerfile: Dockerfile
+  PersistDb:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: ProjectHamilton
+      MYSQL_USER: test

@@ -27,7 +27,7 @@ namespace ProjectHamiltonService.Controllers
         {
             var newLobby = new Lobbies();
 
-            gameContext.lobbies.Add(newLobby);
+            gameContext.Lobbies.Add(newLobby);
 
             var result = new CreatedLobbyInfo
             {
