@@ -26,5 +26,6 @@ namespace LaCasaDelTerror.Models
         public int CurrentThrow { get; set; }
         public int PositionsMoved { get; set; }
         public Guid PlayerToken { get; set; }
+        public int AvailableMovements { get; internal set; }
     }
 }

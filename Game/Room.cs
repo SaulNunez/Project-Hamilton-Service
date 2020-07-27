@@ -243,10 +243,25 @@ namespace LaCasaDelTerror.Models
 
         public RoomType Type { get; set; } = RoomType.NONE;
 
+        /// <summary>
+        /// Usado para saber si es legal establecer cuartos a un lado de este
+        /// </summary>
         public bool adjacentRoomRight = true;
+        /// <summary>
+        /// Usado para saber si es legal establecer cuartos a un lado de este
+        /// </summary>
         public bool adjacentRoomLeft = true;
+        /// <summary>
+        /// Usado para saber si es legal establecer cuartos a un lado de este
+        /// </summary>
         public bool adjacentRoomTop = true;
+        /// <summary>
+        /// Usado para saber si es legal establecer cuartos a un lado de este
+        /// </summary>
         public bool adjacentRoomBottom = true;
+        /// <summary>
+        /// Usado para saber si es legal establecer cuartos a un lado de este
+        /// </summary>
 
         public Stats StatsEffects { get; set; }
         public int[] MovesToFloor { get; set; }

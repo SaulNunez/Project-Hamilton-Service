@@ -65,12 +65,19 @@ namespace ProjectHamiltonService.Game
 
             var rooms = lobby.Rooms.Where(x => x.Floor == player.Floor);
 
+            if(player.AvailableMovements <= 0)
+            {
+                return DirectionAvailability.None;
+            }
+
             return new DirectionAvailability
             {
-                right = (bool)(rooms?.Any(x => x.X == player.X + 1 && x.Y == player.Y)),
-                left = (bool)(rooms?.Any(x => x.X == player.X - 1 && x.Y == player.Y)),
-                up = (bool)(rooms?.Any(x => x.X == player.X && x.Y == player.Y + 1)),
-                down = (bool)(rooms?.Any(x => x.X == player.X && x.Y == player.Y - 1))
+                right = (bool)(rooms?.Any(room => room.X == player.X + 1 && room.Y == player.Y)),
+                left = (bool)(rooms?.Any(room => room.X == player.X - 1 && room.Y == player.Y)),
+                up = (bool)(rooms?.Any(room => room.X == player.X && room.Y == player.Y + 1)),
+                down = (bool)(rooms?.Any(room => room.X == player.X && room.Y == player.Y - 1)),
+                floorUp = (bool)(rooms?.Where(room => room.X == player.X && room.Y == player.Y).First().MovesToFloor.Contains(player.Floor + 1)),
+                floorDown = (bool)(rooms?.Where(room => room.X == player.X && room.Y == player.Y).First().MovesToFloor.Contains(player.Floor - 1))
             };
         }
 
