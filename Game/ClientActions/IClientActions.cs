@@ -12,9 +12,10 @@ namespace ProjectHamiltonService.Game
     {
         void ChangeStats(string playerName, Stats stats);
         void SetItemList(string playerName, List<Items> items);
-        void MoveTo(string playerName, Position pos);
+        void MoveCharacter(PlayerUpdateResult result);
         void StartPuzzle(string xmlTemplate, string instructions);
         void PlayerJoinedLobby();
         void CharacterJoined();
+        void StartGame();
     }
 }

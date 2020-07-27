@@ -1,23 +1,30 @@
-﻿using ProjectHamiltonService.Game.Abstracts;
+﻿using LaCasaDelTerror.Models.Abstracts;
+using ProjectHamiltonService.Game.Abstracts;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LaCasaDelTerror.Models
 {
-    public class Players: Character
+    public class Players
     {
         public Players(Character characterPrototype)
         {
-            name = characterPrototype.name;
-            stats = characterPrototype.stats;
+            Name = characterPrototype.name;
+            Stats = characterPrototype.stats;
         }
 
-        public List<Items> items;
-        public Position position;
-        public int floor;
-        public int firstThrow;
-        public int currentThrow;
-        public int positionsMoved;
+        public string Name { get; set; }
+
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Floor { get; set; }
+
+        public Stats Stats { get; set; }
+        public List<Items> Items { get; set; }
+        public int FirstThrow { get; set; }
+        public int CurrentThrow { get; set; }
+        public int PositionsMoved { get; set; }
+        public Guid PlayerToken { get; set; }
     }
 }

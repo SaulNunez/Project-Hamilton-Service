@@ -7,7 +7,10 @@ using ProjectHamiltonService.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using static LaCasaDelTerror.Models.Server;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjectHamiltonService.Game
 {
@@ -20,57 +23,165 @@ namespace ProjectHamiltonService.Game
             this.gameContext = gameContext;
         }
 
-        private bool IsLobbyInList(string lobbyCode) => gameContext.lobbies.Exists(x => x.code == lobbyCode);
+        private bool IsLobbyInList(string lobbyCode) => gameContext.Lobbies.Any(x => x.Code == lobbyCode);
 
-        private bool IsUserAuthCodeOfCurrentTurn(string lobbyCode, string playerToken)
+        private bool IsUserAuthCodeOfCurrentTurn(string lobbyCode, Guid playerToken)
         {
-            var lobby = gameContext.lobbies.Find(x => x.code == lobbyCode);
+            var lobby = gameContext.Lobbies.Find(lobbyCode);
 
-            if(lobby != null)
+            if (lobby != null)
             {
-                return lobby.players.Exists(x => x.code == playerToken);
+                return lobby.Players.Exists(x => x.PlayerToken == playerToken);
             }
 
             return false;
         }
 
-        public DirectionAvailability GetAvailableMovements(LobbyAction action)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lobbyCode">Codigo humano legible dado al lobby</param>
+        /// <exception cref="LobbyNotExistsException">Aventara esta excepcion si este lobby no existe</exception>
+        /// <returns></returns>
+        private Lobbies GetLobby(string lobbyCode)
         {
-            var lobby = gameContext.lobbies.Find(x => x.code == action.lobbyCode);
+            var lobby = gameContext.Lobbies.Find(lobbyCode);
 
             if (lobby != null)
             {
-                return new DirectionAvailability
+                return lobby;
+            }
+            else
+            {
+                throw new LobbyNotExistsException();
+            }
+        }
+
+        public async Task<DirectionAvailability> GetAvailableMovementsAsync(LobbyAction action)
+        {
+            Lobbies lobby = GetLobby(action.lobbyCode);
+
+            var player = lobby.Players.Find(x => x.PlayerToken == action.playerToken);
+
+            var rooms = lobby.Rooms.Where(x => x.Floor == player.Floor);
+
+            return new DirectionAvailability
+            {
+                right = (bool)(rooms?.Any(x => x.X == player.X + 1 && x.Y == player.Y)),
+                left = (bool)(rooms?.Any(x => x.X == player.X - 1 && x.Y == player.Y)),
+                up = (bool)(rooms?.Any(x => x.X == player.X && x.Y == player.Y + 1)),
+                down = (bool)(rooms?.Any(x => x.X == player.X && x.Y == player.Y - 1))
+            };
+        }
+
+        public async Task<MovementResult> MoveAsync(DirectionAction action)
+        {
+            if (IsUserAuthCodeOfCurrentTurn(action.lobbyCode, action.playerToken))
+            {
+                var lobby = GetLobby(action.lobbyCode);
+
+                var player = lobby.Players.Find(player => player.PlayerToken == action.playerToken);
+
+                var movementIsLegal = false;
+
+                switch (action.Direction)
                 {
-                    right = false,
-                    left = false,
-                    up = false,
-                    down = false
+                    case Direction.DOWN:
+                        if(lobby.Rooms.Any(room => room.X == player.X && room.Y == player.Y - 1))
+                        {
+                            player.Y--;
+                            movementIsLegal = true;
+                        }
+                        break;
+                    case Direction.UP:
+                        if (lobby.Rooms.Any(room => room.X == player.X && room.Y == player.Y + 1))
+                        {
+                            player.Y++;
+                            movementIsLegal = true;
+                        }
+                        break;
+                    case Direction.LEFT:
+                        if (lobby.Rooms.Any(room => room.X == player.X - 1 && room.Y == player.Y))
+                        {
+                            player.X--;
+                            movementIsLegal = true;
+                        }
+                        break;
+                    case Direction.RIGHT:
+                        if (lobby.Rooms.Any(room => room.X == player.X + 1 && room.Y == player.Y))
+                        {
+                            player.X++;
+                            movementIsLegal = true;
+                        }
+                        break;
+                    case Direction.FLOOR_DOWN:
+                        break;
+                    case Direction.FLOOR_UP:
+                        break;
+                }
+
+                await gameContext.SaveChangesAsync();
+
+                if (movementIsLegal)
+                {
+                    Clients.All.MoveCharacter(new PlayerUpdateResult
+                    {
+                        playerToken = action.playerToken,
+                        x = player.X,
+                        y = player.Y,
+                        floor = player.Floor
+                    });
+                }
+
+                return new MovementResult
+                {
+                    movementIsLegal = movementIsLegal,
+                    floor = player.Floor,
+                    x = player.X,
+                    y = player.Y
                 };
             }
 
             return null;
         }
 
-        public int Move(LobbyAction action)
+        public async Task UseItem(ItemAction action)
         {
-
-            return 1;
+            //Tener lista de items en player
+            //Revisar si tiene item
+            //Si si, afecta jugador que nos mando el shit
         }
 
-        public async Task UseItem(ItemAction puzzleActions)
+        public List<Items> GetItems(LobbyAction action)
         {
-            
+            var lobby = GetLobby(action.lobbyCode);
+
+            var player = lobby.Players.Find(x => x.PlayerToken == action.playerToken);
+
+            return player.Items;
         }
 
-        public List<Items> GetItems(LobbyAction lobby)
+        private static readonly HttpClient client = new HttpClient();
+        public async Task<bool> CheckPuzzle(PuzzleActions puzzleActions)
         {
-            return new List<Items>();
-        }
+            if (IsUserAuthCodeOfCurrentTurn(puzzleActions.lobbyCode, puzzleActions.playerToken))
+            {
+                //TODO: Cuando este terminada esa API llenar el JSON del request
+                var values = new Dictionary<string, string>
+                {
+                { "code", puzzleActions.code },
+                { "type", "world" }
+                };
 
-        public async Task<bool> SendPuzzle(PuzzleActions puzzleActions)
-        {
-            return false;
+                var content = new FormUrlEncodedContent(values);
+
+                //Cambiar dirección del servidor
+                var response = await client.PostAsync("http://www.example.com/recepticle.aspx", content);
+
+                var responseString = await response.Content.ReadAsStringAsync();
+            }
+
+            return true;
         }
 
         public async Task<bool> EnterLobby(string code)
@@ -90,6 +201,11 @@ namespace ProjectHamiltonService.Game
         public List<Character> GetAvailableCharacters(LobbyAction lobby)
         {
             return new List<Character>();
+        }
+
+        public bool SelectCharacter()
+        {
+            return true;
         }
     }
 }

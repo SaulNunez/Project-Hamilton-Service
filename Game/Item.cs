@@ -16,7 +16,7 @@ namespace LaCasaDelTerror.Models
                 needsThrow=true,
                 statEffects=new Stats
                 {
-                    physical=-1
+                    Physical=-1
                 },
                 singleUse=true
             });
@@ -29,7 +29,7 @@ namespace LaCasaDelTerror.Models
             items.Add("small_totem", new Items { 
                 statEffects=new Stats
                 {
-                    sanity=-1
+                    Sanity=-1
                 }
             });
             items.Add("sacrificial_dagger", new Items
@@ -50,9 +50,9 @@ namespace LaCasaDelTerror.Models
                 singleUse = true,
                 statEffects = new Stats
                 {
-                    sanity = -1,
-                    physical = 1,
-                    balls = 2
+                    Sanity = -1,
+                    Physical = 1,
+                    Bravery = 2
                 }
             });
         }
