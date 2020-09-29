@@ -3,10 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>ProjectHamilton</title>
-  <meta name="author" content="name">
-  <meta name="description" content="description here">
-  <meta name="keywords" content="keywords,here">
+  <title>UnityWebSockets</title>
+  <meta name="author" content="Saúl Nuñez">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./stylesheet.css" type="text/css">
   <style>
     #game_render {
@@ -19,42 +18,58 @@
 </head>
 
 <body>
-  <div id="code_editor_sidewindow">
-    <div id="code_editor">
-    </div>
-    <button id="run_program_button">Correr programa</button>
+  <div>
+    <h1 class="display">El terror en la masión</h1>
+    <p class="spacingOnTop">
+      El siguiente videojuego ha sido desarrollado como parte de un proyecto académico,... .
+      Por esta razón, la presente implementación se encarga de recolectar datos de las diferentes acciones
+      de los jugadores, y los diferentes eventos que ocurren dentro de cada partida.
+      Estos datos son almacenados en un servidor externo, donde posteriormente serán anonimizados,
+      analizados y posiblemente serán publicados.
+    </p>
   </div>
-  <div id="game_render">
-    <p>Este navegador no soporta correr esta aplicación. Intenta un navegador <a
-        href="https://www.mozilla.org/en-US/firefox/windows/">más moderno</a>.</p>
+  <div id="game_container">
+    <!-- game -->
+    <div id="code_editor_sidewindow">
+      <div id="code_editor">
+      </div>
+      <button id="run_program_button">Correr programa</button>
+    </div>
+    <div id="game_render">
+      <noscript>
+        <p>Este juego necesita que Javascript este habilitado. Puedes intentar cambia a otro navegador web.</p>
+      </noscript>
+    </div>
   </div>
   <xml id="toolbox" style="display: none">
-    <block type="controls_if"></block>
-    <block type="controls_repeat_ext"></block>
-    <block type="logic_compare"></block>
-    <block type="math_number"></block>
-    <block type="math_arithmetic"></block>
-    <block type="text"></block>
-    <block type="text_print"></block>
+    <category name="Variables" colour="330" custom="VARIABLE"></category>
+    <category name="Lógica" colour="210">
+        <block type="logic_compare"></block>
+        <block type="logic_operation"></block>
+        <block type="logic_boolean"></block>
+    </category>
+    <category name="Matemáticas" colour="230">
+        <block type="math_arithmetic"></block>
+    </category>
+    <sep gap="8"></sep>
+    <category name="Condicionales" colour="20">
+        <block type="controls_if"></block>
+    </category>
+    <category name="Ciclos" colour="120">
+        <block type="controls_whileUntil"></block>
+        <block type="controls_for">
+    </category>
+    <category name="Funciones" colour="290" custom="PROCEDURE"></category>
   </xml>
 
-  <script src="./blockly/blockly_compressed.js"></script>
-  <script src="./blockly/blocks_compressed.js"></script>
-  <script src="./blockly/javascript_compressed.js"></script>
-  <script src="./blockly/msg/js/es.js"></script>
-  <script>
-    // Como estuve pendejo, al parecer blocky no estaba iniciando antes de Unity, por lo que salia que Blocky no estaba declarado
-    initBlocky();
-  </script>
+  <script src="/blockly/blockly_compressed.js"></script>
+  <script src="/blockly/blocks_compressed.js"></script>
+  <script src="/blockly/javascript_compressed.js"></script>
+  <script src="/blockly/msg/js/es.js"></script>
   <script src="./js/page_setup.js"></script>
-
-  <!--Brindado por el servidor de juego-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
-
-  <script src="./js/multiplayer.js"></script>
   <script src="Build/UnityLoader.js"></script>
   <script>
-    var unityInstance = UnityLoader.instantiate("game_render", "Build/static.json");
+    var unityInstance = UnityLoader.instantiate("game_render", "Build/game.json");
 
     initBlocky();
   </script>
