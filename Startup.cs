@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using ProjectHamiltonService.Game;
 using ProjectHamiltonService.Models;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace ProjectHamiltonService
 {
@@ -39,13 +40,19 @@ namespace ProjectHamiltonService
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "node_modules", "blocky")),
-                RequestPath = "/blocky"
-            });
+            StaticFileOptions option = new StaticFileOptions();
+            FileExtensionContentTypeProvider contentTypeProvider = (FileExtensionContentTypeProvider)option.ContentTypeProvider ??
+            new FileExtensionContentTypeProvider();
+
+            contentTypeProvider.Mappings.Add(".mem", "application/octet-stream");
+            contentTypeProvider.Mappings.Add(".data", "application/octet-stream");
+            contentTypeProvider.Mappings.Add(".memgz", "application/octet-stream");
+            contentTypeProvider.Mappings.Add(".datagz", "application/octet-stream");
+            contentTypeProvider.Mappings.Add(".unity3dgz", "application/octet-stream");
+            contentTypeProvider.Mappings.Add(".unityweb", "application/octet-stream");
+            contentTypeProvider.Mappings.Add(".jsgz", "application/x-javascript; charset=UTF-8");
+            option.ContentTypeProvider = contentTypeProvider;
+            app.UseStaticFiles(option);
 
             app.UseRouting();
 
