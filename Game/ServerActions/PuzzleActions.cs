@@ -8,5 +8,6 @@ namespace ProjectHamiltonService.Game.ClientActions
     public class PuzzleActions: LobbyAction
     {
         public string code;
+        public string puzzleId;
     }
 }

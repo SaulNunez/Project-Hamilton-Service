@@ -13,6 +13,8 @@ using static LaCasaDelTerror.Models.Server;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using Items = LaCasaDelTerror.Models.Items;
+using System.Net;
+using RestSharp;
 
 namespace ProjectHamiltonService.Game
 {
@@ -189,30 +191,51 @@ namespace ProjectHamiltonService.Game
         }
 
         private static readonly HttpClient client = new HttpClient();
-        public async Task<bool> CheckPuzzleAsync(PuzzleActions puzzleActions)
+        public async Task<PuzzleResult> CheckPuzzleAsync(PuzzleActions puzzleActions)
         {
             var lobby = gameContext.Lobbies.Find(puzzleActions.lobbyCode);
+            var puzzle = gameContext.Puzzles.Find(puzzleActions.puzzleId);
 
-            if (lobby.CurrentPlayer.Id == puzzleActions.playerToken)
+            var puzzlePrototype = Puzzles.puzzles.Find(x => x.id == puzzle.PuzzlePrototype);
+
+            if (lobby.CurrentPlayer.Id == puzzleActions.playerToken && puzzle.PlayersId == puzzleActions.playerToken)
             {
-                //TODO: Cuando este terminada esa API llenar el JSON del request
-                var values = new Dictionary<string, string>
+                var requestPayload = new PuzzleCheckRequest(puzzleActions.code, puzzlePrototype.expectedOutput,
+                    puzzlePrototype.type,
+                    new List<PuzzleFunctionCheck> { },
+                    puzzlePrototype.functionsExpected);
+
+                var client = new RestClient("https://hamilton-microservice.herokuapp.com/");
+                var request = new RestRequest()
                 {
-                { "code", puzzleActions.code },
-                { "type", "world" }
+                    Method = Method.POST,
+                    RequestFormat = DataFormat.Json
                 };
 
-                var content = new FormUrlEncodedContent(values);
-
-                //Cambiar dirección del servidor
-                var response = await client.PostAsync("https://hamilton-microservice.herokuapp.com/", content);
-
-                var responseString = await response.Content.ReadAsStringAsync();
-
+                request.AddJsonBody(requestPayload);
+                var response = client.Execute(request);
+                var responseString = response.Content;
                 var result = JsonSerializer.Deserialize<CodeTestResult>(responseString);
+
+                var correct = result.matchesOutput && result.passedCheck && result.hasFunctions && result.passedFunctionChecks;
+                var output = String.Join("\n", result.runOutput);
+
+                puzzle.SolvedCorrectly = correct;
+                puzzle.PuzzleEnd = DateTime.Now;
+
+                if (correct)
+                {
+                    //TODO: Ver que consecuencias tiene que se haya resuelto el puzzle y encadenarlas aqui
+                }
+
+                return new PuzzleResult
+                {
+                    correct = correct,
+                    output = output
+                };
             }
 
-            return true;
+            return new PuzzleResult { correct = false, output = "" };
         }
 
         public async Task<bool> EnterLobby(string code)
