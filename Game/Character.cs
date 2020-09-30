@@ -7,7 +7,10 @@ namespace LaCasaDelTerror.Models
 {
     public class Character
     {
-        public static Dictionary<string, Character> roster = new Dictionary<string, Character>();
+        public static List<Character> roster = new List<Character>
+        {
+
+        };
 
         static Character()
         {
@@ -16,5 +19,7 @@ namespace LaCasaDelTerror.Models
 
         public string name;
         public Stats stats;
+        public string description;
+        public string id;
     }
 }

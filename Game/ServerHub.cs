@@ -27,40 +27,6 @@ namespace ProjectHamiltonService.Game
             this.gameContext = gameContext;
         }
 
-        //private bool IsLobbyInList(string lobbyCode) => gameContext.Lobbies.Any(x => x.Code == lobbyCode);
-
-        //private bool IsUserAuthCodeOfCurrentTurn(string lobbyCode, Guid playerToken)
-        //{
-        //    var lobby = gameContext.Lobbies.Find(lobbyCode);
-
-        //    if (lobby != null)
-        //    {
-        //        return lobby.Players.Exists(x => x.PlayerToken == playerToken);
-        //    }
-
-        //    return false;
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="lobbyCode">Codigo humano legible dado al lobby</param>
-        ///// <exception cref="LobbyNotExistsException">Aventara esta excepcion si este lobby no existe</exception>
-        ///// <returns></returns>
-        //private Lobbies GetLobby(string lobbyCode)
-        //{
-        //    var lobby = gameContext.Lobbies.Find(lobbyCode);
-
-        //    if (lobby != null)
-        //    {
-        //        return lobby;
-        //    }
-        //    else
-        //    {
-        //        throw new LobbyNotExistsException();
-        //    }
-        //}
-
         public DirectionAvailability GetAvailableMovements(LobbyAction action)
         {
             var lobby = gameContext.Lobbies.Find(action.lobbyCode);
@@ -253,12 +219,40 @@ namespace ProjectHamiltonService.Game
 
         public List<Character> GetAvailableCharacters(LobbyAction lobby)
         {
-            return new List<Character>();
+            var currentPlayers = gameContext.Players.Where(x => x.LobbyId == lobby.lobbyCode);
+            var charactersAvailable = Character.roster.Where(x => currentPlayers.FirstOrDefault(y => y.CharacterPrototypeId == x.id) != null);
+
+            return charactersAvailable.ToList();
         }
 
-        //public bool SelectCharacter()
-        //{
-        //    return true;
-        //}
+        public async Task<PlayerSelectionResult> SelectCharacterAsync(SelectCharacterAction action)
+        {
+            var currentPlayers = gameContext.Players.Where(x => x.LobbyId == action.lobbyCode && x.CharacterPrototypeId == action.character).FirstOrDefault();
+            if(currentPlayers != null)
+            {
+                return null;
+            }
+
+            var characterPrototype = Character.roster.Find(x => x.id == action.character);
+
+            var newPlayer = new Models.Players
+            {
+                Bravery = characterPrototype.stats.Bravery,
+                Intelligence = characterPrototype.stats.Intelligence,
+                Sanity = characterPrototype.stats.Sanity,
+                Physical = characterPrototype.stats.Physical,
+
+                Name = action.name
+            };
+            
+            gameContext.Add(newPlayer);
+
+            await gameContext.SaveChangesAsync();
+
+            return new PlayerSelectionResult
+            {
+                playerToken = newPlayer.Id.ToString()
+            };
+        }
     }
 }
