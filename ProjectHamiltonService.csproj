@@ -18,4 +18,8 @@
     <PackageReference Include="RestSharp" Version="106.11.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Game\Internal\Request\" />
+  </ItemGroup>
+
 </Project>

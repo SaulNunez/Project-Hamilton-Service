@@ -1,8 +1,6 @@
 ﻿using LaCasaDelTerror.Models.Abstracts;
-using ProjectHamiltonService.Game.Abstracts;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace LaCasaDelTerror.Models
 {
