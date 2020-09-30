@@ -36,19 +36,19 @@ namespace ProjectHamiltonService.Controllers
         [Consumes(MediaTypeNames.Application.Json)]
         public async System.Threading.Tasks.Task<IActionResult> StartGameSessionAsync(GameStart gameStart)
         {
-            var lobby = gameContext.Lobbies.Where(x => x.code == gameStart.lobbyCode).First();
+            var lobby = gameContext.Lobbies.Where(x => x.Code == gameStart.lobbyCode).First();
 
             if (lobby == null)
             {
                 return new NotFoundResult();
             }
 
-            if (gameContext.Players.Where(x => x.lobbyId == gameStart.lobbyCode).Count() < 2)
+            if (gameContext.Players.Where(x => x.LobbyId == gameStart.lobbyCode).Count() < 2)
             {
                 return new StatusCodeResult(403);
             }
 
-            lobby.onProgress = true;
+            lobby.OnProgress = true;
 
             await gameContext.SaveChangesAsync();
 
@@ -64,7 +64,7 @@ namespace ProjectHamiltonService.Controllers
             var code = new string(Enumerable.Repeat(chars, 5)
               .Select(s => s[random.Next(s.Length)]).ToArray());
 
-            gameContext.Add(new Models.Lobbies { code = code });
+            gameContext.Add(new Models.Lobbies { Code = code });
 
             await gameContext.SaveChangesAsync();
 

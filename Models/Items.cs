@@ -8,12 +8,12 @@ namespace ProjectHamiltonService.Models
 {
     public class Items
     {
-        public Guid id;
+        public Guid Id { get; set; }
         [ForeignKey("Players")]
-        public Guid playersId;
-        public int prototype;
-        public string name;
+        public Guid PlayersId { get; set; }
+        public int Prototype { get; set; }
+        public string Name { get; set; }
 
-        public Players player;
+        public virtual Players Player { get; set; }
     }
 }

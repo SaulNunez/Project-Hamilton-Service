@@ -9,28 +9,28 @@ namespace ProjectHamiltonService.Models
 {
     public class Players
     {
-        public Guid id;
+        public Guid Id { get; set; }
         [Required]
-        public int x;
+        public int X { get; set; }
         [Required]
-        public int y;
+        public int Y { get; set; }
         [Required]
-        public int floor;
+        public int Floor { get; set; }
         [Required]
-        public int sanity;
+        public int Sanity { get; set; }
         [Required]
-        public int physical;
+        public int Physical { get; set; }
         [Required]
-        public int intelligence;
+        public int Intelligence { get; set; }
         [Required]
-        public int bravery;
-        public int availableMoves;
+        public int Bravery { get; set; }
+        public int AvailableMoves { get; set; }
         [Required]
-        public string characterPrototypeId;
-        public string name;
+        public string CharacterPrototypeId { get; set; }
+        public string Name { get; set; }
         [ForeignKey("Lobbies")]
-        public string lobbyId;
+        public string LobbyId { get; set; }
 
-        public Lobbies lobby;
+        public virtual Lobbies Lobby { get; set; }
     }
 }

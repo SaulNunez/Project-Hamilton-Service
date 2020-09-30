@@ -58,29 +58,29 @@ namespace ProjectHamiltonService.Game
         //    }
         //}
 
-        //public async Task<DirectionAvailability> GetAvailableMovementsAsync(LobbyAction action)
-        //{
-        //    Lobbies lobby = GetLobby(action.lobbyCode);
+        public DirectionAvailability GetAvailableMovements(LobbyAction action)
+        {
+            var lobby = gameContext.Lobbies.Find(action.lobbyCode);
 
-        //    var player = lobby.Players.Find(x => x.PlayerToken == action.playerToken);
+            var player = gameContext.Players.Find(action.playerToken);
 
-        //    var rooms = lobby.Rooms.Where(x => x.Floor == player.Floor);
+            var rooms = gameContext.Rooms.Where(r => r.Floor == player.Floor && r.X == player.X && r.Y == player.Y).First();
 
-        //    if(player.AvailableMovements <= 0)
-        //    {
-        //        return DirectionAvailability.None;
-        //    }
+            if (player.AvailableMoves <= 0)
+            {
+                return DirectionAvailability.None;
+            }
 
-        //    return new DirectionAvailability
-        //    {
-        //        right = (bool)(rooms?.Any(room => room.X == player.X + 1 && room.Y == player.Y)),
-        //        left = (bool)(rooms?.Any(room => room.X == player.X - 1 && room.Y == player.Y)),
-        //        up = (bool)(rooms?.Any(room => room.X == player.X && room.Y == player.Y + 1)),
-        //        down = (bool)(rooms?.Any(room => room.X == player.X && room.Y == player.Y - 1)),
-        //        floorUp = (bool)(rooms?.Where(room => room.X == player.X && room.Y == player.Y).First().MovesToFloor.Contains(player.Floor + 1)),
-        //        floorDown = (bool)(rooms?.Where(room => room.X == player.X && room.Y == player.Y).First().MovesToFloor.Contains(player.Floor - 1))
-        //    };
-        //}
+            return new DirectionAvailability
+            {
+                right = gameContext.Rooms.Any(room => room.X == player.X + 1 && room.Y == player.Y),
+                left = gameContext.Rooms.Any(room => room.X == player.X - 1 && room.Y == player.Y),
+                up = gameContext.Rooms.Any(room => room.X == player.X && room.Y == player.Y + 1),
+                down = gameContext.Rooms.Any(room => room.X == player.X && room.Y == player.Y - 1),
+                //floorUp = (bool)(gameContext.Rooms.Where(room => room.x == player.x && room.y == player.y).First().MovesToFloor.Contains(player.Floor + 1)),
+                //floorDown = (bool)(gameContext.Rooms.Where(room => room.x == player.x && room.y == player.y).First().MovesToFloor.Contains(player.Floor - 1))
+            };
+        }
 
         //public async Task<MovementResult> MoveAsync(DirectionAction action)
         //{

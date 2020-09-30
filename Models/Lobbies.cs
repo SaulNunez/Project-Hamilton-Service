@@ -10,10 +10,10 @@ namespace ProjectHamiltonService.Models
     public class Lobbies
     {
         [Key]
-        public string code;
+        public string Code { get; set; }
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime creationTime;
-        public bool onProgress;
+        public DateTime CreationTime { get; set; }
+        public bool OnProgress { get; set; }
     }
 }

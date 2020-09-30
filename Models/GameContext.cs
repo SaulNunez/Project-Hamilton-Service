@@ -21,23 +21,24 @@ namespace ProjectHamiltonService.Models
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Players>()
-                .HasIndex(x => x.lobbyId)
+                .HasIndex(x => x.LobbyId)
                 .IsUnique();
 
             builder.Entity<Players>()
-                .HasIndex(x => x.characterPrototypeId)
+                .HasIndex(x => x.CharacterPrototypeId)
                 .IsUnique();
 
             builder.Entity<Players>()
-                .Property(x => x.x)
-                .HasDefaultValue(0);
-            builder.Entity<Players>()
-                .Property(x => x.y)
-                .HasDefaultValue(0);
-            builder.Entity<Players>()
-                .Property(x => x.floor)
+                .Property(x => x.X)
                 .HasDefaultValue(0);
 
+            builder.Entity<Players>()
+                .Property(x => x.Y)
+                .HasDefaultValue(0);
+
+            builder.Entity<Players>()
+                .Property(x => x.Floor)
+                .HasDefaultValue(0);
         }
     }
 }
