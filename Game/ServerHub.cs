@@ -188,49 +188,50 @@ namespace ProjectHamiltonService.Game
             return protoInfo;
         }
 
-        //private static readonly HttpClient client = new HttpClient();
-        //public async Task<bool> CheckPuzzleAsync(PuzzleActions puzzleActions)
-        //{
-        //    if (IsUserAuthCodeOfCurrentTurn(puzzleActions.lobbyCode, puzzleActions.playerToken))
-        //    {
-        //        //TODO: Cuando este terminada esa API llenar el JSON del request
-        //        var values = new Dictionary<string, string>
-        //        {
-        //        { "code", puzzleActions.code },
-        //        { "type", "world" }
-        //        };
+        private static readonly HttpClient client = new HttpClient();
+        public async Task<bool> CheckPuzzleAsync(PuzzleActions puzzleActions)
+        {
+            var lobby = gameContext.Lobbies.Find(puzzleActions.lobbyCode);
 
-        //        var content = new FormUrlEncodedContent(values);
+            if (lobby.CurrentPlayer.Id == puzzleActions.playerToken)
+            {
+                //TODO: Cuando este terminada esa API llenar el JSON del request
+                var values = new Dictionary<string, string>
+                {
+                { "code", puzzleActions.code },
+                { "type", "world" }
+                };
 
-        //        //Cambiar dirección del servidor
-        //        var response = await client.PostAsync("http://CodeTest", content);
+                var content = new FormUrlEncodedContent(values);
 
-        //        var responseString = await response.Content.ReadAsStringAsync();
+                //Cambiar dirección del servidor
+                var response = await client.PostAsync("https://hamilton-microservice.herokuapp.com/", content);
 
-        //        var result = JsonSerializer.Deserialize<CodeTestResult>(responseString);
-        //    }
+                var responseString = await response.Content.ReadAsStringAsync();
 
-        //    return true;
-        //}
+                var result = JsonSerializer.Deserialize<CodeTestResult>(responseString);
+            }
 
-        //public async Task<bool> EnterLobby(string code)
-        //{
-        //    //Existe lobby en servidor
-        //    if (true)
-        //    {
-        //        await Groups.AddToGroupAsync(Context.ConnectionId, code);
-        //        Clients.Group(code).PlayerJoinedLobby();
+            return true;
+        }
 
-        //        return true;
-        //    }
+        public async Task<bool> EnterLobby(string code)
+        {
+            if (gameContext.Lobbies.Find(code) != null)
+            {
+                await Groups.AddToGroupAsync(Context.ConnectionId, code);
+                Clients.Group(code).PlayerJoinedLobby();
 
-        //    return false;
-        //}
+                return true;
+            }
 
-        //public List<Character> GetAvailableCharacters(LobbyAction lobby)
-        //{
-        //    return new List<Character>();
-        //}
+            return false;
+        }
+
+        public List<Character> GetAvailableCharacters(LobbyAction lobby)
+        {
+            return new List<Character>();
+        }
 
         //public bool SelectCharacter()
         //{
