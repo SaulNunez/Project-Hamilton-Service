@@ -82,86 +82,86 @@ namespace ProjectHamiltonService.Game
             };
         }
 
-        //public async Task<MovementResult> MoveAsync(DirectionAction action)
-        //{
-        //    if (IsUserAuthCodeOfCurrentTurn(action.lobbyCode, action.playerToken))
-        //    {
-        //        var lobby = GetLobby(action.lobbyCode);
+        public async Task<MovementResult> MoveAsync(DirectionAction action)
+        {
+            var lobby = gameContext.Lobbies.Find(action.lobbyCode);
 
-        //        var player = lobby.Players.Find(player => player.PlayerToken == action.playerToken);
+            if (lobby != null && lobby.CurrentPlayer.Id == action.playerToken)
+            {
+                var player = gameContext.Players.Find(action.playerToken);
 
-        //        var movementIsLegal = false;
+                var movementIsLegal = false;
 
-        //        switch (action.Direction)
-        //        {
-        //            case Direction.DOWN:
-        //                if(lobby.Rooms.Any(room => room.X == player.X && room.Y == player.Y - 1))
-        //                {
-        //                    player.Y--;
-        //                    movementIsLegal = true;
-        //                }
-        //                break;
-        //            case Direction.UP:
-        //                if (lobby.Rooms.Any(room => room.X == player.X && room.Y == player.Y + 1))
-        //                {
-        //                    player.Y++;
-        //                    movementIsLegal = true;
-        //                }
-        //                break;
-        //            case Direction.LEFT:
-        //                if (lobby.Rooms.Any(room => room.X == player.X - 1 && room.Y == player.Y))
-        //                {
-        //                    player.X--;
-        //                    movementIsLegal = true;
-        //                }
-        //                break;
-        //            case Direction.RIGHT:
-        //                if (lobby.Rooms.Any(room => room.X == player.X + 1 && room.Y == player.Y))
-        //                {
-        //                    player.X++;
-        //                    movementIsLegal = true;
-        //                }
-        //                break;
-        //            case Direction.FLOOR_DOWN:
-        //                if(lobby.Rooms.Where(room => room.X == player.X && room.Y == player.Y).First().MovesToFloor.Contains(player.Floor + 1))
-        //                {
-        //                    player.Floor--;
-        //                    movementIsLegal = true;
-        //                }
-        //                break;
-        //            case Direction.FLOOR_UP:
-        //                if (lobby.Rooms.Where(room => room.X == player.X && room.Y == player.Y).First().MovesToFloor.Contains(player.Floor - 1))
-        //                {
-        //                    player.Floor++;
-        //                    movementIsLegal = true;
-        //                }
-        //                break;
-        //        }
+                switch (action.Direction)
+                {
+                    case Direction.DOWN:
+                        if (gameContext.Rooms.Any(room => room.X == player.X && room.Y == player.Y - 1))
+                        {
+                            player.Y--;
+                            movementIsLegal = true;
+                        }
+                        break;
+                    case Direction.UP:
+                        if (gameContext.Rooms.Any(room => room.X == player.X && room.Y == player.Y + 1))
+                        {
+                            player.Y++;
+                            movementIsLegal = true;
+                        }
+                        break;
+                    case Direction.LEFT:
+                        if (gameContext.Rooms.Any(room => room.X == player.X - 1 && room.Y == player.Y))
+                        {
+                            player.X--;
+                            movementIsLegal = true;
+                        }
+                        break;
+                    case Direction.RIGHT:
+                        if (gameContext.Rooms.Any(room => room.X == player.X + 1 && room.Y == player.Y))
+                        {
+                            player.X++;
+                            movementIsLegal = true;
+                        }
+                        break;
+                    case Direction.FLOOR_DOWN:
+                        //if (gameContext.Rooms.Where(room => room.X == player.X && room.Y == player.Y).First().MovesToFloor.Contains(player.Floor + 1))
+                        //{
+                        //    player.Floor--;
+                        //    movementIsLegal = true;
+                        //}
+                        break;
+                    case Direction.FLOOR_UP:
+                        //if (gameContext.Rooms.Where(room => room.X == player.X && room.Y == player.Y).First().MovesToFloor.Contains(player.Floor - 1))
+                        //{
+                        //    player.Floor++;
+                        //    movementIsLegal = true;
+                        //}
+                        break;
+                }
 
-        //        await gameContext.SaveChangesAsync();
+                await gameContext.SaveChangesAsync();
 
-        //        if (movementIsLegal)
-        //        {
-        //            Clients.All.MoveCharacter(new PlayerUpdateResult
-        //            {
-        //                playerToken = action.playerToken,
-        //                x = player.X,
-        //                y = player.Y,
-        //                floor = player.Floor
-        //            });
-        //        }
+                if (movementIsLegal)
+                {
+                    Clients.All.MoveCharacter(new PlayerUpdateResult
+                    {
+                        playerToken = action.playerToken,
+                        x = player.X,
+                        y = player.Y,
+                        floor = player.Floor
+                    });
+                }
 
-        //        return new MovementResult
-        //        {
-        //            movementIsLegal = movementIsLegal,
-        //            floor = player.Floor,
-        //            x = player.X,
-        //            y = player.Y
-        //        };
-        //    }
+                return new MovementResult
+                {
+                    movementIsLegal = movementIsLegal,
+                    floor = player.Floor,
+                    x = player.X,
+                    y = player.Y
+                };
+            }
 
-        //    return null;
-        //}
+            return null;
+        }
 
         //public async Task UseItem(ItemAction action)
         //{

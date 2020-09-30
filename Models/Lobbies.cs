@@ -15,5 +15,8 @@ namespace ProjectHamiltonService.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreationTime { get; set; }
         public bool OnProgress { get; set; }
+        
+        [ForeignKey("Players")]
+        public virtual Players CurrentPlayer { get; set; }
     }
 }
