@@ -65,7 +65,7 @@ namespace LaCasaDelTerror.Models
         }
 
         public bool needsThrow = false;
-        public Stats? statEffects;
+        public Stats statEffects;
         public bool singleUse = false;
         public bool affectsOtherPlayer =  false;
         public SpecialItems specialItem = SpecialItems.NONE;

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using static LaCasaDelTerror.Models.Server;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using Items = LaCasaDelTerror.Models.Items;
 
 namespace ProjectHamiltonService.Game
 {
@@ -163,23 +164,29 @@ namespace ProjectHamiltonService.Game
             return null;
         }
 
-        //public async Task UseItem(ItemAction action)
-        //{
-        //    //Tener lista de items en player
-        //    //Revisar si tiene item
-        //    //Si si, afecta jugador que nos mando el shit
+        public async Task UseItem(ItemAction action)
+        {
+            //Tener lista de items en player
+            //Revisar si tiene item
+            //Si si, afecta jugador que nos mando el shit
 
-        //    //TODO: Revisar todas las posibilidades que tienen los items
-        //}
+            //TODO: Revisar todas las posibilidades que tienen los items
+        }
 
-        //public List<Items> GetItems(LobbyAction action)
-        //{
-        //    var lobby = GetLobby(action.lobbyCode);
+        public List<Items> GetItems(LobbyAction action)
+        {
+            var lobby = gameContext.Lobbies.Find(action.lobbyCode);
 
-        //    var player = lobby.Players.Find(x => x.PlayerToken == action.playerToken);
+            if(lobby == null)
+            {
+                return null;
+            }
+            var itemsOnPlayer = gameContext.Items.Where(x => x.PlayersId == action.playerToken);
+            //Tal vez no sea tan rapido, luego hacer profiling
+            var protoInfo = itemsOnPlayer.Select(x => Items.items.Where(y => y.Key == x.Prototype).First()).Select(x => x.Value).ToList();
 
-        //    return player.Items;
-        //}
+            return protoInfo;
+        }
 
         //private static readonly HttpClient client = new HttpClient();
         //public async Task<bool> CheckPuzzleAsync(PuzzleActions puzzleActions)

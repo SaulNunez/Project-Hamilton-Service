@@ -11,7 +11,7 @@ namespace ProjectHamiltonService.Models
         public Guid Id { get; set; }
         [ForeignKey("Players")]
         public Guid PlayersId { get; set; }
-        public int Prototype { get; set; }
+        public string Prototype { get; set; }
         public string Name { get; set; }
 
         public virtual Players Player { get; set; }
