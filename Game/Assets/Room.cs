@@ -62,12 +62,12 @@ namespace LaCasaDelTerror.Assets
             new Rooms
             {
                 Name="Elevador",
-                MovesToFloor=new int[]{0,1,2 }
+                MovesToFloor=new int[]{-1,0,1 }
             },
             new Rooms
             {
                 Name="Entrada",
-                MovesToFloor=new int[]{2}
+                MovesToFloor=new int[]{1}
             },
             new Rooms
             {
@@ -121,7 +121,7 @@ namespace LaCasaDelTerror.Assets
             new Rooms
             {
                 Name="Piso con agujero",
-                MovesToFloor=new int[]{1}
+                MovesToFloor=new int[]{0}
             },
             new Rooms
             {
@@ -154,7 +154,7 @@ namespace LaCasaDelTerror.Assets
             new Rooms
             {
                 Name="Elevador",
-                MovesToFloor= new int[]{0, 1, 2}
+                MovesToFloor= new int[]{-1, 0, 1}
             },
             new Rooms
             {
