@@ -7,67 +7,66 @@ namespace LaCasaDelTerror.Assets
 {
     public class Items
     {
-        public static Dictionary<string, Items> items = new Dictionary<string, Items>();
-        
-        static Items()
+        public static List<Items> items = new List<Items>()
         {
-            items.Add("revolver", new Items
+            new Items
             {
-                needsThrow=true,
+                id = "revolver",
                 statEffects=new Stats
                 {
                     Physical=-1
                 },
                 singleUse=true
-            });
-
-            items.Add("magic_stone", new Items
+            },
+            new Items
             {
-                singleUse=true,
+                id = "magic_stone",
+                singleUse =true,
                 needsThrow=true
-            });
-            items.Add("small_totem", new Items { 
+            },
+            new Items {
+                id = "small_totem",
                 statEffects=new Stats
                 {
                     Sanity=-1
                 }
-            });
-            items.Add("sacrificial_dagger", new Items
+            },
+            new Items
             {
-                needsThrow=true,
+                id= "sacrificial_dagger",
+                needsThrow =true,
                 //TODO: Agregar informacion de custom throw
-                statEffects = new Stats{
-                
-                }
-            });
-            items.Add("buttler_key", new Items
+            },
+            new Items
             {
-                specialItem=SpecialItems.KEY,
+                id= "buttler_key",
+                specialItem =SpecialEffect.KEY,
                 singleUse=true
-            });
-            items.Add("adrenaline_shot", new Items
+            },
+            new Items
             {
+                id= "adrenaline_shot",
                 singleUse = true,
                 statEffects = new Stats
                 {
-                    Sanity = -1,
-                    Physical = 1,
-                    Bravery = 2
+                    Physical = 1
                 }
-            });
-        }
+            }
+        };
 
-        public enum SpecialItems
+        public enum SpecialEffect
         {
+            NONE,
             KEY,
             LADDER,
-            NONE
+            TELETRANSPORT
         }
 
+        public string id;
         public bool needsThrow = false;
         public Stats statEffects;
         public bool singleUse = false;
         public bool affectsOtherPlayer =  false;
-        public SpecialItems specialItem = SpecialItems.NONE;
+        public SpecialEffect specialItem = SpecialEffect.NONE;
     }
 }
