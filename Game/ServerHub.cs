@@ -134,11 +134,38 @@ namespace ProjectHamiltonService.Game
 
         public async Task UseItem(ItemAction action)
         {
-            //Tener lista de items en player
-            //Revisar si tiene item
-            //Si si, afecta jugador que nos mando el shit
+            var item = gameContext.Items.Find(Guid.Parse(action.itemId));
 
-            //TODO: Revisar todas las posibilidades que tienen los items
+            if(item != null)
+            {
+                var itemPrototype = Items.items.Find(x => item.Prototype == x.id);
+
+                if(itemPrototype.specialItem == Items.SpecialEffect.LADDER)
+                {
+
+                }
+
+                if(itemPrototype.statEffects != null)
+                {
+                    Models.Players players;
+                    if (action.characterToAffect != null) {
+                        players = gameContext.Players.Where(x => x.Name == action.characterToAffect && x.LobbyId == action.lobbyCode).FirstOrDefault();
+                    } else
+                    {
+                        players = gameContext.Players.Find(action.playerToken);
+                    }
+
+                    players.Bravery += itemPrototype.statEffects.Bravery;
+                    players.Intelligence += itemPrototype.statEffects.Intelligence;
+                    players.Sanity += itemPrototype.statEffects.Sanity;
+                    players.Physical += itemPrototype.statEffects.Physical;
+                }
+
+                if (itemPrototype.singleUse)
+                {
+                    gameContext.Remove(item);
+                }
+            }
         }
 
         public List<Items> GetItems(LobbyAction action)
@@ -151,7 +178,7 @@ namespace ProjectHamiltonService.Game
             }
             var itemsOnPlayer = gameContext.Items.Where(x => x.PlayersId == action.playerToken);
             //Tal vez no sea tan rapido, luego hacer profiling
-            var protoInfo = itemsOnPlayer.Select(x => Items.items.Where(y => y.Key == x.Prototype).First()).Select(x => x.Value).ToList();
+            var protoInfo = itemsOnPlayer.Select(x => Items.items.Where(y => y.id == x.Prototype).First()).ToList();
 
             return protoInfo;
         }

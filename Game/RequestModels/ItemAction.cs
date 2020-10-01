@@ -7,6 +7,7 @@ namespace ProjectHamiltonService.Game.ServerActions
 {
     public class ItemAction: LobbyAction
     {
-        public string itemName;
+        public string itemId;
+        public string characterToAffect;
     }
 }
