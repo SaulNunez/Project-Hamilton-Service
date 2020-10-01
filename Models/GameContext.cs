@@ -1,4 +1,4 @@
-﻿using LaCasaDelTerror.Models;
+﻿using LaCasaDelTerror.Assets;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

@@ -28,6 +28,8 @@ namespace ProjectHamiltonService
             services.AddDbContext<GameContext>(opt => 
                 opt.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddTransient<MansionCreation>();
+
             services.AddSignalR();
             services.AddMvc();
         }

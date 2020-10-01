@@ -1,13 +1,13 @@
-﻿using LaCasaDelTerror.Models.Abstracts;
+﻿using LaCasaDelTerror.Assets.Abstracts;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace LaCasaDelTerror.Models
+namespace LaCasaDelTerror.Assets
 {
     public class Rooms
     {
-        public static Rooms[] mainFloor = {
+        public static List<Rooms> mainFloor = new List<Rooms>(){
             new Rooms
             {
                 Name="Commedor",
@@ -82,7 +82,7 @@ namespace LaCasaDelTerror.Models
             }
         };
 
-        public static Rooms[] topFloor =
+        public static List<Rooms> topFloor = new List<Rooms>()
         {
             new Rooms
             {
@@ -163,7 +163,7 @@ namespace LaCasaDelTerror.Models
             }
         };
 
-        public static Rooms[] basement =
+        public static List<Rooms> basement = new List<Rooms>()
         {
             new Rooms
             {
@@ -259,6 +259,8 @@ namespace LaCasaDelTerror.Models
         /// Usado para saber si es legal establecer cuartos a un lado de este
         /// </summary>
         public bool adjacentRoomBottom = true;
+        public string id;
+
         /// <summary>
         /// Usado para saber si es legal establecer cuartos a un lado de este
         /// </summary>
@@ -269,5 +271,16 @@ namespace LaCasaDelTerror.Models
         public int X { get; set; }
         public int Y { get; set; }
         public int Floor { get; set; }
+
+        struct Position
+        {
+            public Position(int x, int y)
+            {
+                this.x = x;
+                this.y = y;
+            }
+            public int x;
+            public int y;
+        }
     }
 }

@@ -1,8 +1,8 @@
-﻿using LaCasaDelTerror.Models.Abstracts;
+﻿using LaCasaDelTerror.Assets.Abstracts;
 using System;
 using System.Collections.Generic;
 
-namespace LaCasaDelTerror.Models
+namespace LaCasaDelTerror.Assets
 {
     public class Players
     {

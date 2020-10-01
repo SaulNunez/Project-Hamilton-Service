@@ -1,5 +1,6 @@
-﻿using LaCasaDelTerror.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using ProjectHamiltonService.Game;
 using ProjectHamiltonService.Models;
 using System;
 using System.Linq;
@@ -11,11 +12,13 @@ namespace ProjectHamiltonService.Controllers
 {
     public class TeacherController : Controller
     {
-        private GameContext gameContext;
+        private readonly GameContext gameContext;
+        private readonly IHubContext<ServerHub> hubContext;
 
-        public TeacherController(GameContext gameContext)
+        public TeacherController(GameContext gameContext, IHubContext<ServerHub> hubContext)
         {
             this.gameContext = gameContext;
+            this.hubContext = hubContext;
         }
 
         // GET: /<controller>/
@@ -52,21 +55,26 @@ namespace ProjectHamiltonService.Controllers
 
             await gameContext.SaveChangesAsync();
 
+            await hubContext.Clients.Group(gameStart.lobbyCode).SendAsync("SessionStart");
+
             return new OkResult();
         }
 
-
         [HttpPost]
         [Route("Teacher/CreateLobby")]
-        public async System.Threading.Tasks.Task<IActionResult> CreateLobbyAsync()
+        public async System.Threading.Tasks.Task<IActionResult> CreateLobbyAsync([FromServices] MansionCreation mansionCreation)
         {
             const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
             var code = new string(Enumerable.Repeat(chars, 5)
               .Select(s => s[random.Next(s.Length)]).ToArray());
 
-            gameContext.Add(new Models.Lobbies { Code = code });
+            gameContext.Add(new Lobbies { Code = code });
 
             await gameContext.SaveChangesAsync();
+
+            await mansionCreation.populateFloorAsync(code, LaCasaDelTerror.Assets.Rooms.basement, -1);
+            await mansionCreation.populateFloorAsync(code, LaCasaDelTerror.Assets.Rooms.mainFloor, 0);
+            await mansionCreation.populateFloorAsync(code, LaCasaDelTerror.Assets.Rooms.topFloor, 1);
 
             return new OkObjectResult(new { code });
         }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 
@@ -21,8 +21,12 @@
                     <div>
                         <p>Crea un hub para tu clase.</p>
                         <p id="hubCode"></p>
-                        <button type="button" class="btn btn-primary" id="crear_hub" onclick="createHub()">Crear
-                            hub</button>
+                        <button type="button" class="btn btn-primary" id="crear_hub" onclick="createHub()">
+                            Crear hub
+                        </button>
+                        <button type="button" class="btn btn-primary" id="crear_hub" onclick="createHub()">
+                            Iniciar juego
+                        </button>
                     </div>
                     <p></p>
                 </div>
@@ -38,7 +42,7 @@
                 var hubCodeContainer = document.getElementById("hubCode");
 
                 function createHub() {
-                    fetch('/create_lobby', { method: 'POST' })
+                    fetch('/Teacher/CreateLobby', { method: 'POST' })
                         .then((response) => response.json())
                         .then(function (data) {
                             hubCodeContainer.innerHTML = data.code || "";

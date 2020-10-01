@@ -1,4 +1,4 @@
-﻿namespace LaCasaDelTerror.Models
+﻿namespace LaCasaDelTerror.Assets
 {
     public partial class Server
     {

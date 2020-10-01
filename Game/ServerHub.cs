@@ -1,5 +1,5 @@
-﻿using LaCasaDelTerror.Models;
-using LaCasaDelTerror.Models.Abstracts;
+﻿using LaCasaDelTerror.Assets;
+using LaCasaDelTerror.Assets.Abstracts;
 using Microsoft.AspNetCore.SignalR;
 using ProjectHamiltonService.Game.ClientActions;
 using ProjectHamiltonService.Game.ServerActions;
@@ -9,10 +9,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using static LaCasaDelTerror.Models.Server;
+using static LaCasaDelTerror.Assets.Server;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
-using Items = LaCasaDelTerror.Models.Items;
+using Items = LaCasaDelTerror.Assets.Items;
 using System.Net;
 using RestSharp;
 

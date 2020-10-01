@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LaCasaDelTerror.Models;
-using LaCasaDelTerror.Models.Abstracts;
+using LaCasaDelTerror.Assets;
+using LaCasaDelTerror.Assets.Abstracts;
 using ProjectHamiltonService.Game.Abstracts;
 
 namespace ProjectHamiltonService.Game

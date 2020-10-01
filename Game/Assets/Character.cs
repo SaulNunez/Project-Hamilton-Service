@@ -1,9 +1,9 @@
-﻿using LaCasaDelTerror.Models.Abstracts;
+﻿using LaCasaDelTerror.Assets.Abstracts;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace LaCasaDelTerror.Models
+namespace LaCasaDelTerror.Assets
 {
     public class Character
     {

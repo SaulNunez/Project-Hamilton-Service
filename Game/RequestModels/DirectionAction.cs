@@ -1,4 +1,4 @@
-﻿using static LaCasaDelTerror.Models.Server;
+﻿using static LaCasaDelTerror.Assets.Server;
 
 namespace ProjectHamiltonService.Game
 {

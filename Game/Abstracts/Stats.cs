@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LaCasaDelTerror.Models.Abstracts
+namespace LaCasaDelTerror.Assets.Abstracts
 {
     public class Stats
     {
