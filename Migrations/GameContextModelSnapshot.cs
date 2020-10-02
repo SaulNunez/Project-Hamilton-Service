@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ProjectHamiltonService.Models;
 
 namespace ProjectHamiltonService.Migrations
@@ -14,21 +15,21 @@ namespace ProjectHamiltonService.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.6")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("ProjectHamiltonService.Models.Items", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varbinary(16)");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<byte[]>("PlayersId")
-                        .IsRequired()
-                        .HasColumnType("varbinary(16)");
+                    b.Property<Guid>("PlayersId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Prototype")
                         .HasColumnType("text");
@@ -43,17 +44,17 @@ namespace ProjectHamiltonService.Migrations
             modelBuilder.Entity("ProjectHamiltonService.Models.Lobbies", b =>
                 {
                     b.Property<string>("Code")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreationTime")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("OnProgress")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
-                    b.Property<byte[]>("Players")
-                        .HasColumnType("varbinary(16)");
+                    b.Property<Guid?>("Players")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Code");
 
@@ -65,48 +66,48 @@ namespace ProjectHamiltonService.Migrations
 
             modelBuilder.Entity("ProjectHamiltonService.Models.Players", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varbinary(16)");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("AvailableMoves")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Bravery")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("CharacterPrototypeId")
                         .IsRequired()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Floor")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasDefaultValue(0);
 
                     b.Property<int>("Intelligence")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("LobbyId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.Property<int>("Physical")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Sanity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("X")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasDefaultValue(0);
 
                     b.Property<int>("Y")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasDefaultValue(0);
 
                     b.HasKey("Id");
@@ -122,26 +123,25 @@ namespace ProjectHamiltonService.Migrations
 
             modelBuilder.Entity("ProjectHamiltonService.Models.Puzzles", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varbinary(16)");
+                        .HasColumnType("uuid");
 
-                    b.Property<byte[]>("PlayersId")
-                        .IsRequired()
-                        .HasColumnType("varbinary(16)");
+                    b.Property<Guid>("PlayersId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("PuzzleEnd")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("PuzzlePrototype")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("PuzzleStart")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("SolvedCorrectly")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
@@ -150,27 +150,27 @@ namespace ProjectHamiltonService.Migrations
 
             modelBuilder.Entity("ProjectHamiltonService.Models.Rooms", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varbinary(16)");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Floor")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("LobbyId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("PlayerActionAvailable")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("RoomProtoype")
                         .HasColumnType("text");
 
                     b.Property<int>("X")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Y")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

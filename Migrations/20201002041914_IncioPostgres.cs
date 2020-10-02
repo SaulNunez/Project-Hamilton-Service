@@ -1,32 +1,17 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace ProjectHamiltonService.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class IncioPostgres : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Lobbies",
-                columns: table => new
-                {
-                    Code = table.Column<string>(nullable: false),
-                    CreationTime = table.Column<DateTime>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
-                    OnProgress = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Lobbies", x => x.Code);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Players",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     X = table.Column<int>(nullable: false, defaultValue: 0),
                     Y = table.Column<int>(nullable: false, defaultValue: 0),
                     Floor = table.Column<int>(nullable: false, defaultValue: 0),
@@ -42,11 +27,61 @@ namespace ProjectHamiltonService.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Players", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Puzzles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    PuzzleStart = table.Column<DateTime>(nullable: false),
+                    PuzzleEnd = table.Column<DateTime>(nullable: false),
+                    PlayersId = table.Column<Guid>(nullable: false),
+                    PuzzlePrototype = table.Column<string>(nullable: true),
+                    SolvedCorrectly = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Puzzles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Items",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    PlayersId = table.Column<Guid>(nullable: false),
+                    Prototype = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Players_Lobbies_LobbyId",
-                        column: x => x.LobbyId,
-                        principalTable: "Lobbies",
-                        principalColumn: "Code",
+                        name: "FK_Items_Players_PlayersId",
+                        column: x => x.PlayersId,
+                        principalTable: "Players",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Lobbies",
+                columns: table => new
+                {
+                    Code = table.Column<string>(nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    OnProgress = table.Column<bool>(nullable: false),
+                    Players = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lobbies", x => x.Code);
+                    table.ForeignKey(
+                        name: "FK_Lobbies_Players_Players",
+                        column: x => x.Players,
+                        principalTable: "Players",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -54,7 +89,7 @@ namespace ProjectHamiltonService.Migrations
                 name: "Rooms",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     X = table.Column<int>(nullable: false),
                     Y = table.Column<int>(nullable: false),
                     Floor = table.Column<int>(nullable: false),
@@ -73,30 +108,16 @@ namespace ProjectHamiltonService.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Items",
-                columns: table => new
-                {
-                    Id = table.Column<byte[]>(nullable: false),
-                    PlayersId = table.Column<byte[]>(nullable: false),
-                    Prototype = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Items", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Items_Players_PlayersId",
-                        column: x => x.PlayersId,
-                        principalTable: "Players",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Items_PlayersId",
                 table: "Items",
                 column: "PlayersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Lobbies_Players",
+                table: "Lobbies",
+                column: "Players",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Players_CharacterPrototypeId",
@@ -122,13 +143,16 @@ namespace ProjectHamiltonService.Migrations
                 name: "Items");
 
             migrationBuilder.DropTable(
+                name: "Puzzles");
+
+            migrationBuilder.DropTable(
                 name: "Rooms");
 
             migrationBuilder.DropTable(
-                name: "Players");
+                name: "Lobbies");
 
             migrationBuilder.DropTable(
-                name: "Lobbies");
+                name: "Players");
         }
     }
 }
