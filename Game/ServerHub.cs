@@ -15,6 +15,7 @@ using System.Text.Json;
 using Items = LaCasaDelTerror.Assets.Items;
 using System.Net;
 using RestSharp;
+using ProjectHamiltonService.Game.RequestModels;
 
 namespace ProjectHamiltonService.Game
 {
@@ -244,7 +245,7 @@ namespace ProjectHamiltonService.Game
             return false;
         }
 
-        public List<Character> GetAvailableCharacters(LobbyAction lobby)
+        public List<Character> GetAvailableCharacters(SimpleLobbyAction lobby)
         {
             var currentPlayers = gameContext.Players.Where(x => x.LobbyId == lobby.lobbyCode);
             var charactersAvailable = Character.roster.Where(x => currentPlayers.FirstOrDefault(y => y.CharacterPrototypeId == x.id) != null);
