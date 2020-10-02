@@ -45,6 +45,8 @@ namespace ProjectHamiltonService
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseDefaultFiles();
+
             StaticFileOptions option = new StaticFileOptions();
             FileExtensionContentTypeProvider contentTypeProvider = (FileExtensionContentTypeProvider)option.ContentTypeProvider ??
             new FileExtensionContentTypeProvider();
