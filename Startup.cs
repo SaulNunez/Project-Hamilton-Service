@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using ProjectHamiltonService.Game;
 using ProjectHamiltonService.Models;
 using Microsoft.AspNetCore.StaticFiles;
+using System;
 
 namespace ProjectHamiltonService
 {
@@ -25,8 +26,10 @@ namespace ProjectHamiltonService
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            string connection = Environment.GetEnvironmentVariable("DatabaseConnection") ?? Configuration.GetConnectionString("DefaultConnection");
+
             services.AddDbContext<GameContext>(opt => 
-                opt.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
+                opt.UseMySQL(connection));
 
             services.AddTransient<MansionCreation>();
 
