@@ -29,7 +29,7 @@ namespace ProjectHamiltonService
             string connection = Environment.GetEnvironmentVariable("DatabaseConnection") ?? Configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<GameContext>(opt => 
-                opt.UseMySQL(connection));
+                opt.UseNpgsql(connection));
 
             services.AddTransient<MansionCreation>();
 
