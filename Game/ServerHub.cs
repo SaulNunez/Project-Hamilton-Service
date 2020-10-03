@@ -185,7 +185,7 @@ namespace ProjectHamiltonService.Game
         }
 
         private static readonly HttpClient client = new HttpClient();
-        public async Task<PuzzleResult> CheckPuzzleAsync(PuzzleActions puzzleActions)
+        public PuzzleResult CheckPuzzle(PuzzleActions puzzleActions)
         {
             var lobby = gameContext.Lobbies.Find(puzzleActions.lobbyCode);
             var puzzle = gameContext.Puzzles.Find(puzzleActions.puzzleId);
@@ -237,7 +237,7 @@ namespace ProjectHamiltonService.Game
             if (gameContext.Lobbies.Find(code) != null)
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, code);
-                Clients.Group(code).PlayerJoinedLobby();
+                //await Clients.Group(code).PlayerJoinedLobby();
 
                 return true;
             }
@@ -245,12 +245,12 @@ namespace ProjectHamiltonService.Game
             return false;
         }
 
-        public List<Character> GetAvailableCharacters(SimpleLobbyAction lobby)
+        public Task<List<Character>> GetAvailableCharacters(SimpleLobbyAction lobby)
         {
             var currentPlayers = gameContext.Players.Where(x => x.LobbyId == lobby.lobbyCode);
             var charactersAvailable = Character.roster.Where(x => currentPlayers.FirstOrDefault(y => y.CharacterPrototypeId == x.id) != null);
 
-            return charactersAvailable.ToList();
+            return Task.FromResult(charactersAvailable.ToList());
         }
 
         public async Task<PlayerSelectionResult> SelectCharacterAsync(SelectCharacterAction action)
