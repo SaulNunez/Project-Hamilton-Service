@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,8 +11,6 @@ namespace ProjectHamiltonService.Models
     {
         [Key]
         public string Code { get; set; }
-        [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreationTime { get; set; }
         public bool OnProgress { get; set; }
         

@@ -40,6 +40,8 @@ namespace ProjectHamiltonService.Models
             builder.Entity<Players>()
                 .Property(x => x.Floor)
                 .HasDefaultValue(0);
+
+            builder.Entity<Lobbies>().Property(x => x.CreationTime).HasDefaultValueSql("NOW()");
         }
     }
 }
