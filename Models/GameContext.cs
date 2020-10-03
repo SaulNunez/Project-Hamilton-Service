@@ -41,7 +41,13 @@ namespace ProjectHamiltonService.Models
                 .Property(x => x.Floor)
                 .HasDefaultValue(0);
 
-            builder.Entity<Lobbies>().Property(x => x.CreationTime).HasDefaultValueSql("NOW()");
+            builder.Entity<Lobbies>()
+                .Property(x => x.CreationTime)
+                .HasDefaultValueSql("NOW()");
+
+            builder.Entity<Puzzles>()
+                .Property(x => x.PuzzleStart)
+                .HasDefaultValueSql("NOW()");
         }
     }
 }

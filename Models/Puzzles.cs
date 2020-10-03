@@ -11,7 +11,6 @@ namespace ProjectHamiltonService.Models
     {
         [Key]
         public Guid Id { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime PuzzleStart { get; set; }
         public DateTime PuzzleEnd { get; set; }
         [ForeignKey("Players")]
