@@ -10,12 +10,12 @@ namespace ProjectHamiltonService.Game
 {
     public interface IClientActions
     {
-        void ChangeStats(string playerName, Stats stats);
-        void SetItemList(string playerName, List<Items> items);
-        void MoveCharacter(PlayerUpdateResult result);
-        void StartPuzzle(string xmlTemplate, string instructions);
-        void PlayerJoinedLobby();
-        void CharacterJoined();
-        void StartGame();
+        Task ChangeStats(string playerName, Stats stats);
+        Task SetItemList(string playerName, List<Items> items);
+        Task MoveCharacter(PlayerUpdateResult result);
+        Task StartPuzzle(string xmlTemplate, string instructions);
+        Task PlayerJoinedLobby();
+        Task CharacterJoined();
+        Task StartGame();
     }
 }
