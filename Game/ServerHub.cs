@@ -248,7 +248,8 @@ namespace ProjectHamiltonService.Game
         public List<Character> GetAvailableCharacters(SimpleLobbyAction lobby)
         {
             var currentPlayers = gameContext.Players.Where(x => x.LobbyId == lobby.lobbyCode);
-            var charactersAvailable = Character.roster.Where(x => currentPlayers.FirstOrDefault(y => y.CharacterPrototypeId == x.id) != null);
+            var charactersAvailable = Character.roster
+                .Where(x => currentPlayers.FirstOrDefault(y => y.CharacterPrototypeId == x.id) == null);
 
             return charactersAvailable.ToList();
         }
