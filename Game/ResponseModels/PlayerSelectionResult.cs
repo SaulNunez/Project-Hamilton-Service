@@ -7,6 +7,6 @@ namespace ProjectHamiltonService.Game.ClientActions
 {
     public class PlayerSelectionResult
     {
-        public string playerToken;
+        public string PlayerToken { get; set; }
     }
 }

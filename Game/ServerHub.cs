@@ -254,7 +254,7 @@ namespace ProjectHamiltonService.Game
             return Task.FromResult(charactersAvailable.ToList());
         }
 
-        public async Task<PlayerSelectionResult> SelectCharacterAsync(SelectCharacterAction action)
+        public async Task<PlayerSelectionResult> SelectCharacter(SelectCharacterAction action)
         {
             var currentPlayers = gameContext.Players.Where(x => x.LobbyId == action.lobbyCode && x.CharacterPrototypeId == action.character).FirstOrDefault();
             if(currentPlayers != null)
@@ -280,7 +280,7 @@ namespace ProjectHamiltonService.Game
 
             return new PlayerSelectionResult
             {
-                playerToken = newPlayer.Id.ToString()
+                PlayerToken = newPlayer.Id.ToString()
             };
         }
     }
