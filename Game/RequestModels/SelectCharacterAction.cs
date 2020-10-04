@@ -8,7 +8,7 @@ namespace ProjectHamiltonService.Game.ServerActions
 {
     public class SelectCharacterAction: SimpleLobbyAction
     {
-        public string character;
-        public string name;
+        public string Character { get; set; }
+        public string Name { get; set; }
     }
 }

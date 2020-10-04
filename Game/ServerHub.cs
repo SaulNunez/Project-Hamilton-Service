@@ -257,13 +257,13 @@ namespace ProjectHamiltonService.Game
 
         public async Task<PlayerSelectionResult> SelectCharacter(SelectCharacterAction action)
         {
-            var currentPlayers = gameContext.Players.Where(x => x.LobbyId == action.lobbyCode && x.CharacterPrototypeId == action.character).FirstOrDefault();
+            var currentPlayers = gameContext.Players.Where(x => x.LobbyId == action.lobbyCode && x.CharacterPrototypeId == action.Character).FirstOrDefault();
             if(currentPlayers != null)
             {
                 return null;
             }
 
-            var characterPrototype = Character.roster.Find(x => x.id == action.character);
+            var characterPrototype = Character.roster.Find(x => x.id == action.Character);
 
             var newPlayer = new Models.Players
             {
@@ -272,7 +272,8 @@ namespace ProjectHamiltonService.Game
                 Sanity = characterPrototype.stats.Sanity,
                 Physical = characterPrototype.stats.Physical,
 
-                Name = action.name
+                Name = action.Name,
+                CharacterPrototypeId = action.Character
             };
             
             gameContext.Add(newPlayer);

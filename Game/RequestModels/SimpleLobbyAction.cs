@@ -7,6 +7,6 @@ namespace ProjectHamiltonService.Game.RequestModels
 {
     public class SimpleLobbyAction
     {
-        public string lobbyCode;
+        public string lobbyCode { get; set; }
     }
 }
