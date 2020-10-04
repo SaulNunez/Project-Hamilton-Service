@@ -16,6 +16,7 @@ using Items = LaCasaDelTerror.Assets.Items;
 using System.Net;
 using RestSharp;
 using ProjectHamiltonService.Game.RequestModels;
+using ProjectHamiltonService.Game.ResponseModels;
 
 namespace ProjectHamiltonService.Game
 {
@@ -245,13 +246,13 @@ namespace ProjectHamiltonService.Game
             return false;
         }
 
-        public Task<List<Character>> GetAvailableCharacters(SimpleLobbyAction lobby)
+        public Task<AvailableCharactersResult> GetAvailableCharacters(SimpleLobbyAction lobby)
         {
             var currentPlayers = gameContext.Players.Where(x => x.LobbyId == lobby.lobbyCode);
             var charactersAvailable = Character.roster
                 .Where(x => currentPlayers.FirstOrDefault(y => y.CharacterPrototypeId == x.id) == null);
 
-            return Task.FromResult(charactersAvailable.ToList());
+            return Task.FromResult(new AvailableCharactersResult(charactersAvailable.ToList()));
         }
 
         public async Task<PlayerSelectionResult> SelectCharacter(SelectCharacterAction action)
