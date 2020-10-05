@@ -255,13 +255,14 @@ namespace ProjectHamiltonService.Game
             return Task.FromResult(new AvailableCharactersResult(charactersAvailable.ToList()));
         }
 
-        public async Task<PlayerSelectionResult> SelectCharacter(SelectCharacterAction action)
+        public Task<PlayerSelectionResult> SelectCharacter(SelectCharacterAction action)
         {
-            var currentPlayers = gameContext.Players.Where(x => x.LobbyId == action.lobbyCode && x.CharacterPrototypeId == action.Character).FirstOrDefault();
-            if(currentPlayers != null)
-            {
-                return null;
-            }
+            //var currentPlayers = gameContext.Players.Where(x => x.LobbyId == action.lobbyCode && x.CharacterPrototypeId == action.Character);
+            //if(currentPlayers.Count() > 0)
+            //{
+            //    Console.WriteLine("Player is in lobby");
+            //    return null;
+            //}
 
             var characterPrototype = Character.roster.Find(x => x.id == action.Character);
 
@@ -275,15 +276,17 @@ namespace ProjectHamiltonService.Game
                 Name = action.Name,
                 CharacterPrototypeId = action.Character
             };
-            
+
             gameContext.Add(newPlayer);
 
-            await gameContext.SaveChangesAsync();
+            gameContext.SaveChanges();
 
-            return new PlayerSelectionResult
+            var response = new PlayerSelectionResult
             {
                 PlayerToken = newPlayer.Id.ToString()
             };
+
+            return Task.FromResult(response);
         }
     }
 }

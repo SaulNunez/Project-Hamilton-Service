@@ -22,14 +22,6 @@ namespace ProjectHamiltonService.Models
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Players>()
-                .HasIndex(x => x.LobbyId)
-                .IsUnique();
-
-            builder.Entity<Players>()
-                .HasIndex(x => x.CharacterPrototypeId)
-                .IsUnique();
-
-            builder.Entity<Players>()
                 .Property(x => x.X)
                 .HasDefaultValue(0);
 
