@@ -257,12 +257,12 @@ namespace ProjectHamiltonService.Game
 
         public Task<PlayerSelectionResult> SelectCharacter(SelectCharacterAction action)
         {
-            //var currentPlayers = gameContext.Players.Where(x => x.LobbyId == action.lobbyCode && x.CharacterPrototypeId == action.Character);
-            //if(currentPlayers.Count() > 0)
-            //{
-            //    Console.WriteLine("Player is in lobby");
-            //    return null;
-            //}
+            var currentPlayers = gameContext.Players.Where(x => x.LobbyId == action.lobbyCode && x.CharacterPrototypeId == action.Character);
+            if (currentPlayers.Count() > 0)
+            {
+                Console.WriteLine("Player is in lobby");
+                return null;
+            }
 
             var characterPrototype = Character.roster.Find(x => x.id == action.Character);
 
