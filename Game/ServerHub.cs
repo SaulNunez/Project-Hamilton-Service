@@ -113,13 +113,13 @@ namespace ProjectHamiltonService.Game
 
                 if (movementIsLegal)
                 {
-                    Clients.All.MoveCharacter(new PlayerUpdateResult
-                    {
-                        playerToken = action.playerToken,
-                        x = player.X,
-                        y = player.Y,
-                        floor = player.Floor
-                    });
+                    //Clients.All.MoveCharacter(new PlayerUpdateResult
+                    //{
+                    //    playerToken = action.playerToken,
+                    //    x = player.X,
+                    //    y = player.Y,
+                    //    floor = player.Floor
+                    //});
                 }
 
                 return new MovementResult
