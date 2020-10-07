@@ -67,14 +67,53 @@ namespace ProjectHamiltonService.Game
             new Puzzles
             {
                 id="cond_a1",
-                type=Type.Variables,
-                instructions="Si entrada es verdadero, entonces imprime “Todo bien”. Ver qué haya un if. Entrada es igual a verdadero. Ver qué la salida es todo bien."
+                type=Type.Conditionals,
+                instructions="Si entrada es verdadero, entonces imprime “Todo bien”. Ver qué haya un if. Entrada es igual a verdadero. Ver qué la salida es todo bien.",
+                defaultWorkspaceFilename="cond_a1.xml"
             },
             new Puzzles
             {
                 id="cond_a2",
-                type=Type.Variables,
-                instructions="Si num es mayor o igual a 7, escribe aprobado. Num es 7, ver qué haya un if y que haya “aprobado” en pantalla."
+                type=Type.Conditionals,
+                instructions="Si num es mayor o igual a 7, escribe aprobado. Num es 7, ver qué haya un if y que haya “aprobado” en pantalla.",
+                defaultWorkspaceFilename="cond_a2.xml"
+            },
+            new Puzzles
+            {
+                id="cond_b1",
+                type=Type.Conditionals,
+                instructions="Si miVariable es mayor a cero has que imprima “Es positivo”, si no imprime “Es negativo”.",
+                expectedOutput="Es positivo",
+                defaultWorkspaceFilename="cond_b1.xml"
+            },
+            new Puzzles
+            {
+                id="cond_b2",
+                type=Type.Conditionals,
+                instructions="¡Si calificacion es mayor o igual a 7, escribe “Pasaste!”",
+                expectedOutput="Pasaste!",
+                defaultWorkspaceFilename="cond_b2.xml"
+            },
+            new Puzzles
+            {
+                id="cond_c1",
+                type=Type.Conditionals,
+                instructions="Si x es igual a y, entonces imprimir “Es igual”.",
+                defaultWorkspaceFilename="cond_c1.xml",
+                expectedOutput=""
+            },
+            new Puzzles
+            {
+                id="cond_c2",
+                type=Type.Conditionals,
+                instructions="Si es entrada es cero imprime “Esta entrada es cero”, si entrada es positiva imprime “Esta entrada es mayor a cero”, si entrada es negativa imprime “Esta entrada es menor a cero”.",
+                defaultWorkspaceFilename="cond_c2.xml",
+                expectedOutput="Esta entrada es menor a cero"
+            },
+            new Puzzles
+            {
+                id="loop_a1",
+                type=Type.Cycles
             }
         };
 
