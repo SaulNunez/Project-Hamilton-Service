@@ -185,7 +185,6 @@ namespace ProjectHamiltonService.Game
             return protoInfo;
         }
 
-        private static readonly HttpClient client = new HttpClient();
         public PuzzleResult CheckPuzzle(PuzzleActions puzzleActions)
         {
             var lobby = gameContext.Lobbies.Find(puzzleActions.lobbyCode);
@@ -221,6 +220,7 @@ namespace ProjectHamiltonService.Game
                 if (correct)
                 {
                     //TODO: Ver que consecuencias tiene que se haya resuelto el puzzle y encadenarlas aqui
+
                 }
 
                 return new PuzzleResult
