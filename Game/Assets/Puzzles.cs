@@ -140,7 +140,7 @@ namespace ProjectHamiltonService.Game
             },
             new Puzzles
             {
-                id="loop_c1", 
+                id="loop_c1",
                 type=Type.Cycles,
                 instructions="Escribe en pantalla los números primos del 1 al 20. Recuerda que si un número se puede dividir entre sí mismo y entre 1 y ninguno otro más entonces es primo, el uno no se considera número primo.",
                 expectedOutput="2 3 5 7 11 13 17 19"
@@ -154,8 +154,139 @@ namespace ProjectHamiltonService.Game
             },
             new Puzzles
             {
-
-            }
+                id="func_a1",
+                instructions="Haz una función llamada suma que acepte dos números y retorna su suma.Revisar que exista función y revisar que la podamos usar.",
+                type= Type.Functions,
+                functionsExpected = new List<string>{"suma"},
+                functionTests = new List<FunctionTest>
+                {
+                    new FunctionTest
+                    {
+                        functionName="suma",
+                        functionParameters= new List<object> { 2, 2 },
+                        outputResult="4"
+                    }
+                }
+            },
+            new Puzzles
+            {
+                id="func_a2",
+                instructions="Haz una función que se llame max, y retorna el número más grande. Revisar que exista  función y que funcione así.",
+                type= Type.Functions,
+                functionsExpected = new List<string>{"max"},
+                functionTests = new List<FunctionTest>
+                {
+                    new FunctionTest
+                    {
+                        functionName="max",
+                        functionParameters= new List<object> { 2, 4 },
+                        outputResult="4"
+                    }
+                }
+            },
+            new Puzzles
+            {
+                id="func_b1",
+                instructions="Realiza una función se llame bienvenida que acepte una cadena de texto y retorne “Hola, [entrada]”. ",
+                type= Type.Functions,
+                functionsExpected = new List<string>{"bienvenida"},
+                functionTests = new List<FunctionTest>
+                {
+                    new FunctionTest
+                    {
+                        functionName="bienvenida",
+                        functionParameters= new List<object> { "mundo" },
+                        outputResult="Hola mundo"
+                    }
+                }
+            },
+            new Puzzles
+            {
+                id="func_b1",
+                instructions="Realiza una función se llame bienvenida que acepte una cadena de texto y retorne “Hola, [entrada]”. ",
+                type= Type.Functions,
+                functionsExpected = new List<string>{"bienvenida"},
+                functionTests = new List<FunctionTest>
+                {
+                    new FunctionTest
+                    {
+                        functionName="bienvenida",
+                        functionParameters= new List<object> { "mundo" },
+                        outputResult="Hola mundo"
+                    }
+                }
+            },
+            new Puzzles
+            {
+                id="func_b2",
+                instructions="Realizar una función que se llame recortar, que acepte tres valores número, mínimo y máximo. El primero es el número a recortar." +
+                    "<ul>" +
+                    "<li>Si es mayor a máximo, retorna máximo</li>" +
+                    "<li>Si es menor a mínimo, retorna mínimo</li>" +
+                    "<li>Si esta entre menor y máximo, retorna el valor</li>" +
+                    "<ul>",
+                type= Type.Functions,
+                functionsExpected = new List<string>{"recortar"},
+                functionTests = new List<FunctionTest>
+                {
+                    new FunctionTest
+                    {
+                        functionName="recortar",
+                        functionParameters= new List<object> { 6, 1, 4 },
+                        outputResult="4"
+                    },
+                    new FunctionTest
+                    {
+                        functionName="recortar",
+                        functionParameters= new List<object> { -1, 1, 4 },
+                        outputResult="1"
+                    },
+                    new FunctionTest
+                    {
+                        functionName="recortar",
+                        functionParameters= new List<object> { 2, 1, 4 },
+                        outputResult="2"
+                    }
+                }
+            },
+            new Puzzles
+            {
+                id="func_c1",
+                instructions="Haz una función llamada esPrimo que retorne verdadero si es un numero primo y falso si no. Recuerda que si un número se puede dividir entre sí mismo y entre 1 y ninguno otro más entonces es primo, el uno no se considera número primo.",
+                type= Type.Functions,
+                functionsExpected = new List<string>{"esPrimo"},
+                functionTests = new List<FunctionTest>
+                {
+                    new FunctionTest
+                    {
+                        functionName="esPrimo",
+                        functionParameters= new List<object> { 6 },
+                        outputResult="false"
+                    },
+                    new FunctionTest
+                    {
+                        functionName="esPrimo",
+                        functionParameters= new List<object> { 7 },
+                        outputResult="true"
+                    }
+                }
+            },
+            new Puzzles
+            {
+                id="func_c2",
+                instructions="•	Haz una función que se llame areaRectangulo y acepte el largo y ancho y retorne el área. ",
+                type= Type.Functions,
+                functionsExpected = new List<string>{"areaCirculo"},
+                functionTests = new List<FunctionTest>
+                {
+                    new FunctionTest
+                    {
+                        functionName="areaCirculo",
+                        functionParameters= new List<object> { 2, 2 },
+                        outputResult="4"
+                    }
+                }
+            },
         };
 
         public string GetWorkspaceXmlFromFile()
@@ -180,5 +311,14 @@ namespace ProjectHamiltonService.Game
         public string instructions;
         public string expectedOutput;
         public List<string> functionsExpected;
+        public List<FunctionTest> functionTests;
+
+
+        public class FunctionTest
+        {
+            public string functionName;
+            public List<object> functionParameters;
+            public string outputResult;
+        }
     }
 }
