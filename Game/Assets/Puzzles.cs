@@ -68,7 +68,7 @@ namespace ProjectHamiltonService.Game
             {
                 id="cond_a1",
                 type=Type.Conditionals,
-                instructions="Si entrada es verdadero, entonces imprime “Todo bien”. Ver qué haya un if. Entrada es igual a verdadero. Ver qué la salida es todo bien.",
+                instructions="Si entrada es verdadero, entonces imprime “Todo bien”. ",
                 defaultWorkspaceFilename="cond_a1.xml"
             },
             new Puzzles
@@ -113,7 +113,48 @@ namespace ProjectHamiltonService.Game
             new Puzzles
             {
                 id="loop_a1",
-                type=Type.Cycles
+                type=Type.Cycles,
+                instructions="Imprime los números del 1 al 10. Revisar que tenga un ciclo.",
+                expectedOutput="1 2 3 4 5 6 7 8 9 10"
+            },
+            new Puzzles
+            {
+                id="loop_a2",
+                type=Type.Cycles,
+                instructions="Imprime 10 veces “Hola”. Revisar que hola este escrito en 10 líneas.",
+                expectedOutput="Hola Hola Hola Hola Hola Hola Hola Hola Hola Hola"
+            },
+            new Puzzles
+            {
+                id="loop_b1",
+                type=Type.Cycles,
+                instructions="Realiza un programa que imprima todos los dígitos pares del 1 al 10.",
+                expectedOutput="2 4 6 8 10"
+            },
+            new Puzzles
+            {
+                id="loop_b2",
+                type=Type.Cycles,
+                instructions="Realiza un programa que imprima la tabla de 4. Del 4 al 10.",
+                expectedOutput="4 8 12 16 20 24 28 32 36 40"
+            },
+            new Puzzles
+            {
+                id="loop_c1", 
+                type=Type.Cycles,
+                instructions="Escribe en pantalla los números primos del 1 al 20. Recuerda que si un número se puede dividir entre sí mismo y entre 1 y ninguno otro más entonces es primo, el uno no se considera número primo.",
+                expectedOutput="2 3 5 7 11 13 17 19"
+            },
+            new Puzzles
+            {
+                id="loop_c2",
+                type=Type.Cycles,
+                instructions="Obtén el factorial de 4. E imprimelo en pantalla. Nota: Factorial es el producto de todos los números enteros positivos desde el uno hasta n, por ejemplo: 2! seria 1 x 2 = 2",
+                expectedOutput="24"
+            },
+            new Puzzles
+            {
+
             }
         };
 
