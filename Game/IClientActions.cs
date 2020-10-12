@@ -19,9 +19,10 @@ namespace ProjectHamiltonService.Game
         Task CharacterJoined();
         Task StartGame();
         Task StartTurn();
-        Task<MovementResult> GetToMoveDirection(MovementRequest movementRequest);
+        Task MoveCharacterToPosition(MovementRequest movementRequest);
+        Task PlayerMovementRequested(AvailableMovements availableMovements);
         Task GetItem(ItemObtainedUpdateRequest itemObtainedUpdateRequest);
         Task GetOmen(OmenObtainedUpdateRequest omenObtainedUpdateRequest);
-        Task SolvePuzzle();
+        Task SolvePuzzle(ShowPuzzleRequest puzzleRequest);
     }
 }
