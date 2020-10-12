@@ -7,7 +7,7 @@ namespace ProjectHamiltonService.Game.ClientActions
 {
     public class PuzzleActions: LobbyAction
     {
-        public string code;
-        public string puzzleId;
+        public string Code { get; set; }
+        public string PuzzleId { get; set; }
     }
 }

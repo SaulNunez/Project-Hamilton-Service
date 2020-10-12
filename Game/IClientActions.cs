@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LaCasaDelTerror.Assets;
 using LaCasaDelTerror.Assets.Abstracts;
 using ProjectHamiltonService.Game.Abstracts;
+using ProjectHamiltonService.Game.ClientRequestModels;
 using ProjectHamiltonService.Game.RequestModels;
 using ProjectHamiltonService.Models;
 
@@ -19,9 +20,9 @@ namespace ProjectHamiltonService.Game
         Task CharacterJoined();
         Task StartGame();
         Task StartTurn();
-        Task<MovementResult> GetToMoveDirection(MovementRequest movementRequest);
+        Task MoveCharacterToPosition(MovementRequest movementRequest);
         Task GetItem(ItemObtainedUpdateRequest itemObtainedUpdateRequest);
         Task GetOmen(OmenObtainedUpdateRequest omenObtainedUpdateRequest);
-        Task SolvePuzzle();
+        Task SolvePuzzle(ShowPuzzleRequest puzzleRequest);
     }
 }

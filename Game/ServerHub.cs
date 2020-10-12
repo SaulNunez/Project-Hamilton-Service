@@ -63,9 +63,11 @@ namespace ProjectHamiltonService.Game
 
                 var movementIsLegal = false;
 
+                Models.Rooms rooms = null;
                 switch (action.Direction)
                 {
                     case Direction.DOWN:
+                        rooms = gameContext.Rooms.Where(room => room.X == player.X && room.Y == player.Y - 1).First();
                         if (gameContext.Rooms.Any(room => room.X == player.X && room.Y == player.Y - 1))
                         {
                             player.Y--;
@@ -73,6 +75,7 @@ namespace ProjectHamiltonService.Game
                         }
                         break;
                     case Direction.UP:
+                        rooms = gameContext.Rooms.Where(room => room.X == player.X && room.Y == player.Y + 1).First();
                         if (gameContext.Rooms.Any(room => room.X == player.X && room.Y == player.Y + 1))
                         {
                             player.Y++;
@@ -80,6 +83,7 @@ namespace ProjectHamiltonService.Game
                         }
                         break;
                     case Direction.LEFT:
+                        rooms = gameContext.Rooms.Where(room => room.X == player.X - 1 && room.Y == player.Y).First();
                         if (gameContext.Rooms.Any(room => room.X == player.X - 1 && room.Y == player.Y))
                         {
                             player.X--;
@@ -87,6 +91,7 @@ namespace ProjectHamiltonService.Game
                         }
                         break;
                     case Direction.RIGHT:
+                        rooms = gameContext.Rooms.Where(room => room.X == player.X + 1 && room.Y == player.Y).First();
                         if (gameContext.Rooms.Any(room => room.X == player.X + 1 && room.Y == player.Y))
                         {
                             player.X++;
@@ -111,23 +116,18 @@ namespace ProjectHamiltonService.Game
 
                 await gameContext.SaveChangesAsync();
 
-                if (movementIsLegal)
+                await Clients.Group(action.lobbyCode).MoveCharacterToPosition(new MovementRequest
                 {
-                    //Clients.All.MoveCharacter(new PlayerUpdateResult
-                    //{
-                    //    playerToken = action.playerToken,
-                    //    x = player.X,
-                    //    y = player.Y,
-                    //    floor = player.Floor
-                    //});
-                }
+                    Character = player.CharacterPrototypeId,
+                    X = player.X,
+                    Y = player.Y
+                });
 
                 return new MovementResult
                 {
-                    movementIsLegal = movementIsLegal,
-                    floor = player.Floor,
-                    x = player.X,
-                    y = player.Y
+                    Floor = player.Floor,
+                    X = player.X,
+                    Y = player.Y
                 };
             }
 
@@ -185,17 +185,16 @@ namespace ProjectHamiltonService.Game
             return protoInfo;
         }
 
-        private static readonly HttpClient client = new HttpClient();
         public PuzzleResult CheckPuzzle(PuzzleActions puzzleActions)
         {
             var lobby = gameContext.Lobbies.Find(puzzleActions.lobbyCode);
-            var puzzle = gameContext.Puzzles.Find(puzzleActions.puzzleId);
+            var puzzle = gameContext.Puzzles.Find(puzzleActions.PuzzleId);
 
             var puzzlePrototype = Puzzles.puzzles.Find(x => x.id == puzzle.PuzzlePrototype);
 
             if (lobby.CurrentPlayer.Id == puzzleActions.playerToken && puzzle.PlayersId == puzzleActions.playerToken)
             {
-                var requestPayload = new PuzzleCheckRequest(puzzleActions.code, puzzlePrototype.expectedOutput,
+                var requestPayload = new PuzzleCheckRequest(puzzleActions.Code, puzzlePrototype.expectedOutput,
                     puzzlePrototype.type,
                     new List<PuzzleFunctionCheck> { },
                     puzzlePrototype.functionsExpected);
@@ -221,16 +220,17 @@ namespace ProjectHamiltonService.Game
                 if (correct)
                 {
                     //TODO: Ver que consecuencias tiene que se haya resuelto el puzzle y encadenarlas aqui
+
                 }
 
                 return new PuzzleResult
                 {
-                    correct = correct,
-                    output = output
+                    Correct = correct,
+                    Output = output
                 };
             }
 
-            return new PuzzleResult { correct = false, output = "" };
+            return new PuzzleResult { Correct = false, Output = "" };
         }
 
         public async Task<bool> EnterLobby(string code)
