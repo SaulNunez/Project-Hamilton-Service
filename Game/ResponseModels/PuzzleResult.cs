@@ -7,7 +7,7 @@ namespace ProjectHamiltonService.Game
 {
     public class PuzzleResult
     {
-        public string output;
-        public bool correct;
+        public string Output { get; set; }
+        public bool Correct { get; set; }
     }
 }

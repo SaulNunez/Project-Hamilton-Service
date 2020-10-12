@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -19,6 +19,48 @@
 
   <ItemGroup>
     <Folder Include="Game\Internal\Request\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Game\Assets\puzzles_workspace\vars_a1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Game\Assets\puzzles_workspace\vars_a2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Game\Assets\puzzles_workspace\cond_a1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Assets\puzzles_workspace\cond_a2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Assets\puzzles_workspace\cond_b1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Assets\puzzles_workspace\cond_b2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Assets\puzzles_workspace\cond_c1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Assets\puzzles_workspace\cond_c2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Assets\puzzles_workspace\vars_a1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Assets\puzzles_workspace\vars_a2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Assets\puzzles_workspace\vars_c1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Assets\puzzles_workspace\vars_c2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

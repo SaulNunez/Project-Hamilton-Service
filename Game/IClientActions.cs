@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LaCasaDelTerror.Assets;
 using LaCasaDelTerror.Assets.Abstracts;
 using ProjectHamiltonService.Game.Abstracts;
+using ProjectHamiltonService.Game.ClientRequestModels;
 using ProjectHamiltonService.Game.RequestModels;
 using ProjectHamiltonService.Models;
 
