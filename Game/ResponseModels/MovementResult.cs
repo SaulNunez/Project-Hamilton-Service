@@ -2,9 +2,8 @@
 {
     public class MovementResult
     {
-        public bool movementIsLegal;
-        public int floor;
-        public int y;
-        public int x;
+        public int Floor { get; set; }
+        public int Y { get; set; }
+        public int X { get; set; }
     }
 }
