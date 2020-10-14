@@ -142,11 +142,6 @@ namespace ProjectHamiltonService.Game
             {
                 var itemPrototype = Items.items.Find(x => item.Prototype == x.id);
 
-                if(itemPrototype.specialItem == Items.SpecialEffect.LADDER)
-                {
-
-                }
-
                 if(itemPrototype.statEffects != null)
                 {
                     Models.Players players;
