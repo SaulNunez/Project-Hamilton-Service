@@ -288,5 +288,10 @@ namespace ProjectHamiltonService.Game
 
             return Task.FromResult(response);
         }
+        
+        public Task<ThrowResult> ThrowDice()
+        {
+            return null;
+        }
     }
 }
