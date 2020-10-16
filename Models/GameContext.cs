@@ -1,4 +1,5 @@
 ﻿using LaCasaDelTerror.Assets;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProjectHamiltonService.Models
 {
-    public class GameContext: DbContext
+    public class GameContext: IdentityDbContext
     {
         public DbSet<Lobbies> Lobbies { get; set; }
         public DbSet<Items> Items { get; set; }
@@ -21,6 +22,8 @@ namespace ProjectHamiltonService.Models
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+
             builder.Entity<Players>()
                 .Property(x => x.X)
                 .HasDefaultValue(0);
