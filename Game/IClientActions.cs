@@ -18,7 +18,7 @@ namespace ProjectHamiltonService.Game
         Task StartPuzzle(string xmlTemplate, string instructions);
         Task PlayerJoinedLobby();
         Task CharacterJoined();
-        Task StartGame();
+        Task StartGame(PlayerOrderInformation playerOrderInformation);
         Task StartTurn();
         Task MoveCharacterToPosition(MovementRequest movementRequest);
         Task GetItem(ItemObtainedUpdateRequest itemObtainedUpdateRequest);

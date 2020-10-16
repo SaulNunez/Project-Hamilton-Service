@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using ProjectHamiltonService.Game;
+using ProjectHamiltonService.Game.ClientRequestModels;
+using ProjectHamiltonService.Game.utils;
 using ProjectHamiltonService.Models;
 using System;
 using System.Linq;
@@ -13,12 +15,14 @@ namespace ProjectHamiltonService.Controllers
     public class TeacherController : Controller
     {
         private readonly GameContext gameContext;
-        private readonly IHubContext<ServerHub> hubContext;
+        private readonly IHubContext<ServerHub, IClientActions> hubContext;
+        private readonly DiceThrow diceThrow;
 
-        public TeacherController(GameContext gameContext, IHubContext<ServerHub> hubContext)
+        public TeacherController(GameContext gameContext, IHubContext<ServerHub, IClientActions> hubContext, DiceThrow diceThrow)
         {
             this.gameContext = gameContext;
             this.hubContext = hubContext;
+            this.diceThrow = diceThrow;
         }
 
         // GET: /<controller>/
@@ -46,16 +50,38 @@ namespace ProjectHamiltonService.Controllers
                 return new NotFoundResult();
             }
 
-            if (gameContext.Players.Where(x => x.LobbyId == gameStart.lobbyCode).Count() < 2)
+            var players = gameContext.Players.Where(x => x.LobbyId == gameStart.lobbyCode);
+
+            if (players.Count() < 2)
             {
                 return new StatusCodeResult(403);
             }
 
             lobby.OnProgress = true;
 
-            await gameContext.SaveChangesAsync();
 
-            await hubContext.Clients.Group(gameStart.lobbyCode).SendAsync("SessionStart");
+            //Aparte de calcular el tiro de los jugadores, calculamos cual es su orden
+            foreach(var player in players)
+            {
+                player.TurnThrowResult = diceThrow.DoThrow(DiceThrow.ThrowTypes.OneSixFaceDice);
+            }
+
+            var ordered = players.OrderBy(x => x.TurnThrowResult);
+
+            foreach(var (player, index) in ordered.WithIndex())
+            {
+                player.TurnIndex = index;
+            }
+
+            await hubContext.Clients.Group(gameStart.lobbyCode).StartGame(new PlayerOrderInformation { 
+                    PlayerOrder = ordered.Select(x => new CharacterOrder { 
+                        CharacterName = x.CharacterPrototypeId,
+                        TurnOrder = x.TurnIndex,
+                        TurnThrow = x.TurnThrowResult
+                    }).ToList()
+                });
+
+            await gameContext.SaveChangesAsync();
 
             return new OkResult();
         }

@@ -32,6 +32,7 @@ namespace ProjectHamiltonService
                 opt.UseNpgsql(connection));
 
             services.AddTransient<MansionCreation>();
+            services.AddTransient<DiceThrow>();
 
             services.AddSignalR();
             services.AddMvc();
