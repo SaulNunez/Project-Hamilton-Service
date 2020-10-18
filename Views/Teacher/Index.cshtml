@@ -6,34 +6,47 @@
     <link href="@Url.Content("~/css/home_stylesheet.css")" rel="stylesheet" type="text/css" />
 }
 
-<div>
-    <h1>Project Hamilton</h1>
-    <div id="seccion_crear_hub">
-        <h1>Profesores</h1>
-        <div>
-            <p>Crea un hub para tu clase.</p>
-            <p id="hubCode"></p>
-            <button id="crear_hub">Crear hub</button>
+<div class="container">
+    <div>
+        <h1 class="display-1">Project Hamilton</h1>
+        <div class="card-deck">
+            <div class="card" id="seccion_crear_hub">
+                <div class="card-body">
+                    <h1 class="card-title">Profesores</h1>
+                    <div>
+                        <p>Crea un hub para tu clase.</p>
+                        <p id="hubCode"></p>
+                        <button type="button" class="btn btn-primary" id="crear_hub" onclick="createHub()">
+                            Crear hub
+                        </button>
+                        <button type="button" class="btn btn-primary" id="crear_hub" onclick="createHub()">
+                            Iniciar juego
+                        </button>
+                    </div>
+                    <p></p>
+                </div>
+            </div>
+            <div class="card" id="seccion_unir_hub">
+                <div class="card-body">
+                    <h1 class="card-title">Alumnos</h1>
+                    <p>Conectate al lobby de tu profesor.</p>
+                    <a type="button" class="btn btn-primary" id="unir_hub" href="./game/index.html" role="button">Unirse</a>
+                </div>
+            </div>
         </div>
-        <p></p>
-    </div>
-    <div id="seccion_unir_hub">
-        <h1>Alumnos</h1>
-        <p>Conectate al lobby de tu profesor.</p>
-        <a class="button" href="~/game/index.html" id="unir_hub">Unirse</a>
-    </div>
-    <script>
-        var createHub = document.getElementById("crear_hub");
-        var hubCodeContainer = document.getElementById("hubCode");
+        <script>
+            var hubCodeContainer = document.getElementById("hubCode");
 
-        createHub.addEventListener("onclick", function () {
-            fetch('/Teacher', { method: 'POST' })
-                .then(function (response) {
-                    hubCodeContainer.innerHTML = response.text();
-                })
-                .then(function (error) {
-                    console.error(error);
-                });
-        });
-    </script>
+            function createHub() {
+                fetch('/Teacher/CreateLobby', { method: 'POST' })
+                    .then((response) => response.json())
+                    .then(function (data) {
+                        hubCodeContainer.innerHTML = data.code || "";
+                    })
+                    .then(function (error) {
+                        console.error(error);
+                    });
+            }
+        </script>
+    </div>
 </div>

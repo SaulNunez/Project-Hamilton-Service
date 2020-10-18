@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using ProjectHamiltonService.Game;
 using ProjectHamiltonService.Game.ClientRequestModels;
@@ -12,6 +13,7 @@ using System.Net.Mime;
 
 namespace ProjectHamiltonService.Controllers
 {
+    [Authorize]
     public class TeacherController : Controller
     {
         private readonly GameContext gameContext;
