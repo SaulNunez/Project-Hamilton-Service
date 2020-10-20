@@ -53,7 +53,7 @@ namespace ProjectHamiltonService.Game
             };
         }
 
-        public async Task<MovementResult> MoveAsync(DirectionAction action)
+        public async Task<MovementResult> Move(DirectionAction action)
         {
             var lobby = gameContext.Lobbies.Find(action.lobbyCode);
 

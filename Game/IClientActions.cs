@@ -13,13 +13,13 @@ namespace ProjectHamiltonService.Game
 {
     public interface IClientActions
     {
-        Task ChangeStats(string playerName, Stats stats);
+        Task ChangeStats(ChangeStats newStats);
         Task SetItemList(string playerName, List<LaCasaDelTerror.Assets.Items> items);
         Task StartPuzzle(string xmlTemplate, string instructions);
         Task PlayerJoinedLobby();
-        Task CharacterJoined();
+        Task PlayerSelectedCharacter(NewPlayerInfo newPlayerInfo);
         Task StartGame(PlayerOrderInformation playerOrderInformation);
-        Task StartTurn();
+        Task StartTurn(TurnRequest turnRequest);
         Task MoveCharacterToPosition(MovementRequest movementRequest);
         Task GetItem(ItemObtainedUpdateRequest itemObtainedUpdateRequest);
         Task GetOmen(OmenObtainedUpdateRequest omenObtainedUpdateRequest);
