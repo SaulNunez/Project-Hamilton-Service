@@ -7,5 +7,6 @@ namespace ProjectHamiltonService.Game.ClientRequestModels
 {
     public class TurnRequest
     {
+        public bool CanThrowDiceForMovement { get; set; }
     }
 }

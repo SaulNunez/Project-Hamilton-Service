@@ -14,8 +14,8 @@ namespace ProjectHamiltonService.Game
     public interface IClientActions
     {
         Task ChangeStats(ChangeStats newStats);
-        Task SetItemList(string playerName, List<LaCasaDelTerror.Assets.Items> items);
-        Task StartPuzzle(string xmlTemplate, string instructions);
+        //Task SetItemList(string playerName, List<LaCasaDelTerror.Assets.Items> items);
+        //Task StartPuzzle(string xmlTemplate, string instructions);
         Task PlayerJoinedLobby();
         Task PlayerSelectedCharacter(NewPlayerInfo newPlayerInfo);
         Task StartGame(PlayerOrderInformation playerOrderInformation);

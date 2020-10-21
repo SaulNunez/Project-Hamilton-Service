@@ -83,6 +83,10 @@ namespace ProjectHamiltonService.Controllers
                     }).ToList()
                 });
 
+            var firstTurn = ordered.First();
+
+            await hubContext.Clients.User(firstTurn.User.Id).StartTurn(new TurnRequest { CanThrowDiceForMovement = true });
+
             await gameContext.SaveChangesAsync();
 
             return new OkResult();
