@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -30,7 +31,10 @@ namespace ProjectHamiltonService.Models
         public string Name { get; set; }
         [ForeignKey("Lobbies")]
         public string LobbyId { get; set; }
+        public int TurnThrowResult { get; set; }
+        public int TurnIndex { get; set; }
 
         public virtual Lobbies Lobby { get; set; }
+        public virtual IdentityUser User { get; set; }
     }
 }

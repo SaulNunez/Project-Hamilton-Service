@@ -1,0 +1,33 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    string name = null;
+    if (!true.Equals(ViewData["signed-out"]))
+    {
+        name = Context.User?.Identity.Name;
+    }
+}
+
+<div class="nav-page">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+        <a href="~/" class="navbar-brand">
+            <img src="~/icon.png" class="icon-banner">
+            Project Hamilton
+        </a>
+
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"> <b class="caret"></b></a>
+
+            <div class="dropdown-menu">
+                <partial name="_LoginPartial" />
+            </div>
+        </li>
+    </ul>
+        
+
+    </nav>
+</div>
