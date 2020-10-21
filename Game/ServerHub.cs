@@ -17,16 +17,19 @@ using System.Net;
 using RestSharp;
 using ProjectHamiltonService.Game.RequestModels;
 using ProjectHamiltonService.Game.ResponseModels;
+using ProjectHamiltonService.Game.ClientRequestModels;
 
 namespace ProjectHamiltonService.Game
 {
     public class ServerHub : Hub<IClientActions>
     {
-        private GameContext gameContext;
+        private readonly GameContext gameContext;
+        private readonly DiceThrow diceThrow;
 
-        public ServerHub(GameContext gameContext)
+        public ServerHub(GameContext gameContext, DiceThrow diceThrow)
         {
             this.gameContext = gameContext;
+            this.diceThrow = diceThrow;
         }
 
         public DirectionAvailability GetAvailableMovements(LobbyAction action)
@@ -284,8 +287,19 @@ namespace ProjectHamiltonService.Game
             return Task.FromResult(response);
         }
         
-        public Task<ThrowResult> ThrowDice()
+        public Task<ThrowResult> ThrowDice(ClientRequestModels.ThrowRequest throwRequest)
         {
+            var player = gameContext.Players.Find(throwRequest.PlayerToken);
+
+            if (player != null && player.TurnThrowResult == 0)
+            {
+                return Task.FromResult(new ThrowResult
+                {
+                    DiceThrow = diceThrow.DoThrow(DiceThrow.ThrowTypes.OneSixFaceDice)
+                });
+                
+            }
+
             return null;
         }
     }

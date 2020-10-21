@@ -1,6 +1,7 @@
 ﻿using LaCasaDelTerror.Assets;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,11 @@ namespace ProjectHamiltonService.Models
 {
     public class GameContext: IdentityDbContext
     {
+        static GameContext()
+        {
+            NpgsqlConnection.GlobalTypeMapper.MapEnum<ThrowMotive>();
+        }
+
         public DbSet<Lobbies> Lobbies { get; set; }
         public DbSet<Items> Items { get; set; }
         public DbSet<Players> Players { get; set; }
@@ -23,6 +29,8 @@ namespace ProjectHamiltonService.Models
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.HasPostgresEnum<ThrowMotive>();
 
             builder.Entity<Players>()
                 .Property(x => x.X)

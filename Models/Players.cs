@@ -36,5 +36,6 @@ namespace ProjectHamiltonService.Models
 
         public virtual Lobbies Lobby { get; set; }
         public virtual IdentityUser User { get; set; }
+        public virtual ThrowRequest AvailableThrowRequest { get; set; }
     }
 }
