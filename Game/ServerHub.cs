@@ -64,9 +64,9 @@ namespace ProjectHamiltonService.Game
                 var movementIsLegal = false;
 
                 Models.Rooms rooms = null;
-                switch (action.Direction)
+                switch (action.MoveDirection)
                 {
-                    case Direction.DOWN:
+                    case Direction.Down:
                         rooms = gameContext.Rooms.Where(room => room.X == player.X && room.Y == player.Y - 1).First();
                         if (gameContext.Rooms.Any(room => room.X == player.X && room.Y == player.Y - 1))
                         {
@@ -74,7 +74,7 @@ namespace ProjectHamiltonService.Game
                             movementIsLegal = true;
                         }
                         break;
-                    case Direction.UP:
+                    case Direction.Up:
                         rooms = gameContext.Rooms.Where(room => room.X == player.X && room.Y == player.Y + 1).First();
                         if (gameContext.Rooms.Any(room => room.X == player.X && room.Y == player.Y + 1))
                         {
@@ -82,7 +82,7 @@ namespace ProjectHamiltonService.Game
                             movementIsLegal = true;
                         }
                         break;
-                    case Direction.LEFT:
+                    case Direction.Left:
                         rooms = gameContext.Rooms.Where(room => room.X == player.X - 1 && room.Y == player.Y).First();
                         if (gameContext.Rooms.Any(room => room.X == player.X - 1 && room.Y == player.Y))
                         {
@@ -90,7 +90,7 @@ namespace ProjectHamiltonService.Game
                             movementIsLegal = true;
                         }
                         break;
-                    case Direction.RIGHT:
+                    case Direction.Right:
                         rooms = gameContext.Rooms.Where(room => room.X == player.X + 1 && room.Y == player.Y).First();
                         if (gameContext.Rooms.Any(room => room.X == player.X + 1 && room.Y == player.Y))
                         {
@@ -98,14 +98,14 @@ namespace ProjectHamiltonService.Game
                             movementIsLegal = true;
                         }
                         break;
-                    case Direction.FLOOR_DOWN:
+                    case Direction.DownFloor:
                         //if (gameContext.Rooms.Where(room => room.X == player.X && room.Y == player.Y).First().MovesToFloor.Contains(player.Floor + 1))
                         //{
                         //    player.Floor--;
                         //    movementIsLegal = true;
                         //}
                         break;
-                    case Direction.FLOOR_UP:
+                    case Direction.UpFloor:
                         //if (gameContext.Rooms.Where(room => room.X == player.X && room.Y == player.Y).First().MovesToFloor.Contains(player.Floor - 1))
                         //{
                         //    player.Floor++;
@@ -141,11 +141,6 @@ namespace ProjectHamiltonService.Game
             if(item != null)
             {
                 var itemPrototype = Items.items.Find(x => item.Prototype == x.id);
-
-                if(itemPrototype.specialItem == Items.SpecialEffect.LADDER)
-                {
-
-                }
 
                 if(itemPrototype.statEffects != null)
                 {
@@ -287,6 +282,11 @@ namespace ProjectHamiltonService.Game
             };
 
             return Task.FromResult(response);
+        }
+        
+        public Task<ThrowResult> ThrowDice()
+        {
+            return null;
         }
     }
 }

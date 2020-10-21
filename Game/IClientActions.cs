@@ -21,6 +21,7 @@ namespace ProjectHamiltonService.Game
         Task StartGame(PlayerOrderInformation playerOrderInformation);
         Task StartTurn(TurnRequest turnRequest);
         Task MoveCharacterToPosition(MovementRequest movementRequest);
+        Task PlayerMovementRequested(AvailableMovements availableMovements);
         Task GetItem(ItemObtainedUpdateRequest itemObtainedUpdateRequest);
         Task GetOmen(OmenObtainedUpdateRequest omenObtainedUpdateRequest);
         Task SolvePuzzle(ShowPuzzleRequest puzzleRequest);
