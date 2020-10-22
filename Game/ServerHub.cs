@@ -1,5 +1,4 @@
 ﻿using LaCasaDelTerror.Assets;
-using LaCasaDelTerror.Assets.Abstracts;
 using Microsoft.AspNetCore.SignalR;
 using ProjectHamiltonService.Game.ClientActions;
 using ProjectHamiltonService.Game.ServerActions;
@@ -7,17 +6,15 @@ using ProjectHamiltonService.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using static LaCasaDelTerror.Assets.Server;
-using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using Items = LaCasaDelTerror.Assets.Items;
-using System.Net;
 using RestSharp;
 using ProjectHamiltonService.Game.RequestModels;
 using ProjectHamiltonService.Game.ResponseModels;
-using ProjectHamiltonService.Game.ClientRequestModels;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace ProjectHamiltonService.Game
 {
@@ -25,11 +22,13 @@ namespace ProjectHamiltonService.Game
     {
         private readonly GameContext gameContext;
         private readonly DiceThrow diceThrow;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public ServerHub(GameContext gameContext, DiceThrow diceThrow)
+        public ServerHub(GameContext gameContext, DiceThrow diceThrow, UserManager<IdentityUser> userManager)
         {
             this.gameContext = gameContext;
             this.diceThrow = diceThrow;
+            this.userManager = userManager;
         }
 
         public DirectionAvailability GetAvailableMovements(LobbyAction action)
@@ -235,8 +234,8 @@ namespace ProjectHamiltonService.Game
         {
             if (gameContext.Lobbies.Find(code) != null)
             {
+                await Clients.Group(code).PlayerJoinedLobby();
                 await Groups.AddToGroupAsync(Context.ConnectionId, code);
-                //await Clients.Group(code).PlayerJoinedLobby();
 
                 return true;
             }
@@ -253,7 +252,7 @@ namespace ProjectHamiltonService.Game
             return Task.FromResult(new AvailableCharactersResult(charactersAvailable.ToList()));
         }
 
-        public Task<PlayerSelectionResult> SelectCharacter(SelectCharacterAction action)
+        public async Task<PlayerSelectionResult> SelectCharacter(SelectCharacterAction action)
         {
             var currentPlayers = gameContext.Players.Where(x => x.LobbyId == action.lobbyCode && x.CharacterPrototypeId == action.Character);
             if (currentPlayers.Count() > 0)
@@ -270,7 +269,7 @@ namespace ProjectHamiltonService.Game
                 Intelligence = characterPrototype.stats.Intelligence,
                 Sanity = characterPrototype.stats.Sanity,
                 Physical = characterPrototype.stats.Physical,
-
+                User = await userManager.FindByEmailAsync(Context.User?.FindFirst(ClaimTypes.Email)?.Value),
                 Name = action.Name,
                 CharacterPrototypeId = action.Character
             };
@@ -284,7 +283,7 @@ namespace ProjectHamiltonService.Game
                 PlayerToken = newPlayer.Id.ToString()
             };
 
-            return Task.FromResult(response);
+            return response;
         }
         
         public Task<ThrowResult> ThrowDice(ClientRequestModels.ThrowRequest throwRequest)
