@@ -216,7 +216,7 @@ namespace ProjectHamiltonService.Game
 
                 if (correct)
                 {
-                    //TODO: Ver que consecuencias tiene que se haya resuelto el puzzle y encadenarlas aqui
+                    
 
                 }
 
