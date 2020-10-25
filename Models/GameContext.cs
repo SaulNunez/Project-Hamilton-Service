@@ -51,6 +51,19 @@ namespace ProjectHamiltonService.Models
             builder.Entity<Puzzles>()
                 .Property(x => x.PuzzleStart)
                 .HasDefaultValueSql("NOW()");
+
+
+            builder.Entity<Puzzles>().Property(x => x.NewX).HasDefaultValue(-1);
+            builder.Entity<Puzzles>().Property(x => x.NewY).HasDefaultValue(-1);
+            builder.Entity<Puzzles>().Property(x => x.NewFloor).HasDefaultValue(-1);
+
+            builder.Entity<Puzzles>()
+                .Property(x => x.ModifiesStats)
+                .HasComputedColumnSql("[BraveryStatDiff] > 0 OR [IntelligenceStatDiff] > 0 OR [SanityStatDiff] > 0 OR [PhysicalStatDiff] > 0");
+
+            builder.Entity<Puzzles>()
+                .Property(x => x.ModifiesPosition)
+                .HasComputedColumnSql("[NewX] != -1 OR [NewY] != -1 OR [NewFloor] != -1");
         }
     }
 }

@@ -182,16 +182,16 @@ namespace ProjectHamiltonService.Game
             return protoInfo;
         }
 
-        public PuzzleResult CheckPuzzle(PuzzleActions puzzleActions)
+        public async Task<PuzzleResult> CheckPuzzle(PuzzleActions req)
         {
-            var lobby = gameContext.Lobbies.Find(puzzleActions.lobbyCode);
-            var puzzle = gameContext.Puzzles.Find(puzzleActions.PuzzleId);
+            var lobby = gameContext.Lobbies.Find(req.lobbyCode);
+            var puzzle = gameContext.Puzzles.Find(req.PuzzleId);
 
             var puzzlePrototype = Puzzles.puzzles.Find(x => x.id == puzzle.PuzzlePrototype);
 
-            if (lobby.CurrentPlayer.Id == puzzleActions.playerToken && puzzle.PlayersId == puzzleActions.playerToken)
+            if (lobby.CurrentPlayer.Id == req.playerToken && puzzle.PlayersId == req.playerToken)
             {
-                var requestPayload = new PuzzleCheckRequest(puzzleActions.Code, puzzlePrototype.expectedOutput,
+                var requestPayload = new PuzzleCheckRequest(req.Code, puzzlePrototype.expectedOutput,
                     puzzlePrototype.type,
                     new List<PuzzleFunctionCheck> { },
                     puzzlePrototype.functionsExpected);
@@ -216,8 +216,56 @@ namespace ProjectHamiltonService.Game
 
                 if (correct)
                 {
-                    
+                    var affectedPlayer = gameContext.Players.Where(x => x.LobbyId == req.lobbyCode && x.CharacterPrototypeId == req.AffectsCharacter).First();
+                    if (affectedPlayer == null)
+                    {
+                        throw new HubException("Player not found on lobby");
+                    }
 
+                    if (puzzle.ModifiesStats)
+                    {
+                        affectedPlayer.Physical += puzzle.PhysicalStatDiff;
+                        affectedPlayer.Intelligence += puzzle.IntelligenceStatDiff;
+                        affectedPlayer.Sanity += puzzle.SanityStatDiff;
+                        affectedPlayer.Bravery += puzzle.BraveryStatDiff;
+
+                        await Clients.Group(req.lobbyCode).ChangeStats(new ClientRequestModels.ChangeStats { 
+                            PlayerName = affectedPlayer.CharacterPrototypeId,
+                            Stats = new LaCasaDelTerror.Assets.Abstracts.Stats
+                            {
+                                Physical = affectedPlayer.Physical,
+                                Intelligence = affectedPlayer.Intelligence,
+                                Sanity = affectedPlayer.Sanity,
+                                Bravery = affectedPlayer.Bravery
+                            }
+                        });
+                    }
+
+                    if (puzzle.ModifiesPosition)
+                    {
+                        if(puzzle.NewX != -1)
+                        {
+                            affectedPlayer.X = puzzle.NewX;
+                        }
+
+                        if (puzzle.NewY != -1)
+                        {
+                            affectedPlayer.Y = puzzle.NewY;
+                        }
+
+                        if (puzzle.NewFloor != -1)
+                        {
+                            affectedPlayer.Floor = puzzle.NewFloor;
+                        }
+
+                        await Clients.Group(req.lobbyCode).MoveCharacterToPosition(new MovementRequest
+                        {
+                            X = affectedPlayer.X,
+                            Y = affectedPlayer.Y,
+                            Floor = affectedPlayer.Floor,
+                            Character = affectedPlayer.CharacterPrototypeId
+                        });
+                    }
                 }
 
                 return new PuzzleResult
@@ -226,6 +274,8 @@ namespace ProjectHamiltonService.Game
                     Output = output
                 };
             }
+
+            await gameContext.SaveChangesAsync();
 
             return new PuzzleResult { Correct = false, Output = "" };
         }
