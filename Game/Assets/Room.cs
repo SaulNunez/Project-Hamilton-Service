@@ -10,30 +10,36 @@ namespace LaCasaDelTerror.Assets
         public static List<Rooms> mainFloor = new List<Rooms>(){
             new Rooms
             {
-                Name="Commedor",
+                id = "dinning_room",
+                Name="Comedor",
             },
             new Rooms
             {
+                id="ballroom",
                 Name="Cuarto de baile",
                 adjacentRoomTop=false,
                 Type=RoomType.PUZZLE
             },
             new Rooms
             {
+                id="kitchen",
                 Name="Cocina",
                 adjacentRoomTop=false,
             },
             new Rooms
             {
+                id="lavado",
                 Name="Cuarto de lavado"
             },
             new Rooms
-            {
+            {   
+                id="conservatory",
                 Name="Conservatorio",
                 adjacentRoomTop=false
             },
             new Rooms
             {
+                id="garden",
                 Name="Jardin",
                 adjacentRoomLeft=false,
                 adjacentRoomRight=false,
@@ -42,35 +48,42 @@ namespace LaCasaDelTerror.Assets
             },
             new Rooms
             {
+                id="food_storage",
                 Name="Cuarto de conservas",
                 Type=RoomType.ITEM
             },
             new Rooms
             {
-                Name="Workshop",
+                id="workshop",
+                Name="Taller",
             },
             new Rooms
             {
+                id="bathroom",
                 Name="Baño",
                 Type=RoomType.ITEM
             },
             new Rooms
             {
+                id="gunther_room",
                 Name="Cuarto de mayordomo",
                 Type=RoomType.ITEM
             },
             new Rooms
             {
+                id="lift",
                 Name="Elevador",
                 MovesToFloor=new int[]{-1,0,1 }
             },
             new Rooms
             {
+                id="entrance",
                 Name="Entrada",
                 MovesToFloor=new int[]{1}
             },
             new Rooms
             {
+                id="collapsed_room",
                 Name="Cuarto colapsado",
                 StatsEffects= new Stats
                 {
@@ -86,45 +99,55 @@ namespace LaCasaDelTerror.Assets
         {
             new Rooms
             {
+                id="library",
                 Name="Librería",
                 Type= RoomType.PUZZLE
             },
             new Rooms
             {
+                id="gym",
                 Name="Gimnasio",
                 Type= RoomType.PUZZLE
             },
             new Rooms
             {
+                id="Office",
                 Name="Oficina"
             },
             new Rooms
             {
+                id="kids_room",
                 Name="Cuarto de los niños"
             },
             new Rooms
             {
+                id="parents_room",
                 Name="Cuarto de los padres"
             },
             new Rooms
             {
-                Name="Enfermería",
+                id="nursery",
+                Name="Cuarto de cunas",
                 Type= RoomType.PUZZLE
             },
             new Rooms {
+                id="visits_room",
                 Name="Cuarto de huespedes"
             },
             new Rooms
             {
+                id="storage",
                 Name="Cuarto de storage"
             },
             new Rooms
             {
+                id="hole",
                 Name="Piso con agujero",
                 MovesToFloor=new int[]{0}
             },
             new Rooms
             {
+                id="vault",
                 Name="Vault",
                 Type=RoomType.PUZZLE
             },
@@ -137,27 +160,33 @@ namespace LaCasaDelTerror.Assets
             },
             new Rooms
             {
-                Name="Biblioteca"
+                id="library",
+                Name="Libreria"
             },
             new Rooms
             {
+                id="relax_room",
                 Name="Cuarto de descanso"
             },
             new Rooms {
+                id="laboratory",
                 Name="Laboratorio"
             },
             new Rooms
             {
+                id="kids_room",
                 Name="Cuarto de juego de niños",
                 Type=RoomType.ITEM
             },
             new Rooms
             {
+                id="lift",
                 Name="Elevador",
                 MovesToFloor= new int[]{-1, 0, 1}
             },
             new Rooms
             {
+                id="stairs",
                 Name="Escaleras",
                 MovesToFloor= new int[]{1}
             }
@@ -167,21 +196,25 @@ namespace LaCasaDelTerror.Assets
         {
             new Rooms
             {
+                id="storage_room",
                 Name="Cuarto de almacenamiento",
                 Type=RoomType.PUZZLE
             },
             new Rooms
             {
-                Name="Calentadores de agua",
+                id="boilers",
+                Name="Calefacción",
                 adjacentRoomTop=false,
                 Type=RoomType.PUZZLE
             },
             new Rooms
             {
+                id="lift",
                 Name="Elevador",
             },
             new Rooms
             {
+                id="colapsed_room",
                 Name="Cuarto colapsado",
                 StatsEffects= new Stats
                 {
@@ -193,36 +226,44 @@ namespace LaCasaDelTerror.Assets
             },
             new Rooms
             {
+                id="wines",
                 Name="Cuarto de vinos",
                 Type=RoomType.ITEM
             },
             new Rooms
             {
+                id="monster",
                 Name="Cuarto de monstruo",
                 Type=RoomType.PUZZLE
             },
             new Rooms {
+                id="treasure_room",
                 Name="Cuarto de tesoro",
                 Type=RoomType.PUZZLE
             },
             new Rooms
             {
+                id="armery",
                 Name="Cuarto de armamento"
             },
             new Rooms
             {
+                id="subterranean_lake",
                 Name="Lago subterraneo"
             },
             new Rooms
             {
+                id="cript",
                 Name="Cripta",
                 Type=RoomType.PUZZLE
             },
             new Rooms
             {
+                id="messy_room",
                 Name="Cuarto de tiradero"
             },
             new Rooms {
+                id="bloody_room",
                 Name="Cuarto sangriento",
                 StatsEffects=new Stats
                 {
@@ -266,7 +307,10 @@ namespace LaCasaDelTerror.Assets
         /// </summary>
 
         public Stats StatsEffects { get; set; }
+        public string? MovesToRoom { get; set; } = null;
         public int[] MovesToFloor { get; set; }
+        public int? MovesToPositionX { get; set; } = null;
+        public int? MovesToPositionY { get; set; } = null;
 
         public int X { get; set; }
         public int Y { get; set; }
