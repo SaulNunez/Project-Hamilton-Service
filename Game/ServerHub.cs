@@ -166,6 +166,13 @@ namespace ProjectHamiltonService.Game
                     Y = player.Y
                 });
 
+                player.AvailableMoves--;
+                if(player.AvailableMoves <= 0)
+                {
+                    var user = await userManager.FindByEmailAsync(Context.User?.FindFirst(ClaimTypes.Email)?.Value);
+                    await Clients.User(user.Id).EndTurn();
+                }
+
                 return new MovementResult
                 {
                     Floor = player.Floor,
