@@ -7,6 +7,13 @@ namespace LaCasaDelTerror.Assets
 {
     public class Rooms
     {
+        public enum HouseFloors
+        {
+            BASEMENT = -1,
+            MAIN_FLOOR = 0,
+            TOP_FLOOR = 1
+        }
+
         public static List<Rooms> mainFloor = new List<Rooms>(){
             new Rooms
             {
@@ -73,13 +80,15 @@ namespace LaCasaDelTerror.Assets
             {
                 id="lift",
                 Name="Elevador",
-                MovesToFloor=new int[]{-1,0,1 }
+                MovesToFloor=new int[]{-1,1 },
+                MovesToRoom="lift"
             },
             new Rooms
             {
                 id="entrance",
                 Name="Entrada",
-                MovesToFloor=new int[]{1}
+                MovesToFloor=new int[]{1},
+                MovesToRoom="stairs"
             },
             new Rooms
             {
@@ -182,7 +191,8 @@ namespace LaCasaDelTerror.Assets
             {
                 id="lift",
                 Name="Elevador",
-                MovesToFloor= new int[]{-1, 0, 1}
+                MovesToFloor= new int[]{-1, 1},
+                MovesToRoom="lift"
             },
             new Rooms
             {
@@ -211,6 +221,8 @@ namespace LaCasaDelTerror.Assets
             {
                 id="lift",
                 Name="Elevador",
+                MovesToFloor= new int[]{0, 1},
+                MovesToRoom="lift"
             },
             new Rooms
             {
@@ -325,6 +337,23 @@ namespace LaCasaDelTerror.Assets
             }
             public int x;
             public int y;
+        }
+
+        public static Rooms? FindRoom(HouseFloors floor, string id)
+        {
+            Rooms room = null;
+            switch(floor){
+                case HouseFloors.BASEMENT:
+                    room = basement.Find(r => r.id == id);
+                    break;
+                case HouseFloors.MAIN_FLOOR:
+                    room = mainFloor.Find(r => r.id == id);
+                    break;
+                case HouseFloors.TOP_FLOOR:
+                    room = topFloor.Find(r => r.id == id);
+                    break;
+            }
+            return room;
         }
     }
 }

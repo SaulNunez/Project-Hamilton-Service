@@ -15,6 +15,7 @@ using ProjectHamiltonService.Game.RequestModels;
 using ProjectHamiltonService.Game.ResponseModels;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Rooms = LaCasaDelTerror.Assets.Rooms;
 
 namespace ProjectHamiltonService.Game
 {
@@ -63,8 +64,6 @@ namespace ProjectHamiltonService.Game
             {
                 var player = gameContext.Players.Find(action.playerToken);
 
-                var movementIsLegal = false;
-
                 Models.Rooms rooms = null;
                 switch (action.MoveDirection)
                 {
@@ -73,7 +72,6 @@ namespace ProjectHamiltonService.Game
                         if (gameContext.Rooms.Any(room => room.X == player.X && room.Y == player.Y - 1))
                         {
                             player.Y--;
-                            movementIsLegal = true;
                         }
                         break;
                     case Direction.Up:
@@ -81,7 +79,6 @@ namespace ProjectHamiltonService.Game
                         if (gameContext.Rooms.Any(room => room.X == player.X && room.Y == player.Y + 1))
                         {
                             player.Y++;
-                            movementIsLegal = true;
                         }
                         break;
                     case Direction.Left:
@@ -89,7 +86,6 @@ namespace ProjectHamiltonService.Game
                         if (gameContext.Rooms.Any(room => room.X == player.X - 1 && room.Y == player.Y))
                         {
                             player.X--;
-                            movementIsLegal = true;
                         }
                         break;
                     case Direction.Right:
@@ -97,22 +93,75 @@ namespace ProjectHamiltonService.Game
                         if (gameContext.Rooms.Any(room => room.X == player.X + 1 && room.Y == player.Y))
                         {
                             player.X++;
-                            movementIsLegal = true;
                         }
                         break;
                     case Direction.DownFloor:
-                        //if (gameContext.Rooms.Where(room => room.X == player.X && room.Y == player.Y).First().MovesToFloor.Contains(player.Floor + 1))
-                        //{
-                        //    player.Floor--;
-                        //    movementIsLegal = true;
-                        //}
+                        var currentRoomModel = gameContext.Rooms.Where(room => room.X == player.X && room.Y == player.Y).First();
+                        Rooms roomPrototype = Rooms.FindRoom((Rooms.HouseFloors)currentRoomModel.Floor, currentRoomModel.RoomProtoype);
+
+                        if (roomPrototype != null)
+                        {
+                            if(roomPrototype.MovesToFloor.Contains(player.Floor - 1))
+                            {
+                                player.Floor--;
+                                if (roomPrototype.MovesToRoom != null)
+                                {
+                                    var newRoom = gameContext.Rooms.Where(room => room.RoomProtoype == roomPrototype.MovesToRoom && room.Floor == player.Floor).FirstOrDefault();
+                                    player.X = newRoom.X;
+                                    player.Y = newRoom.Y;
+                                }
+                            }
+
+                            if(roomPrototype.MovesToPositionX != null && roomPrototype.MovesToPositionY != null)
+                            {
+                                player.Floor--;
+                                player.X = roomPrototype.MovesToPositionX.Value;
+                                player.Y = roomPrototype.MovesToPositionY.Value;
+                            }
+
+                            await Clients.Group(action.lobbyCode).MoveCharacterToPosition(new MovementRequest
+                            {
+                                X = player.X,
+                                Y = player.Y,
+                                Floor = player.Floor,
+                                Character = player.CharacterPrototypeId
+                            });
+
+                        }
                         break;
                     case Direction.UpFloor:
-                        //if (gameContext.Rooms.Where(room => room.X == player.X && room.Y == player.Y).First().MovesToFloor.Contains(player.Floor - 1))
-                        //{
-                        //    player.Floor++;
-                        //    movementIsLegal = true;
-                        //}
+                        var currentRoomModelTop = gameContext.Rooms.Where(room => room.X == player.X && room.Y == player.Y).First();
+                        Rooms roomPrototypeTop = Rooms.FindRoom((Rooms.HouseFloors)currentRoomModelTop.Floor, currentRoomModelTop.RoomProtoype);
+
+                        if (roomPrototypeTop != null)
+                        {
+                            if (roomPrototypeTop.MovesToFloor.Contains(player.Floor + 1))
+                            {
+                                player.Floor++;
+                                if (roomPrototypeTop.MovesToRoom != null)
+                                {
+                                    var newRoom = gameContext.Rooms.Where(room => room.RoomProtoype == roomPrototypeTop.MovesToRoom && room.Floor == player.Floor).FirstOrDefault();
+                                    player.X = newRoom.X;
+                                    player.Y = newRoom.Y;
+                                }
+                            }
+
+                            if (roomPrototypeTop.MovesToPositionX != null && roomPrototypeTop.MovesToPositionY != null)
+                            {
+                                player.Floor++;
+                                player.X = roomPrototypeTop.MovesToPositionX.Value;
+                                player.Y = roomPrototypeTop.MovesToPositionY.Value;
+                            }
+
+                            await Clients.Group(action.lobbyCode).MoveCharacterToPosition(new MovementRequest
+                            {
+                                X = player.X,
+                                Y = player.Y,
+                                Floor = player.Floor,
+                                Character = player.CharacterPrototypeId
+                            });
+
+                        }
                         break;
                 }
 
