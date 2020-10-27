@@ -47,12 +47,20 @@ namespace ProjectHamiltonService.Game
 
             return new DirectionAvailability
             {
-                right = gameContext.Rooms.Any(room => room.X == player.X + 1 && room.Y == player.Y),
-                left = gameContext.Rooms.Any(room => room.X == player.X - 1 && room.Y == player.Y),
-                up = gameContext.Rooms.Any(room => room.X == player.X && room.Y == player.Y + 1),
-                down = gameContext.Rooms.Any(room => room.X == player.X && room.Y == player.Y - 1),
-                //floorUp = (bool)(gameContext.Rooms.Where(room => room.x == player.x && room.y == player.y).First().MovesToFloor.Contains(player.Floor + 1)),
-                //floorDown = (bool)(gameContext.Rooms.Where(room => room.x == player.x && room.y == player.y).First().MovesToFloor.Contains(player.Floor - 1))
+                right = lobby.Rooms.Any(room => room.X == player.X + 1 && room.Y == player.Y),
+                left = lobby.Rooms.Any(room => room.X == player.X - 1 && room.Y == player.Y),
+                up = lobby.Rooms.Any(room => room.X == player.X && room.Y == player.Y + 1),
+                down = lobby.Rooms.Any(room => room.X == player.X && room.Y == player.Y - 1),
+                floorUp = lobby.Rooms
+                    .Where(room => room.X == player.X && room.Y == player.Y)
+                    .Select(rm => Rooms.FindRoom((Rooms.HouseFloors)rm.Floor, rm.RoomProtoype))
+                    .First().MovesToFloor
+                    .Contains(player.Floor + 1),
+                floorDown = lobby.Rooms
+                    .Where(room => room.X == player.X && room.Y == player.Y)
+                    .Select(rm => Rooms.FindRoom((Rooms.HouseFloors)rm.Floor, rm.RoomProtoype))
+                    .First()
+                    .MovesToFloor.Contains(player.Floor - 1)
             };
         }
 
@@ -68,35 +76,35 @@ namespace ProjectHamiltonService.Game
                 switch (action.MoveDirection)
                 {
                     case Direction.Down:
-                        rooms = gameContext.Rooms.Where(room => room.X == player.X && room.Y == player.Y - 1).First();
-                        if (gameContext.Rooms.Any(room => room.X == player.X && room.Y == player.Y - 1))
+                        rooms = lobby.Rooms.Where(room => room.X == player.X && room.Y == player.Y - 1).First();
+                        if (lobby.Rooms.Any(room => room.X == player.X && room.Y == player.Y - 1))
                         {
                             player.Y--;
                         }
                         break;
                     case Direction.Up:
-                        rooms = gameContext.Rooms.Where(room => room.X == player.X && room.Y == player.Y + 1).First();
-                        if (gameContext.Rooms.Any(room => room.X == player.X && room.Y == player.Y + 1))
+                        rooms = lobby.Rooms.Where(room => room.X == player.X && room.Y == player.Y + 1).First();
+                        if (lobby.Rooms.Any(room => room.X == player.X && room.Y == player.Y + 1))
                         {
                             player.Y++;
                         }
                         break;
                     case Direction.Left:
-                        rooms = gameContext.Rooms.Where(room => room.X == player.X - 1 && room.Y == player.Y).First();
-                        if (gameContext.Rooms.Any(room => room.X == player.X - 1 && room.Y == player.Y))
+                        rooms = lobby.Rooms.Where(room => room.X == player.X - 1 && room.Y == player.Y).First();
+                        if (lobby.Rooms.Any(room => room.X == player.X - 1 && room.Y == player.Y))
                         {
                             player.X--;
                         }
                         break;
                     case Direction.Right:
-                        rooms = gameContext.Rooms.Where(room => room.X == player.X + 1 && room.Y == player.Y).First();
-                        if (gameContext.Rooms.Any(room => room.X == player.X + 1 && room.Y == player.Y))
+                        rooms = lobby.Rooms.Where(room => room.X == player.X + 1 && room.Y == player.Y).First();
+                        if (lobby.Rooms.Any(room => room.X == player.X + 1 && room.Y == player.Y))
                         {
                             player.X++;
                         }
                         break;
                     case Direction.DownFloor:
-                        var currentRoomModel = gameContext.Rooms.Where(room => room.X == player.X && room.Y == player.Y).First();
+                        var currentRoomModel = lobby.Rooms.Where(room => room.X == player.X && room.Y == player.Y).First();
                         Rooms roomPrototype = Rooms.FindRoom((Rooms.HouseFloors)currentRoomModel.Floor, currentRoomModel.RoomProtoype);
 
                         if (roomPrototype != null)
@@ -106,7 +114,7 @@ namespace ProjectHamiltonService.Game
                                 player.Floor--;
                                 if (roomPrototype.MovesToRoom != null)
                                 {
-                                    var newRoom = gameContext.Rooms.Where(room => room.RoomProtoype == roomPrototype.MovesToRoom && room.Floor == player.Floor).FirstOrDefault();
+                                    var newRoom = lobby.Rooms.Where(room => room.RoomProtoype == roomPrototype.MovesToRoom && room.Floor == player.Floor).FirstOrDefault();
                                     player.X = newRoom.X;
                                     player.Y = newRoom.Y;
                                 }
@@ -118,19 +126,10 @@ namespace ProjectHamiltonService.Game
                                 player.X = roomPrototype.MovesToPositionX.Value;
                                 player.Y = roomPrototype.MovesToPositionY.Value;
                             }
-
-                            await Clients.Group(action.lobbyCode).MoveCharacterToPosition(new MovementRequest
-                            {
-                                X = player.X,
-                                Y = player.Y,
-                                Floor = player.Floor,
-                                Character = player.CharacterPrototypeId
-                            });
-
                         }
                         break;
                     case Direction.UpFloor:
-                        var currentRoomModelTop = gameContext.Rooms.Where(room => room.X == player.X && room.Y == player.Y).First();
+                        var currentRoomModelTop = lobby.Rooms.Where(room => room.X == player.X && room.Y == player.Y).First();
                         Rooms roomPrototypeTop = Rooms.FindRoom((Rooms.HouseFloors)currentRoomModelTop.Floor, currentRoomModelTop.RoomProtoype);
 
                         if (roomPrototypeTop != null)
@@ -140,7 +139,7 @@ namespace ProjectHamiltonService.Game
                                 player.Floor++;
                                 if (roomPrototypeTop.MovesToRoom != null)
                                 {
-                                    var newRoom = gameContext.Rooms.Where(room => room.RoomProtoype == roomPrototypeTop.MovesToRoom && room.Floor == player.Floor).FirstOrDefault();
+                                    var newRoom = lobby.Rooms.Where(room => room.RoomProtoype == roomPrototypeTop.MovesToRoom && room.Floor == player.Floor).FirstOrDefault();
                                     player.X = newRoom.X;
                                     player.Y = newRoom.Y;
                                 }
@@ -153,14 +152,6 @@ namespace ProjectHamiltonService.Game
                                 player.Y = roomPrototypeTop.MovesToPositionY.Value;
                             }
 
-                            await Clients.Group(action.lobbyCode).MoveCharacterToPosition(new MovementRequest
-                            {
-                                X = player.X,
-                                Y = player.Y,
-                                Floor = player.Floor,
-                                Character = player.CharacterPrototypeId
-                            });
-
                         }
                         break;
                 }
@@ -170,6 +161,7 @@ namespace ProjectHamiltonService.Game
                 await Clients.Group(action.lobbyCode).MoveCharacterToPosition(new MovementRequest
                 {
                     Character = player.CharacterPrototypeId,
+                    Floor = player.Floor,
                     X = player.X,
                     Y = player.Y
                 });

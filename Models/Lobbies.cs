@@ -16,5 +16,7 @@ namespace ProjectHamiltonService.Models
         
         [ForeignKey("Players")]
         public virtual Players CurrentPlayer { get; set; }
+
+        public virtual List<Rooms> Rooms { get; set; }
     }
 }
