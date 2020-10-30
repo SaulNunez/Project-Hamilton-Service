@@ -14,9 +14,11 @@ namespace ProjectHamiltonService.Models
         public DateTime CreationTime { get; set; }
         public bool OnProgress { get; set; }
         
-        [ForeignKey("Players")]
+        public Guid PlayerId { get; set; }
+        [ForeignKey("PlayerId")]
         public virtual Players CurrentPlayer { get; set; }
 
         public virtual List<Rooms> Rooms { get; set; }
+        public virtual List<Players> Players { get; set; }
     }
 }

@@ -156,8 +156,6 @@ namespace ProjectHamiltonService.Game
                         break;
                 }
 
-                await gameContext.SaveChangesAsync();
-
                 await Clients.Group(action.lobbyCode).MoveCharacterToPosition(new MovementRequest
                 {
                     Character = player.CharacterPrototypeId,
@@ -170,9 +168,25 @@ namespace ProjectHamiltonService.Game
                 if(player.AvailableMoves <= 0)
                 {
                     var user = await userManager.FindByEmailAsync(Context.User?.FindFirst(ClaimTypes.Email)?.Value);
+
                     await Clients.User(user.Id).EndTurn();
+
+                    var turnNo = player.TurnIndex;
+                    if(player.TurnIndex == lobby.Players.Count - 1)
+                    {
+                        lobby.CurrentPlayer = lobby.Players.Find(p => p.TurnIndex == 0);
+                    } else
+                    {
+                        lobby.CurrentPlayer = lobby.Players.Where(p => p.TurnIndex > turnNo).OrderBy(x => x.TurnIndex).First();
+                    }
+                    var newTurnUser = await userManager.FindByEmailAsync(Context.User?.FindFirst(ClaimTypes.Email)?.Value);
+                    await Clients.User(newTurnUser.Id).StartTurn(new ClientRequestModels.TurnRequest
+                    {
+                        CanThrowDiceForMovement = true
+                    });
                 }
 
+                await gameContext.SaveChangesAsync();
                 return new MovementResult
                 {
                     Floor = player.Floor,
