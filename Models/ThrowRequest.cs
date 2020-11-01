@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectHamiltonService.Game;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ namespace ProjectHamiltonService.Models
     {
         public Guid Id { get; set; }
         public ThrowMotive Motive { get; set; }
-        public int Dice { get; set; }
+        public DiceThrow.ThrowTypes Dice { get; set; }
+        public Players Player { get; set; }
+        public DateTime TimeOfRequest { get; private set; }
     }
 }

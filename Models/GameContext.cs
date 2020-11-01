@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using ProjectHamiltonService.Game;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,8 @@ namespace ProjectHamiltonService.Models
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.HasPostgresEnum<DiceThrow.ThrowTypes>();
 
             builder.HasPostgresEnum<ThrowMotive>();
 
@@ -64,6 +67,8 @@ namespace ProjectHamiltonService.Models
             builder.Entity<Puzzles>()
                 .Property(x => x.ModifiesPosition)
                 .HasComputedColumnSql("[NewX] != -1 OR [NewY] != -1 OR [NewFloor] != -1");
+
+            builder.Entity<ThrowRequest>().Property(x => x.TimeOfRequest).HasComputedColumnSql("NOW()");
         }
     }
 }

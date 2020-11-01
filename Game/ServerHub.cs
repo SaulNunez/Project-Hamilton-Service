@@ -68,7 +68,7 @@ namespace ProjectHamiltonService.Game
         {
             var lobby = gameContext.Lobbies.Find(action.lobbyCode);
 
-            if (lobby != null && lobby.CurrentPlayer.Id == action.playerToken)
+            if (lobby != null && lobby.CurrentPlayerId == action.playerToken)
             {
                 var player = gameContext.Players.Find(action.playerToken);
 
@@ -174,10 +174,10 @@ namespace ProjectHamiltonService.Game
                     var turnNo = player.TurnIndex;
                     if(player.TurnIndex == lobby.Players.Count - 1)
                     {
-                        lobby.CurrentPlayer = lobby.Players.Find(p => p.TurnIndex == 0);
+                        lobby.CurrentPlayerId = lobby.Players.Find(p => p.TurnIndex == 0).Id;
                     } else
                     {
-                        lobby.CurrentPlayer = lobby.Players.Where(p => p.TurnIndex > turnNo).OrderBy(x => x.TurnIndex).First();
+                        lobby.CurrentPlayerId = lobby.Players.Where(p => p.TurnIndex > turnNo).OrderBy(x => x.TurnIndex).First().Id;
                     }
                     var newTurnUser = await userManager.FindByEmailAsync(Context.User?.FindFirst(ClaimTypes.Email)?.Value);
                     await Clients.User(newTurnUser.Id).StartTurn(new ClientRequestModels.TurnRequest
@@ -251,7 +251,7 @@ namespace ProjectHamiltonService.Game
 
             var puzzlePrototype = Puzzles.puzzles.Find(x => x.id == puzzle.PuzzlePrototype);
 
-            if (lobby.CurrentPlayer.Id == req.playerToken && puzzle.PlayersId == req.playerToken)
+            if (lobby.CurrentPlayerId == req.playerToken && puzzle.PlayersId == req.playerToken)
             {
                 var requestPayload = new PuzzleCheckRequest(req.Code, puzzlePrototype.expectedOutput,
                     puzzlePrototype.type,
