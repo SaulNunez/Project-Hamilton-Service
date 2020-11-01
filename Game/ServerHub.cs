@@ -401,12 +401,19 @@ namespace ProjectHamiltonService.Game
         public Task<ThrowResult> ThrowDice(ClientRequestModels.ThrowRequest throwRequest)
         {
             var player = gameContext.Players.Find(throwRequest.PlayerToken);
+            var latestThrowRequest = gameContext.ThrowRequests.Where(x => x.Player.Id.ToString() == throwRequest.PlayerToken).OrderByDescending(x => x.TimeOfRequest).FirstOrDefault();
 
-            if (player != null && player.TurnThrowResult == 0)
+            if (player != null && latestThrowRequest != null)
             {
+                var diceThrowRes = diceThrow.DoThrow(latestThrowRequest.Dice);
+                if(latestThrowRequest.Motive == ThrowMotive.MOVEMENT)
+                {
+                    player.AvailableMoves = diceThrowRes;
+                }
+
                 return Task.FromResult(new ThrowResult
                 {
-                    DiceThrow = diceThrow.DoThrow(DiceThrow.ThrowTypes.OneSixFaceDice)
+                    DiceThrow = diceThrowRes
                 });
                 
             }

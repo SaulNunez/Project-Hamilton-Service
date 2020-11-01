@@ -22,6 +22,7 @@ namespace ProjectHamiltonService.Models
         public DbSet<Players> Players { get; set; }
         public DbSet<Rooms> Rooms { get; set; }
         public DbSet<Puzzles> Puzzles { get; set; }
+        public DbSet<ThrowRequest> ThrowRequests { get; set; }
 
         public GameContext(DbContextOptions<GameContext> options)
     : base(options)
