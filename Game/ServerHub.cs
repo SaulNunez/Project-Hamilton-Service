@@ -184,6 +184,12 @@ namespace ProjectHamiltonService.Game
                     {
                         CanThrowDiceForMovement = true
                     });
+                    gameContext.ThrowRequests.Add(new ThrowRequest
+                    {
+                        Player = lobby.Players.Find(x => x.Id == lobby.CurrentPlayerId),
+                        Motive = ThrowMotive.MOVEMENT,
+                        Dice = DiceThrow.ThrowTypes.OneSixFaceDice,
+                    });
                 }
 
                 await gameContext.SaveChangesAsync();
