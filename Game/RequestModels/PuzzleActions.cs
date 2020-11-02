@@ -7,7 +7,10 @@ namespace ProjectHamiltonService.Game.ClientActions
 {
     public class PuzzleActions: LobbyAction
     {
+#nullable enable
         public string Code { get; set; }
         public string PuzzleId { get; set; }
+        public string? AffectsCharacter { get; set; }
+#nullable disable
     }
 }

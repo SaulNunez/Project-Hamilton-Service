@@ -29,11 +29,11 @@ namespace ProjectHamiltonService.Models
         [Required]
         public string CharacterPrototypeId { get; set; }
         public string Name { get; set; }
-        [ForeignKey("Lobbies")]
-        public string LobbyId { get; set; }
         public int TurnThrowResult { get; set; }
         public int TurnIndex { get; set; }
 
+        [ForeignKey("Lobbies")]
+        public string LobbyId { get; set; }
         public virtual Lobbies Lobby { get; set; }
         public virtual IdentityUser User { get; set; }
     }

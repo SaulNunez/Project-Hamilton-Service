@@ -13,6 +13,7 @@ using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Npgsql;
 
 namespace ProjectHamiltonService
 {
@@ -81,6 +82,10 @@ namespace ProjectHamiltonService
             using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 scope.ServiceProvider.GetService<GameContext>().Database.Migrate();
+
+                using var conn = (NpgsqlConnection)scope.ServiceProvider.GetService<GameContext>().Database.GetDbConnection();
+                conn.Open();
+                conn.ReloadTypes();
             }
 
             if (env.IsDevelopment())

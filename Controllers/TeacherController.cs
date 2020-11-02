@@ -68,7 +68,7 @@ namespace ProjectHamiltonService.Controllers
                 player.TurnThrowResult = diceThrow.DoThrow(DiceThrow.ThrowTypes.OneSixFaceDice);
             }
 
-            var ordered = players.OrderBy(x => x.TurnThrowResult);
+            var ordered = players.OrderByDescending(x => x.TurnThrowResult);
 
             foreach(var (player, index) in ordered.WithIndex())
             {

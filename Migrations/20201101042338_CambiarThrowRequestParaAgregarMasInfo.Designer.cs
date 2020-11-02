@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ProjectHamiltonService.Models;
@@ -9,9 +10,10 @@ using ProjectHamiltonService.Models;
 namespace ProjectHamiltonService.Migrations
 {
     [DbContext(typeof(GameContext))]
-    partial class GameContextModelSnapshot : ModelSnapshot
+    [Migration("20201101042338_CambiarThrowRequestParaAgregarMasInfo")]
+    partial class CambiarThrowRequestParaAgregarMasInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -431,9 +433,6 @@ namespace ProjectHamiltonService.Migrations
                     b.Property<int>("Dice")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("ItemId")
-                        .HasColumnType("uuid");
-
                     b.Property<ThrowMotive>("Motive")
                         .HasColumnType("throw_motive");
 
@@ -447,11 +446,9 @@ namespace ProjectHamiltonService.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemId");
-
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("ThrowRequests");
+                    b.ToTable("ThrowRequest");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -534,10 +531,6 @@ namespace ProjectHamiltonService.Migrations
 
             modelBuilder.Entity("ProjectHamiltonService.Models.ThrowRequest", b =>
                 {
-                    b.HasOne("ProjectHamiltonService.Models.Items", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId");
-
                     b.HasOne("ProjectHamiltonService.Models.Players", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId");

@@ -17,5 +17,22 @@ namespace ProjectHamiltonService.Models
         public Guid PlayersId { get; set; }
         public string PuzzlePrototype { get; set; }
         public bool SolvedCorrectly { get; set; }
+
+        //Acciones en juego de respuesta correcta
+        public int BraveryStatDiff { get; set; }
+        public int IntelligenceStatDiff { get; set; }
+        public int SanityStatDiff { get; set; }
+        public int PhysicalStatDiff { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public bool ModifiesStats { get; private set; }
+
+
+        public int NewX { get; set; }
+        public int NewY { get; set; }
+
+
+        public int NewFloor { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public bool ModifiesPosition { get; private set; }
     }
 }

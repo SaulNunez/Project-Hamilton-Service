@@ -20,6 +20,7 @@ namespace ProjectHamiltonService.Game
         Task PlayerSelectedCharacter(NewPlayerInfo newPlayerInfo);
         Task StartGame(PlayerOrderInformation playerOrderInformation);
         Task StartTurn(TurnRequest turnRequest);
+        Task EndTurn();
         Task MoveCharacterToPosition(MovementRequest movementRequest);
         Task PlayerMovementRequested(AvailableMovements availableMovements);
         Task GetItem(ItemObtainedUpdateRequest itemObtainedUpdateRequest);
