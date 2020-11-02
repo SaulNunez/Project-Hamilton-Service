@@ -34,9 +34,9 @@ namespace ProjectHamiltonService.Game
 
         public DirectionAvailability GetAvailableMovements(LobbyAction action)
         {
-            var lobby = gameContext.Lobbies.Find(action.lobbyCode);
+            var lobby = gameContext.Lobbies.Find(action.LobbyCode);
 
-            var player = gameContext.Players.Find(action.playerToken);
+            var player = gameContext.Players.Find(action.PlayerToken);
 
             var rooms = gameContext.Rooms.Where(r => r.Floor == player.Floor && r.X == player.X && r.Y == player.Y).First();
 
@@ -66,11 +66,11 @@ namespace ProjectHamiltonService.Game
 
         public async Task<MovementResult> Move(DirectionAction action)
         {
-            var lobby = gameContext.Lobbies.Find(action.lobbyCode);
+            var lobby = gameContext.Lobbies.Find(action.LobbyCode);
 
-            if (lobby != null && lobby.CurrentPlayerId == action.playerToken)
+            if (lobby != null && lobby.CurrentPlayerId == action.PlayerToken)
             {
-                var player = gameContext.Players.Find(action.playerToken);
+                var player = gameContext.Players.Find(action.PlayerToken);
 
                 Models.Rooms rooms = null;
                 switch (action.MoveDirection)
@@ -156,7 +156,7 @@ namespace ProjectHamiltonService.Game
                         break;
                 }
 
-                await Clients.Group(action.lobbyCode).MoveCharacterToPosition(new MovementRequest
+                await Clients.Group(action.LobbyCode).MoveCharacterToPosition(new MovementRequest
                 {
                     Character = player.CharacterPrototypeId,
                     Floor = player.Floor,
@@ -214,7 +214,7 @@ namespace ProjectHamiltonService.Game
 
                 if (itemPrototype.needsThrow)
                 {
-                    var player = gameContext.Players.Find(action.playerToken);
+                    var player = gameContext.Players.Find(action.PlayerToken);
 
                     gameContext.ThrowRequests.Add(new ThrowRequest
                     {
@@ -229,10 +229,10 @@ namespace ProjectHamiltonService.Game
                 {
                     Models.Players players;
                     if (action.characterToAffect != null) {
-                        players = gameContext.Players.Where(x => x.Name == action.characterToAffect && x.LobbyId == action.lobbyCode).FirstOrDefault();
+                        players = gameContext.Players.Where(x => x.Name == action.characterToAffect && x.LobbyId == action.LobbyCode).FirstOrDefault();
                     } else
                     {
-                        players = gameContext.Players.Find(action.playerToken);
+                        players = gameContext.Players.Find(action.PlayerToken);
                     }
 
                     players.Bravery += itemPrototype.statEffects.Bravery;
@@ -252,13 +252,13 @@ namespace ProjectHamiltonService.Game
 
         public List<Items> GetItems(LobbyAction action)
         {
-            var lobby = gameContext.Lobbies.Find(action.lobbyCode);
+            var lobby = gameContext.Lobbies.Find(action.LobbyCode);
 
             if(lobby == null)
             {
                 return null;
             }
-            var itemsOnPlayer = gameContext.Items.Where(x => x.PlayersId == action.playerToken);
+            var itemsOnPlayer = gameContext.Items.Where(x => x.PlayersId == action.PlayerToken);
             //Tal vez no sea tan rapido, luego hacer profiling
             var protoInfo = itemsOnPlayer.Select(x => Items.items.Where(y => y.id == x.Prototype).First()).ToList();
 
@@ -267,12 +267,12 @@ namespace ProjectHamiltonService.Game
 
         public async Task<PuzzleResult> CheckPuzzle(PuzzleActions req)
         {
-            var lobby = gameContext.Lobbies.Find(req.lobbyCode);
+            var lobby = gameContext.Lobbies.Find(req.LobbyCode);
             var puzzle = gameContext.Puzzles.Find(req.PuzzleId);
 
             var puzzlePrototype = Puzzles.puzzles.Find(x => x.id == puzzle.PuzzlePrototype);
 
-            if (lobby.CurrentPlayerId == req.playerToken && puzzle.PlayersId == req.playerToken)
+            if (lobby.CurrentPlayerId == req.PlayerToken && puzzle.PlayersId == req.PlayerToken)
             {
                 var requestPayload = new PuzzleCheckRequest(req.Code, puzzlePrototype.expectedOutput,
                     puzzlePrototype.type,
@@ -299,7 +299,7 @@ namespace ProjectHamiltonService.Game
 
                 if (correct)
                 {
-                    var affectedPlayer = gameContext.Players.Where(x => x.LobbyId == req.lobbyCode && x.CharacterPrototypeId == req.AffectsCharacter).First();
+                    var affectedPlayer = gameContext.Players.Where(x => x.LobbyId == req.LobbyCode && x.CharacterPrototypeId == req.AffectsCharacter).First();
                     if (affectedPlayer == null)
                     {
                         throw new HubException("Player not found on lobby");
@@ -312,7 +312,7 @@ namespace ProjectHamiltonService.Game
                         affectedPlayer.Sanity += puzzle.SanityStatDiff;
                         affectedPlayer.Bravery += puzzle.BraveryStatDiff;
 
-                        await Clients.Group(req.lobbyCode).ChangeStats(new ClientRequestModels.ChangeStats { 
+                        await Clients.Group(req.LobbyCode).ChangeStats(new ClientRequestModels.ChangeStats { 
                             PlayerName = affectedPlayer.CharacterPrototypeId,
                             Stats = new LaCasaDelTerror.Assets.Abstracts.Stats
                             {
@@ -341,7 +341,7 @@ namespace ProjectHamiltonService.Game
                             affectedPlayer.Floor = puzzle.NewFloor;
                         }
 
-                        await Clients.Group(req.lobbyCode).MoveCharacterToPosition(new MovementRequest
+                        await Clients.Group(req.LobbyCode).MoveCharacterToPosition(new MovementRequest
                         {
                             X = affectedPlayer.X,
                             Y = affectedPlayer.Y,
