@@ -212,7 +212,20 @@ namespace ProjectHamiltonService.Game
             {
                 var itemPrototype = Items.items.Find(x => item.Prototype == x.id);
 
-                if(itemPrototype.statEffects != null)
+                if (itemPrototype.needsThrow)
+                {
+                    var player = gameContext.Players.Find(action.playerToken);
+
+                    gameContext.ThrowRequests.Add(new ThrowRequest
+                    {
+                        Motive = ThrowMotive.ITEM,
+                        Dice = DiceThrow.ThrowTypes.OneSixFaceDice,
+                        Player = player,
+                        Item = item
+                    });
+                }
+
+                if (itemPrototype.statEffects != null)
                 {
                     Models.Players players;
                     if (action.characterToAffect != null) {
@@ -232,6 +245,8 @@ namespace ProjectHamiltonService.Game
                 {
                     gameContext.Remove(item);
                 }
+
+                await gameContext.SaveChangesAsync();
             }
         }
 
@@ -415,6 +430,9 @@ namespace ProjectHamiltonService.Game
                 if(latestThrowRequest.Motive == ThrowMotive.MOVEMENT)
                 {
                     player.AvailableMoves = diceThrowRes;
+                } else if(latestThrowRequest.Motive == ThrowMotive.ITEM)
+                {
+
                 }
 
                 return Task.FromResult(new ThrowResult

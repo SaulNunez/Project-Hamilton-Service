@@ -11,6 +11,7 @@ namespace ProjectHamiltonService.Models
         public Guid Id { get; set; }
         public ThrowMotive Motive { get; set; }
         public DiceThrow.ThrowTypes Dice { get; set; }
+        public Items? Item { get; set; }
         public Players Player { get; set; }
         public DateTime TimeOfRequest { get; private set; }
     }
