@@ -190,6 +190,9 @@ namespace ProjectHamiltonService.Game
                         Motive = ThrowMotive.MOVEMENT,
                         Dice = DiceThrow.ThrowTypes.OneSixFaceDice,
                     });
+                } else
+                {
+                    await Clients.User(player.User.Id).GetDirection(GetAvailableMovements(new LobbyAction { LobbyCode = action.LobbyCode, PlayerToken = action.PlayerToken }));
                 }
 
                 await gameContext.SaveChangesAsync();
