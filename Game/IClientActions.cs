@@ -22,9 +22,10 @@ namespace ProjectHamiltonService.Game
         Task StartTurn(TurnRequest turnRequest);
         Task EndTurn();
         Task MoveCharacterToPosition(MovementRequest movementRequest);
-        Task PlayerMovementRequested(AvailableMovements availableMovements);
+        //Task PlayerMovementRequested(AvailableMovements availableMovements);
         Task GetItem(ItemObtainedUpdateRequest itemObtainedUpdateRequest);
         Task GetOmen(OmenObtainedUpdateRequest omenObtainedUpdateRequest);
         Task SolvePuzzle(ShowPuzzleRequest puzzleRequest);
+        Task GetDirection(DirectionAvailability movements);
     }
 }

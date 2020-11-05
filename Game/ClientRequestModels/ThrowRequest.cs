@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ProjectHamiltonService.Game.ClientRequestModels
 {
-    public class ThrowRequest
+    public class ThrowRequest : LobbyAction
     {
         public string PlayerToken { get; set; }
     }
