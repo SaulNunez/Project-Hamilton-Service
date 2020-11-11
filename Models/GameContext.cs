@@ -50,26 +50,18 @@ namespace ProjectHamiltonService.Models
 
             builder.Entity<Lobbies>()
                 .Property(x => x.CreationTime)
-                .HasDefaultValueSql("NOW()");
+                .HasDefaultValue(DateTime.Now);
 
             builder.Entity<Puzzles>()
                 .Property(x => x.PuzzleStart)
-                .HasDefaultValueSql("NOW()");
+                .HasDefaultValue(DateTime.Now);
 
 
             builder.Entity<Puzzles>().Property(x => x.NewX).HasDefaultValue(-1);
             builder.Entity<Puzzles>().Property(x => x.NewY).HasDefaultValue(-1);
             builder.Entity<Puzzles>().Property(x => x.NewFloor).HasDefaultValue(-1);
 
-            builder.Entity<Puzzles>()
-                .Property(x => x.ModifiesStats)
-                .HasComputedColumnSql("[BraveryStatDiff] > 0 OR [IntelligenceStatDiff] > 0 OR [SanityStatDiff] > 0 OR [PhysicalStatDiff] > 0");
-
-            builder.Entity<Puzzles>()
-                .Property(x => x.ModifiesPosition)
-                .HasComputedColumnSql("[NewX] != -1 OR [NewY] != -1 OR [NewFloor] != -1");
-
-            builder.Entity<ThrowRequest>().Property(x => x.TimeOfRequest).HasComputedColumnSql("NOW()");
+            builder.Entity<ThrowRequest>().Property(x => x.TimeOfRequest).HasDefaultValue(DateTime.Now);
         }
     }
 }

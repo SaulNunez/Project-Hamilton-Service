@@ -249,7 +249,7 @@ namespace ProjectHamiltonService.Migrations
                     b.Property<DateTime>("CreationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("NOW()");
+                        .HasDefaultValue(new DateTime(2020, 11, 10, 20, 44, 5, 810, DateTimeKind.Local).AddTicks(4649));
 
                     b.Property<Guid?>("CurrentPlayerId")
                         .HasColumnType("uuid");
@@ -338,16 +338,6 @@ namespace ProjectHamiltonService.Migrations
                     b.Property<int>("IntelligenceStatDiff")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("ModifiesPosition")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("boolean")
-                        .HasComputedColumnSql("[NewX] != -1 OR [NewY] != -1 OR [NewFloor] != -1");
-
-                    b.Property<bool>("ModifiesStats")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("boolean")
-                        .HasComputedColumnSql("[BraveryStatDiff] > 0 OR [IntelligenceStatDiff] > 0 OR [SanityStatDiff] > 0 OR [PhysicalStatDiff] > 0");
-
                     b.Property<int>("NewFloor")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -378,7 +368,7 @@ namespace ProjectHamiltonService.Migrations
                     b.Property<DateTime>("PuzzleStart")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("NOW()");
+                        .HasDefaultValue(new DateTime(2020, 11, 10, 20, 44, 5, 814, DateTimeKind.Local).AddTicks(3563));
 
                     b.Property<int>("SanityStatDiff")
                         .HasColumnType("integer");
@@ -441,9 +431,9 @@ namespace ProjectHamiltonService.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("TimeOfRequest")
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasComputedColumnSql("NOW()");
+                        .HasDefaultValue(new DateTime(2020, 11, 10, 20, 44, 5, 814, DateTimeKind.Local).AddTicks(9392));
 
                     b.HasKey("Id");
 
