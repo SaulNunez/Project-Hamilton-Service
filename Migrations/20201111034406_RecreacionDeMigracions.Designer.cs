@@ -10,14 +10,15 @@ using ProjectHamiltonService.Models;
 namespace ProjectHamiltonService.Migrations
 {
     [DbContext(typeof(GameContext))]
-    [Migration("20201025042503_CamposParaVerAccionDePuzzle")]
-    partial class CamposParaVerAccionDePuzzle
+    [Migration("20201111034406_RecreacionDeMigracions")]
+    partial class RecreacionDeMigracions
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:Enum:throw_motive", "movement,item")
+                .HasAnnotation("Npgsql:Enum:throw_types", "one_six_face_dice,two_six_face_dice")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
@@ -250,18 +251,15 @@ namespace ProjectHamiltonService.Migrations
                     b.Property<DateTime>("CreationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("NOW()");
+                        .HasDefaultValue(new DateTime(2020, 11, 10, 20, 44, 5, 810, DateTimeKind.Local).AddTicks(4649));
+
+                    b.Property<Guid?>("CurrentPlayerId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("OnProgress")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid?>("Players")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Code");
-
-                    b.HasIndex("Players")
-                        .IsUnique();
 
                     b.ToTable("Lobbies");
                 });
@@ -274,9 +272,6 @@ namespace ProjectHamiltonService.Migrations
 
                     b.Property<int>("AvailableMoves")
                         .HasColumnType("integer");
-
-                    b.Property<Guid?>("AvailableThrowRequestId")
-                        .HasColumnType("uuid");
 
                     b.Property<int>("Bravery")
                         .HasColumnType("integer");
@@ -326,7 +321,7 @@ namespace ProjectHamiltonService.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AvailableThrowRequestId");
+                    b.HasIndex("LobbyId");
 
                     b.HasIndex("UserId");
 
@@ -344,16 +339,6 @@ namespace ProjectHamiltonService.Migrations
 
                     b.Property<int>("IntelligenceStatDiff")
                         .HasColumnType("integer");
-
-                    b.Property<bool>("ModifiesPosition")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("boolean")
-                        .HasComputedColumnSql("[NewX] != -1 OR [NewY] != -1 OR [NewFloor] != -1");
-
-                    b.Property<bool>("ModifiesStats")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("boolean")
-                        .HasComputedColumnSql("[BraveryStatDiff] > 0 OR [IntelligenceStatDiff] > 0 OR [SanityStatDiff] > 0 OR [PhysicalStatDiff] > 0");
 
                     b.Property<int>("NewFloor")
                         .ValueGeneratedOnAdd()
@@ -385,7 +370,7 @@ namespace ProjectHamiltonService.Migrations
                     b.Property<DateTime>("PuzzleStart")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("NOW()");
+                        .HasDefaultValue(new DateTime(2020, 11, 10, 20, 44, 5, 814, DateTimeKind.Local).AddTicks(3563));
 
                     b.Property<int>("SanityStatDiff")
                         .HasColumnType("integer");
@@ -438,12 +423,27 @@ namespace ProjectHamiltonService.Migrations
                     b.Property<int>("Dice")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("ItemId")
+                        .HasColumnType("uuid");
+
                     b.Property<ThrowMotive>("Motive")
                         .HasColumnType("throw_motive");
 
+                    b.Property<Guid?>("PlayerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("TimeOfRequest")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValue(new DateTime(2020, 11, 10, 20, 44, 5, 814, DateTimeKind.Local).AddTicks(9392));
+
                     b.HasKey("Id");
 
-                    b.ToTable("ThrowRequest");
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("ThrowRequests");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -506,18 +506,11 @@ namespace ProjectHamiltonService.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ProjectHamiltonService.Models.Lobbies", b =>
-                {
-                    b.HasOne("ProjectHamiltonService.Models.Players", "CurrentPlayer")
-                        .WithOne("Lobby")
-                        .HasForeignKey("ProjectHamiltonService.Models.Lobbies", "Players");
-                });
-
             modelBuilder.Entity("ProjectHamiltonService.Models.Players", b =>
                 {
-                    b.HasOne("ProjectHamiltonService.Models.ThrowRequest", "AvailableThrowRequest")
-                        .WithMany()
-                        .HasForeignKey("AvailableThrowRequestId");
+                    b.HasOne("ProjectHamiltonService.Models.Lobbies", "Lobby")
+                        .WithMany("Players")
+                        .HasForeignKey("LobbyId");
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
@@ -527,8 +520,19 @@ namespace ProjectHamiltonService.Migrations
             modelBuilder.Entity("ProjectHamiltonService.Models.Rooms", b =>
                 {
                     b.HasOne("ProjectHamiltonService.Models.Lobbies", "Lobby")
-                        .WithMany()
+                        .WithMany("Rooms")
                         .HasForeignKey("LobbyId");
+                });
+
+            modelBuilder.Entity("ProjectHamiltonService.Models.ThrowRequest", b =>
+                {
+                    b.HasOne("ProjectHamiltonService.Models.Items", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId");
+
+                    b.HasOne("ProjectHamiltonService.Models.Players", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId");
                 });
 #pragma warning restore 612, 618
         }

@@ -23,8 +23,9 @@ namespace ProjectHamiltonService.Models
         public int IntelligenceStatDiff { get; set; }
         public int SanityStatDiff { get; set; }
         public int PhysicalStatDiff { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public bool ModifiesStats { get; private set; }
+        
+        [NotMapped]
+        public bool ModifiesStats { get => BraveryStatDiff > 0 || IntelligenceStatDiff > 0 || SanityStatDiff > 0 || PhysicalStatDiff > 0; }
 
 
         public int NewX { get; set; }
@@ -32,7 +33,8 @@ namespace ProjectHamiltonService.Models
 
 
         public int NewFloor { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public bool ModifiesPosition { get; private set; }
+
+        [NotMapped]
+        public bool ModifiesPosition { get => NewX != -1 || NewY != -1 || NewFloor != -1; }
     }
 }
