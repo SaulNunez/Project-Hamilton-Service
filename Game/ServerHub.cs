@@ -16,9 +16,11 @@ using ProjectHamiltonService.Game.ResponseModels;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Rooms = LaCasaDelTerror.Assets.Rooms;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjectHamiltonService.Game
 {
+    [Authorize]
     public class ServerHub : Hub<IClientActions>
     {
         private readonly GameContext gameContext;
@@ -390,8 +392,8 @@ namespace ProjectHamiltonService.Game
 
         public async Task<PlayerSelectionResult> SelectCharacter(SelectCharacterAction action)
         {
-            var currentPlayers = gameContext.Players.Where(x => x.LobbyId == action.lobbyCode && x.CharacterPrototypeId == action.Character);
-            if (currentPlayers.Count() > 0)
+            var currentPlayers = gameContext.Players.Count(x => x.LobbyId == action.lobbyCode && x.CharacterPrototypeId == action.Character);
+            if (currentPlayers > 0)
             {
                 Console.WriteLine("Player is in lobby");
                 return null;
@@ -405,7 +407,7 @@ namespace ProjectHamiltonService.Game
                 Intelligence = characterPrototype.stats.Intelligence,
                 Sanity = characterPrototype.stats.Sanity,
                 Physical = characterPrototype.stats.Physical,
-                User = await userManager.FindByEmailAsync(Context.User?.FindFirst(ClaimTypes.Email)?.Value),
+                User = await userManager.FindByNameAsync(Context.User?.Identity.Name),
                 Name = action.Name,
                 CharacterPrototypeId = action.Character
             };
@@ -413,6 +415,18 @@ namespace ProjectHamiltonService.Game
             gameContext.Add(newPlayer);
 
             gameContext.SaveChanges();
+
+            await Clients.Group(action.lobbyCode).PlayerSelectedCharacter(new ClientRequestModels.NewPlayerInfo { 
+                CharacterSelected = action.Character,
+                LobbyName = action.lobbyCode,
+                StartingStats = new LaCasaDelTerror.Assets.Abstracts.Stats
+                {
+                    Bravery = characterPrototype.stats.Bravery,
+                    Intelligence = characterPrototype.stats.Intelligence,
+                    Sanity = characterPrototype.stats.Sanity,
+                    Physical = characterPrototype.stats.Physical,
+                }
+            });
 
             var response = new PlayerSelectionResult
             {
