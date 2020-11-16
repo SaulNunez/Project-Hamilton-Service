@@ -37,22 +37,21 @@ namespace ProjectHamiltonService.Controllers
 
         public class GameStart
         {
-            public string lobbyCode;
+            public string LobbyCode { get; set; }
         }
 
         [HttpPost]
         [Route("Teacher/StartGame")]
-        [Consumes(MediaTypeNames.Application.Json)]
-        public async System.Threading.Tasks.Task<IActionResult> StartGameSessionAsync(GameStart gameStart)
+        public async System.Threading.Tasks.Task<IActionResult> StartGameSessionAsync([FromBody] GameStart gameStart)
         {
-            var lobby = gameContext.Lobbies.Where(x => x.Code == gameStart.lobbyCode).First();
+            var lobby = gameContext.Lobbies.Find(gameStart.LobbyCode);
 
             if (lobby == null)
             {
                 return new NotFoundResult();
             }
 
-            var players = gameContext.Players.Where(x => x.LobbyId == gameStart.lobbyCode);
+            var players = gameContext.Players.Where(x => x.LobbyId == gameStart.LobbyCode);
 
             if (players.Count() < 2)
             {
@@ -75,9 +74,9 @@ namespace ProjectHamiltonService.Controllers
                 player.TurnIndex = index;
             }
 
-            var rooms = gameContext.Rooms.Where(x => x.LobbyId == gameStart.lobbyCode);
+            var rooms = gameContext.Rooms.Where(x => x.LobbyId == gameStart.LobbyCode);
 
-            await hubContext.Clients.Group(gameStart.lobbyCode).StartGame(new GamePrestartInformation { 
+            await hubContext.Clients.Group(gameStart.LobbyCode).StartGame(new GamePrestartInformation { 
                     PlayerOrder = ordered.Select(x => new CharacterOrder { 
                         CharacterName = x.CharacterPrototypeId,
                         TurnOrder = x.TurnIndex,
