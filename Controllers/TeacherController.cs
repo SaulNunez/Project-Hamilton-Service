@@ -75,12 +75,38 @@ namespace ProjectHamiltonService.Controllers
                 player.TurnIndex = index;
             }
 
-            await hubContext.Clients.Group(gameStart.lobbyCode).StartGame(new PlayerOrderInformation { 
+            var rooms = gameContext.Rooms.Where(x => x.LobbyId == gameStart.lobbyCode);
+
+            await hubContext.Clients.Group(gameStart.lobbyCode).StartGame(new GamePrestartInformation { 
                     PlayerOrder = ordered.Select(x => new CharacterOrder { 
                         CharacterName = x.CharacterPrototypeId,
                         TurnOrder = x.TurnIndex,
                         TurnThrow = x.TurnThrowResult
-                    }).ToList()
+                    }).ToList(),
+                    RoomPositions = new Game.ResponseModels.RoomOrganization
+                    {
+                        MainFloor = rooms.Where(x => x.Floor == 0).Select(r => new Game.ResponseModels.RoomPosition
+                        {
+                            RoomId = r.RoomProtoype,
+                            Name = $"{r.RoomProtoype} (Fix Me)",
+                            X = r.X,
+                            Y = r.Y
+                        }).ToList(),
+                        Basement = rooms.Where(x => x.Floor == -1).Select(r => new Game.ResponseModels.RoomPosition
+                        {
+                            RoomId = r.RoomProtoype,
+                            Name = $"{r.RoomProtoype} (Fix Me)",
+                            X = r.X,
+                            Y = r.Y
+                        }).ToList(),
+                        TopFloor = rooms.Where(x => x.Floor == 1).Select(r => new Game.ResponseModels.RoomPosition
+                        {
+                            RoomId = r.RoomProtoype,
+                            Name = $"{r.RoomProtoype} (Fix Me)",
+                            X = r.X,
+                            Y = r.Y
+                        }).ToList()
+                    }
                 });
 
             var firstTurn = ordered.First();

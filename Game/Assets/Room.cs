@@ -120,7 +120,7 @@ namespace LaCasaDelTerror.Assets
             },
             new Rooms
             {
-                id="Office",
+                id="office",
                 Name="Oficina"
             },
             new Rooms
@@ -131,7 +131,7 @@ namespace LaCasaDelTerror.Assets
             new Rooms
             {
                 id="parents_room",
-                Name="Cuarto de los padres"
+                Name="Cuarto"
             },
             new Rooms
             {
@@ -162,6 +162,7 @@ namespace LaCasaDelTerror.Assets
             },
             new Rooms
             {
+                id="terraza",
                 Name="Terraza",
                 adjacentRoomBottom=false,
                 adjacentRoomLeft=false,
@@ -169,8 +170,8 @@ namespace LaCasaDelTerror.Assets
             },
             new Rooms
             {
-                id="library",
-                Name="Libreria"
+                id="laboratory",
+                Name="Laboratorio"
             },
             new Rooms
             {
@@ -183,7 +184,7 @@ namespace LaCasaDelTerror.Assets
             },
             new Rooms
             {
-                id="kids_room",
+                id="play_room",
                 Name="Cuarto de juego de niños",
                 Type=RoomType.ITEM
             },

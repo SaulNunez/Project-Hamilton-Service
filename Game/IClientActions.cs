@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LaCasaDelTerror.Assets;
-using LaCasaDelTerror.Assets.Abstracts;
-using ProjectHamiltonService.Game.Abstracts;
-using ProjectHamiltonService.Game.ClientRequestModels;
+﻿using ProjectHamiltonService.Game.ClientRequestModels;
 using ProjectHamiltonService.Game.RequestModels;
 using ProjectHamiltonService.Models;
+using System.Threading.Tasks;
 
 namespace ProjectHamiltonService.Game
 {
@@ -18,7 +12,7 @@ namespace ProjectHamiltonService.Game
         //Task StartPuzzle(string xmlTemplate, string instructions);
         Task PlayerJoinedLobby();
         Task PlayerSelectedCharacter(NewPlayerInfo newPlayerInfo);
-        Task StartGame(PlayerOrderInformation playerOrderInformation);
+        Task StartGame(GamePrestartInformation playerOrderInformation);
         Task StartTurn(TurnRequest turnRequest);
         Task EndTurn();
         Task MoveCharacterToPosition(MovementRequest movementRequest);

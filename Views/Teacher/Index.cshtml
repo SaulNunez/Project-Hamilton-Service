@@ -19,7 +19,7 @@
                         <button type="button" class="btn btn-primary" id="crear_hub" onclick="createHub()">
                             Crear hub
                         </button>
-                        <button type="button" class="btn btn-primary" id="crear_hub" onclick="createHub()">
+                        <button type="button" disabled class="btn btn-primary" id="iniciar_juego" onclick="startGame()">
                             Iniciar juego
                         </button>
                     </div>
@@ -36,16 +36,34 @@
         </div>
         <script>
             var hubCodeContainer = document.getElementById("hubCode");
+            var startGameButton = document.getElementById("iniciar_juego");
+            var createLobbyButton = document.getElementById("crear_hub");
 
             function createHub() {
                 fetch('/Teacher/CreateLobby', { method: 'POST' })
                     .then((response) => response.json())
                     .then(function (data) {
                         hubCodeContainer.innerHTML = data.code || "";
+
+                        startGameButton.disabled = false;
+                        createLobbyButton.disabled = true;
                     })
                     .then(function (error) {
                         console.error(error);
                     });
+            }
+
+            function startGame() {
+                fetch('/Teacher/StartGame',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify({ lobbyCode: hubCodeContainer.innerHTML })
+                    }
+                ).then((response) => {
+                    if (response.ok) {
+                        alert("Ha iniciado el juego");
+                    }
+                });
             }
         </script>
     </div>
