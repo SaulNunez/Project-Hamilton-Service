@@ -53,10 +53,10 @@ namespace ProjectHamiltonService.Controllers
 
             var players = gameContext.Players.Where(x => x.LobbyId == gameStart.LobbyCode);
 
-            if (players.Count() < 2)
-            {
-                return new StatusCodeResult(403);
-            }
+            //if (players.Count() < 2)
+            //{
+            //    return new StatusCodeResult(403);
+            //}
 
             lobby.OnProgress = true;
 
@@ -110,7 +110,7 @@ namespace ProjectHamiltonService.Controllers
 
             var firstTurn = ordered.First();
 
-            await hubContext.Clients.User(firstTurn.User.Id).StartTurn(new TurnRequest { CanThrowDiceForMovement = true });
+            await hubContext.Clients.User(firstTurn.UserId).StartTurn(new TurnRequest { CanThrowDiceForMovement = true });
 
             await gameContext.SaveChangesAsync();
 

@@ -407,7 +407,8 @@ namespace ProjectHamiltonService.Game
                 Intelligence = characterPrototype.stats.Intelligence,
                 Sanity = characterPrototype.stats.Sanity,
                 Physical = characterPrototype.stats.Physical,
-                User = await userManager.FindByNameAsync(Context.User?.Identity.Name),
+                UserId = Context.UserIdentifier,
+                LobbyId = action.lobbyCode,
                 Name = action.Name,
                 CharacterPrototypeId = action.Character
             };

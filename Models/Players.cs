@@ -35,6 +35,8 @@ namespace ProjectHamiltonService.Models
         [ForeignKey("Lobbies")]
         public string LobbyId { get; set; }
         public virtual Lobbies Lobby { get; set; }
+
+        public string UserId { get; set; }
         public virtual IdentityUser User { get; set; }
     }
 }
